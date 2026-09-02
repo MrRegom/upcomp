@@ -526,6 +526,23 @@ function arrancarAutoMazo(){
 }
 function detenerAutoMazo(){ mazoIntervenido=true; clearInterval(autoMazo); }
 
+/* Rueda del mouse y gesto horizontal del trackpad sobre el mazo.
+   Solo se captura el desplazamiento horizontal (o con Shift), para no
+   robarle el scroll vertical a la página. */
+let ruedaBloqueada=false;
+mazo.addEventListener("wheel",e=>{
+  const horizontal=Math.abs(e.deltaX)>Math.abs(e.deltaY);
+  if(!horizontal&&!e.shiftKey) return;
+  e.preventDefault();
+  if(ruedaBloqueada) return;
+  const d=horizontal?e.deltaX:e.deltaY;
+  if(Math.abs(d)<12) return;
+  detenerAutoMazo();
+  ruedaBloqueada=true;
+  d>0?expulsar(1):rotar(false);
+  setTimeout(()=>{ruedaBloqueada=false;},420);
+},{passive:false});
+
 $("#mazoSig").onclick=()=>{detenerAutoMazo();expulsar(1);};
 $("#mazoAnt").onclick=()=>{detenerAutoMazo();rotar(false);};
 pintarMazo();
@@ -822,10 +839,10 @@ const panelFicha=$("#panelFicha");
 let fichaActual=0, pestanaActual="descripcion";
 
 const REDES=[
-  {id:"wa",   nombre:"WhatsApp", url:t=>`https://wa.me/?text=${encodeURIComponent(t.titulo+" — "+t.url)}`},
-  {id:"fb",   nombre:"Facebook", url:t=>`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(t.url)}`},
-  {id:"x",    nombre:"X",        url:t=>`https://twitter.com/intent/tweet?text=${encodeURIComponent(t.titulo)}&url=${encodeURIComponent(t.url)}`},
-  {id:"in",   nombre:"LinkedIn", url:t=>`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(t.url)}`}
+  {ico:"i-wa", nombre:"WhatsApp", url:t=>`https://wa.me/?text=${encodeURIComponent(t.titulo+" — "+t.url)}`},
+  {ico:"i-fb", nombre:"Facebook", url:t=>`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(t.url)}`},
+  {ico:"i-x",  nombre:"X",        url:t=>`https://twitter.com/intent/tweet?text=${encodeURIComponent(t.titulo)}&url=${encodeURIComponent(t.url)}`},
+  {ico:"i-in", nombre:"LinkedIn", url:t=>`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(t.url)}`}
 ];
 
 function abrirFicha(i){
@@ -879,10 +896,24 @@ function pintarFicha(){
   }
 
   panelFicha.innerHTML=`
+    <div class="ficha__barra">
+      <div class="ficha__barra-in">
+        <button class="ficha__volver" id="cerrarFicha">${ico("i-izq")} <span>Volver al catálogo</span></button>
+        <span class="logo" style="color:#E9EFEB"><img src="assets/marcas/upcomp-logo.webp" alt="" width="28" height="28">UPCOMP</span>
+        <button class="icono-btn" id="fichaCarro" aria-label="Abrir lista de cotización">
+          ${ico("i-carro")}<span class="badge ${nTotal()>0?"is-on":""}">${nTotal()}</span>
+        </button>
+      </div>
+    </div>
     <div class="ficha">
-      <button class="ficha__cerrar" id="cerrarFicha" aria-label="Cerrar ficha">${ico("i-x")}</button>
       <div class="ficha__top">
-        <div class="ficha__img"><img src="${e.img}" alt="${esc(e.t)}"></div>
+        <div class="ficha__galeria">
+          <div class="ficha__img" id="fichaZoom" title="Pasa el cursor para acercar">
+            <img src="${e.img}" alt="${esc(e.t)}">
+            <span class="ficha__lupa">${ico("i-lupa")} Acercar</span>
+          </div>
+          <button class="ficha__ampliar" id="fichaAmpliar">${ico("i-lupa")} Ver en grande</button>
+        </div>
         <div class="ficha__info">
           ${f?`<p class="ficha__sku">SKU: ${esc(f.sku)}</p>`:`<p class="ficha__sku">Catálogo UpComp</p>`}
           <p class="carta__tag">${esc(e.tag)}</p>
@@ -895,7 +926,7 @@ function pintarFicha(){
           <div class="ficha__compartir">
             <p>Compartir este producto</p>
             <div class="ficha__redes">
-              ${REDES.map(r=>`<a href="${r.url(compartir)}" target="_blank" rel="noopener" aria-label="Compartir en ${r.nombre}" title="${r.nombre}"><span>${r.id==="wa"?"":""}</span>${r.id==="wa"?ico("i-wa"):`<b>${r.nombre[0]}</b>`}</a>`).join("")}
+              ${REDES.map(r=>`<a href="${r.url(compartir)}" target="_blank" rel="noopener" aria-label="Compartir en ${r.nombre}" title="${r.nombre}">${ico(r.ico)}</a>`).join("")}
               <button id="fichaCopiar" aria-label="Copiar enlace" title="Copiar enlace">${ico("i-enlace")}</button>
             </div>
           </div>
@@ -918,8 +949,34 @@ function pintarFicha(){
     </div>`;
 
   $("#cerrarFicha").onclick=cerrarTodo;
+  $("#fichaCarro").onclick=()=>{cerrarTodo();setTimeout(abrirCarro,260);};
   $("#fichaCotizar").onclick=()=>{cerrarTodo();setTimeout(()=>abrirModal(fichaActual),260);};
   $("#fichaAgregar").onclick=()=>agregar(fichaActual);
+
+  /* Lupa: la imagen se acerca siguiendo el cursor, como en las fichas
+     de catálogo industrial. Con el dedo no aplica, ahí va "Ver en grande". */
+  const zona=$("#fichaZoom"), img=$("img",zona);
+  if(matchMedia("(hover:hover)").matches){
+    zona.addEventListener("mousemove",ev=>{
+      const r=zona.getBoundingClientRect();
+      const x=((ev.clientX-r.left)/r.width)*100, y=((ev.clientY-r.top)/r.height)*100;
+      img.style.transformOrigin=`${x}% ${y}%`;
+      img.style.transform="scale(2.2)";
+      zona.classList.add("is-zoom");
+    });
+    zona.addEventListener("mouseleave",()=>{
+      img.style.transform=""; zona.classList.remove("is-zoom");
+    });
+  }
+  $("#fichaAmpliar").onclick=()=>{
+    const v=document.createElement("div");
+    v.className="visor";
+    v.innerHTML=`<img src="${e.img}" alt="${esc(e.t)}"><button aria-label="Cerrar">${ico("i-x")}</button>`;
+    document.body.appendChild(v);
+    requestAnimationFrame(()=>v.classList.add("is-on"));
+    const fuera=()=>{v.classList.remove("is-on");setTimeout(()=>v.remove(),300);};
+    v.onclick=fuera;
+  };
   $("#fichaCopiar").onclick=async()=>{
     try{ await navigator.clipboard.writeText(compartir.url); avisar("Enlace copiado"); }
     catch{ avisar("No se pudo copiar el enlace"); }
