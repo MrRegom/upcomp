@@ -27,22 +27,22 @@ const EQUIPOS=[
      Estructuran la portada: UpComp es una empresa de servicios y la
      tienda vive aparte, en /tienda. ---------- */
 const AREAS=[
-  {icono:"i-caja",tag:"Usuarios y equipos",t:"Puesto de Trabajo Gestionado",
+  {icono:"i-caja",fondo:"assets/banners/puesto-trabajo.webp",pos:"center",tag:"Usuarios y equipos",t:"Puesto de Trabajo Gestionado",
    d:"Equipos, configuración y servicios asociados definidos según el cargo, las aplicaciones y la criticidad de cada usuario.",
    specs:["Notebooks y workstations","Configuración por perfil","Renovación planificada"]},
-  {icono:"i-soporte",tag:"Operación diaria",t:"Soporte TI para Empresas",
+  {icono:"i-soporte",fondo:"assets/banners/tecnologia.webp",pos:"left center",tag:"Operación diaria",t:"Soporte TI para Empresas",
    d:"Un canal técnico para resolver incidentes, asistir usuarios y coordinar acciones sobre equipos que afectan la productividad.",
    specs:["Remoto o presencial","Hardware y software","Puntual o recurrente"]},
-  {icono:"i-engranaje",tag:"Rendimiento",t:"Mantención y Optimización",
+  {icono:"i-engranaje",fondo:"assets/banners/tecnologia.webp",pos:"right center",tag:"Rendimiento",t:"Mantención y Optimización",
    d:"Evaluamos el estado de los equipos para prevenir fallas, recuperar rendimiento y decidir qué mantener, mejorar o renovar.",
    specs:["Mantención preventiva","Revisión térmica","Upgrades"]},
-  {icono:"i-escudo",tag:"Respaldo",t:"Continuidad Operacional",
+  {icono:"i-escudo",fondo:"assets/banners/financiamiento.webp",pos:"center",tag:"Respaldo",t:"Continuidad Operacional",
    d:"Coberturas y alternativas de respaldo para reducir el impacto de una falla sobre usuarios y equipos relevantes para la operación.",
    specs:["Garantía Shield","Seguimiento de casos","Equipo temporal"]},
-  {icono:"i-red",tag:"Implementación",t:"Proyectos e Infraestructura TI",
+  {icono:"i-red",fondo:"assets/banners/portafolio.webp",pos:"left center",tag:"Implementación",t:"Proyectos e Infraestructura TI",
    d:"Diseñamos soluciones para oficinas nuevas, ampliaciones y renovación de infraestructura con mirada técnica y comercial integrada.",
    specs:["Networking y Wi-Fi","Servidores","Videoconferencia"]},
-  {icono:"i-codigo",tag:"Capacidad nueva",t:"Desarrollo e Integración",nuevo:true,
+  {icono:"i-codigo",fondo:"assets/banners/portafolio.webp",pos:"right center",tag:"Capacidad nueva",t:"Desarrollo e Integración",nuevo:true,
    d:"Cuando una plataforma estándar no resuelve el proceso real, diseñamos y construimos la solución que conecta la operación.",
    specs:["Software a medida","APIs e integraciones","IA privada"]}
 ];
@@ -328,7 +328,7 @@ const esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;"
 const wa=t=>`https://wa.me/${TELEFONO}?text=${encodeURIComponent(t)}`;
 const clp=new Intl.NumberFormat("es-CL",{style:"currency",currency:"CLP",maximumFractionDigits:0});
 const suave=matchMedia("(prefers-reduced-motion: reduce)").matches;
-const ico=id=>`<svg aria-hidden="true"><use href="#${id}"/></svg>`;
+const ico=id=>`<svg viewBox="0 0 24 24" aria-hidden="true"><use href="#${id}"/></svg>`;
 
 $("#anio").textContent=new Date().getFullYear();
 $$("[data-wa]").forEach(el=>el.href=wa(el.dataset.wa));
@@ -479,7 +479,8 @@ function pintarMazo(){
     const e=MAZO[idx];
     const cara=e.img
       ? `<div class="carta__img"><img src="${e.img}" alt="${esc(e.t)}" loading="${pos<2?"eager":"lazy"}" draggable="false"></div>`
-      : `<div class="carta__icono">${ico(e.icono)}${e.nuevo?'<span class="carta__nuevo">Nuevo</span>':''}</div>`;
+      : `<div class="carta__icono"${e.fondo?` style="background-image:url('${e.fondo}');background-position:${e.pos||"center"}"`:""}>
+           <span class="carta__velo"></span>${ico(e.icono)}${e.nuevo?'<span class="carta__nuevo">Nuevo</span>':''}</div>`;
     return `<article class="carta ${e.img?"":"carta--area"}" data-pos="${pos}" ${pos===0?'tabindex="0"':'aria-hidden="true"'}>
       ${cara}
       <div class="carta__cuerpo">
@@ -1132,7 +1133,7 @@ const inputUsuarios=D("#usuarios");
 D("#atajos").innerHTML=[10,25,50,100,200].map(n=>`<button class="atajo" data-n="${n}">${n}</button>`).join("");
 D("#planes").innerHTML=PLANES.map(p=>`
   <button class="plan" data-plan="${p.id}">
-    <b>${esc(p.nombre)}<svg aria-hidden="true" style="display:none"><use href="#i-check"/></svg></b>
+    <b>${esc(p.nombre)}<svg viewBox="0 0 24 24" aria-hidden="true" style="display:none"><use href="#i-check"/></svg></b>
     <span>${esc(p.d)}</span></button>`).join("");
 function pintarCalculadora(){
   const n=+inputUsuarios.value;
@@ -1141,12 +1142,26 @@ function pintarCalculadora(){
   const unitario=Math.round(plan.ref*(1-tramo.desc));
   const mensual=unitario*n;
   D("#salidaUsuarios").textContent=n;
-  D("#calcTotal").textContent=clp.format(mensual);
-  D("#calcSub").textContent=`mensual · ${n} ${n===1?"usuario":"usuarios"} · plan ${plan.nombre}`;
-  D("#calcDetalle").innerHTML=`
-    <div><dt>Por usuario</dt><dd class="tabular">${clp.format(unitario)}</dd></div>
-    <div><dt>Ajuste por volumen</dt><dd class="tabular">${tramo.desc===0?"—":"−"+Math.round(tramo.desc*100)+"%"}</dd></div>
-    <div><dt>Proyección anual</dt><dd class="tabular">${clp.format(mensual*12)}</dd></div>`;
+  /* La cuenta se muestra escrita, no solo el total: quien la mira tiene que
+     entender de dónde sale la cifra sin preguntar. */
+  D("#calcFormula").innerHTML=`
+    <div class="formula__fila">
+      <span class="formula__op"></span>
+      <span class="formula__val tabular">${n}</span>
+      <span class="formula__et">${n===1?"usuario cubierto":"usuarios cubiertos"}</span>
+    </div>
+    <div class="formula__fila">
+      <span class="formula__op">×</span>
+      <span class="formula__val tabular">${clp.format(unitario)}</span>
+      <span class="formula__et">por usuario, cada mes${tramo.desc>0?` <b>(lista ${clp.format(plan.ref)} − ${Math.round(tramo.desc*100)}% por volumen)</b>`:""}</span>
+    </div>
+    <div class="formula__fila formula__fila--total">
+      <span class="formula__op">=</span>
+      <span class="formula__val tabular">${clp.format(mensual)}</span>
+      <span class="formula__et">al mes, plan ${esc(plan.nombre)}</span>
+    </div>
+    <p class="formula__anual">Equivale a <b class="tabular">${clp.format(mensual*12)}</b> al año.
+      Reemplaza la compra de ${n} ${n===1?"equipo":"equipos"} más su soporte, garantía y renovación.</p>`;
   D("#incluye").innerHTML=plan.incluye.map(i=>`<li>${ico("i-check")}${esc(i)}</li>`).join("");
   $$("#atajos .atajo").forEach(b=>b.classList.toggle("is-sel",+b.dataset.n===n));
   $$("#planes .plan").forEach(b=>{

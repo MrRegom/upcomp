@@ -1068,12 +1068,31 @@ textarea{resize:vertical;min-height:5.5rem}
 
 /* Cartas del mazo cuando muestran áreas en vez de equipos */
 .carta--area{background:var(--negro-2);color:#E9EFEB;border-color:var(--linea-oscura)}
-.carta__icono{height:34%;display:grid;place-items:center;background:var(--negro-3);border-bottom:1px solid var(--linea-oscura);position:relative}
-.carta__icono svg{width:2.75rem;height:2.75rem;color:var(--verde)}
+.carta__icono{
+  height:38%;display:grid;place-items:center;background:var(--negro-3) center/cover no-repeat;
+  border-bottom:1px solid var(--linea-oscura);position:relative;overflow:hidden;
+}
+/* Velo sobre la imagen para que el icono se lea siempre */
+.carta__velo{position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,22,20,.62),rgba(15,22,20,.86))}
+.carta__icono svg{position:relative;z-index:1;width:2.75rem;height:2.75rem;color:var(--verde);filter:drop-shadow(0 2px 8px rgba(0,0,0,.5))}
 .carta__nuevo{position:absolute;top:.75rem;right:.75rem;font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;background:var(--verde);color:#06110A;padding:.2rem .45rem}
 .carta--area .carta__tag{color:var(--verde)}
 .carta__d{font-size:.82rem;color:#93A79D;line-height:1.5}
 .carta--area .carta__specs li{color:#A9BAB1;border-color:var(--linea-oscura)}
+
+/* ---------- La cuenta del estimador, escrita ---------- */
+.formula{margin-top:1.25rem;display:grid;gap:.15rem}
+.formula__fila{display:grid;grid-template-columns:1.4rem minmax(0,auto) 1fr;gap:.75rem;align-items:baseline;padding:.5rem 0}
+.formula__op{font-family:var(--mono);font-size:1.15rem;color:#7F9189;text-align:center}
+.formula__val{font-family:var(--display);font-weight:700;font-size:1.35rem;color:#E9EFEB;white-space:nowrap}
+.formula__et{font-size:.82rem;color:#93A79D;line-height:1.4}
+.formula__et b{color:var(--verde);font-weight:500}
+.formula__fila--total{border-top:1px solid var(--linea-oscura);margin-top:.35rem;padding-top:.9rem}
+.formula__fila--total .formula__op{color:var(--verde)}
+.formula__fila--total .formula__val{font-size:clamp(1.75rem,4.5vw,2.5rem);font-weight:800;color:var(--verde);letter-spacing:-.02em}
+.formula__fila--total .formula__et{color:#B7C6BE}
+.formula__anual{margin-top:1.1rem;border-top:1px solid var(--linea-oscura);padding-top:1rem;font-size:.83rem;color:#7F9189;line-height:1.6}
+.formula__anual b{color:#C7D4CD}
 
 /* Cabecera de la tienda */
 .tienda-cinta{background:var(--verde-wash);border-bottom:1px solid var(--verde-wash-2)}
