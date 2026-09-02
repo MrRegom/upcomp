@@ -1,0 +1,248 @@
+================================================================================
+UPCOMP - QUE SE MEJORO, POR QUE, Y CON QUE ESTRATEGIA
+Prototipo: https://upcomp.vercel.app   Repo: github.com/MrRegom/upcomp
+================================================================================
+
+EN UNA LINEA
+UpComp se ve como empresa de servicios, la tienda queda aparte, todo el
+contenido es real de upcomp.cl, y cada camino de la pagina termina en una
+conversacion por WhatsApp o correo.
+
+
+--------------------------------------------------------------------------------
+1. ARQUITECTURA - EMPRESA DE SERVICIOS, CON TIENDA APARTE
+--------------------------------------------------------------------------------
+ESTRATEGIA: que la primera impresion sea "empresa de servicios TI", no
+"tienda de computadores". El catalogo suma, pero no manda.
+
+1.1 Dos paginas separadas: / y /tienda
+    Que se hizo: la portada es la empresa de servicios; el catalogo, fichas,
+    configurador y lista de cotizacion viven en /tienda.
+    Por que: quien llega buscando soporte TI no deberia toparse con precios de
+    workstations, y quien viene a comprar equipos no necesita leer sobre
+    continuidad operacional para llegar al catalogo.
+
+1.2 Las areas de negocio son la columna vertebral
+    Que se hizo: seis tarjetas estructuran la portada - Puesto de Trabajo
+    Gestionado, Soporte TI, Mantencion y Optimizacion, Continuidad Operacional,
+    Proyectos e Infraestructura, y Desarrollo e Integracion.
+    Por que: es el modelo de Intellicore, la referencia que se pidio. Poca
+    informacion por tarjeta y todo el catalogo de capacidades de una mirada.
+
+1.3 Desarrollo e Integracion va marcado como propuesta nueva
+    Que se hizo: es la unica seccion que no existe en upcomp.cl, y la propia
+    pagina lo declara.
+    Por que: en la reunion nadie tiene que adivinar que es de UpComp y que
+    aporta la alianza. Marcarlo da credibilidad a todo el resto.
+
+1.4 Una cinta orienta dentro de la tienda
+    Que se hizo: al entrar a /tienda una franja explica donde esta uno y ofrece
+    volver a servicios.
+    Por que: separar dos mundos crea el riesgo de perderse entre ellos. La
+    cinta lo resuelve sin ocupar espacio real.
+
+
+--------------------------------------------------------------------------------
+2. CONVERSION - TODO CAMINO TERMINA EN UNA CONVERSACION
+--------------------------------------------------------------------------------
+ESTRATEGIA: el sitio no vende en linea, consigue que alguien escriba. Cada
+pieza esta pensada para acortar ese trayecto y para que el lead llegue
+calificado.
+
+2.1 Carrito siempre visible en la barra fija
+    Que se hizo: encabezado fijo arriba (64 px) con el carrito y un contador
+    que aparece apenas hay algo dentro. Esta en las dos paginas, incluso
+    dentro de la ficha de producto.
+    Por que: si el carrito desaparece al hacer scroll, la persona pierde de
+    vista lo que lleva acumulado y abandona. Visible siempre, el avance es
+    evidente.
+
+2.2 Es lista de cotizacion, no carrito de compra
+    Que se hizo: no hay precios ni pago. Se acumulan equipos con cantidad,
+    plazo y servicios asociados, y al final se envia todo por WhatsApp o correo
+    con el mensaje ya redactado.
+    Por que: UpComp no publica precios porque cada configuracion se cotiza
+    segun requerimiento y stock. Un carrito de compra prometeria algo que el
+    negocio no hace.
+
+2.3 La lista sobrevive al cambio de pagina
+    Que se hizo: se guarda en el navegador. Se arma en la tienda, se vuelve a
+    servicios, se llena el formulario, y los equipos se adjuntan solos a la
+    solicitud.
+    Por que: al separar el sitio en dos, perder la lista al navegar habria
+    sido un retroceso. Asi la separacion no cuesta nada.
+
+2.4 Tres accesos flotantes, jerarquizados
+    Que se hizo: WhatsApp con pulso, el asistente, y volver arriba (que solo
+    aparece despues de 600 px de scroll).
+    Por que: WhatsApp es el canal real de UpComp, va siempre presente. El
+    boton de subir no molesta arriba porque todavia no hace falta.
+
+2.5 Formulario que califica, no que recolecta
+    Que se hizo: tres pasos - Necesidad, Contexto, Datos - antes de pedir el
+    correo. Pregunta cargo, cantidad de usuarios y plazo.
+    Por que: es lo que separa una web enterprise de una PYME. Un "nombre y
+    mensaje" obliga a tres correos de ida y vuelta antes de saber si el lead
+    sirve.
+
+2.6 Se explica que informacion conviene traer
+    Que se hizo: los cuatro datos que ayudan a responder mejor y los seis
+    antecedentes que aceleran la cotizacion, tomados de su pagina de contacto.
+    Por que: ya lo tenian escrito y funciona - reduce preguntas y acorta el
+    ciclo de venta. Solo estaba mal presentado.
+
+
+--------------------------------------------------------------------------------
+3. CONTENIDO - TODO SALE DE UPCOMP.CL
+--------------------------------------------------------------------------------
+ESTRATEGIA: cero informacion inventada. Es lo que hace que la pagina se sienta
+de ellos y no una plantilla; en el codigo cada bloque lleva anotada la pagina
+de la que salio.
+
+3.1 Se barrieron cuatro paginas completas
+    Que se hizo: la home, /contacto, /servicios-empresas y /quienes-somos-1.
+    De ahi salen servicios, ecosistema, preguntas frecuentes, canales y proceso.
+    Por que: el primer intento usaba el PDF del portafolio y texto redactado
+    por mi. Suena bien pero no es de ellos, y en la reunion eso se nota.
+
+3.2 Assets reales, no ilustraciones genericas
+    Que se hizo: logo de UpComp, cinco logos de partners, ocho de clientes y
+    diez fotos de producto en resolucion mayor que la del sitio actual.
+    Por que: es lo que mas rapido mata el aspecto de plantilla. Un logo de
+    Dell real pesa mas que cualquier ilustracion.
+
+3.3 Fichas de producto con SKU verdadero
+    Que se hizo: descripcion, caracteristicas destacadas, "ideal para",
+    especificaciones tecnicas y servicios asociados, con la estructura de sus
+    propias fichas.
+    Por que: una ficha vacia delata el prototipo. Con el SKU a la vista se lee
+    como sitio en produccion.
+
+3.4 Lo que no esta confirmado, se dice
+    Que se hizo: los equipos sin ficha completa lo declaran; no hay contadores
+    porque no hay cifras confirmadas; se elimino el estimador de precios.
+    Por que: un numero inventado en pantalla abre preguntas que UpComp no puede
+    responder, y desvia la reunion hacia el detalle equivocado.
+
+    HALLAZGO PARA CONTARLES: los logos de Geocom y Ducati Chile estan rotos en
+    upcomp.cl - las URLs devuelven "Image Not Found!". En el prototipo se
+    muestran como marca tipografica.
+
+
+--------------------------------------------------------------------------------
+4. DISENO - SU MARCA, CON OTRO NIVEL DE EJECUCION
+--------------------------------------------------------------------------------
+ESTRATEGIA: no es una propuesta de rebranding. Es el mismo UpComp, mejor
+construido - y deliberadamente lejos del look "hecho con IA".
+
+4.1 Paleta y tipografia extraidas de su sitio
+    Que se hizo: verde #36B85C, verde profundo #23984F, negro #0F1614 y Albert
+    Sans, que es la tipografia que ya usan.
+    Por que: quien conoce upcomp.cl reconoce la marca al instante.
+
+4.2 Base clara institucional, oscuro con intencion
+    Que se hizo: el sitio es mayoritariamente claro. El negro-verde aparece en
+    la barra superior, el hero, el configurador y el pie.
+    Por que: el patron "todo oscuro con verde neon" es exactamente el que hoy
+    se lee como pagina generada. La base clara es la que usan Microsoft o Dell
+    en su cara empresarial.
+
+4.3 Fondo de senal, no cuadricula
+    Que se hizo: trazos que ascienden de izquierda a derecha, dibujados en
+    canvas, que se detienen cuando la seccion sale de pantalla.
+    Por que: la cuadricula de puntos es de los fondos mas repetidos de la web
+    actual. La curva ascendente nace del propio logo de UpComp - una flecha que
+    sube sobre un grafico - y de su discurso de continuidad operacional.
+
+
+--------------------------------------------------------------------------------
+5. INTERACCION - MOVIMIENTO QUE HACE ALGO
+--------------------------------------------------------------------------------
+ESTRATEGIA: cada animacion resuelve un problema de navegacion o demuestra una
+capacidad que vendemos. Ninguna esta solo de adorno.
+
+5.1 Mazo de tarjetas arrastrable con fisica
+    Que se hizo: sigue el puntero, rota segun el desplazamiento y al soltar
+    mide la velocidad - si supera el umbral sale volando, si no vuelve con
+    rebote. Mouse, dedo, rueda, trackpad y teclado. Avanza solo hasta que
+    alguien lo toca.
+    Por que: es la interaccion que se pidio tomar de Ki Technologies. En la
+    portada muestra las areas de negocio y en la tienda los equipos - el mismo
+    componente sirviendo a dos contenidos.
+
+5.2 El asistente es el producto que se vende
+    Que se hizo: guia por las areas de negocio, sugiere equipos con su foto y
+    los agrega a la cotizacion. Si le preguntan que es, responde que es una
+    demo del servicio de bots de UpComp.
+    Por que: es el argumento comercial mas fuerte que existe - "el bot que te
+    esta atendiendo es el que te vendemos". La web deja de ser folleto y pasa a
+    ser demostracion.
+
+5.3 Lupa en la ficha de producto
+    Que se hizo: la foto se acerca siguiendo el cursor, con visor a pantalla
+    completa para pantallas tactiles.
+    Por que: es lo que hace cualquier catalogo industrial serio. Quien compra
+    una workstation de varios millones quiere ver el equipo de cerca.
+
+5.4 Pantalla de bienvenida con la marca
+    Que se hizo: el logo con halo de senal, la palabra UPCOMP y una barra que
+    cierra el ciclo. Dura menos de dos segundos y se salta con un clic.
+    Por que: da un momento de marca al abrir. El limite de dos segundos existe
+    porque una carga larga es de las cosas que mas molestan.
+
+
+--------------------------------------------------------------------------------
+6. TECNICA - SIN DEPENDENCIAS, SIN SORPRESAS
+--------------------------------------------------------------------------------
+ESTRATEGIA: que nada pueda fallar el dia de la reunion, y que despues lo pueda
+mantener cualquiera del equipo.
+
+6.1 HTML, CSS y JavaScript puros
+    Que se hizo: sin framework, sin compilacion, sin paquetes. Tres archivos y
+    una carpeta de imagenes.
+    Por que: se abre con doble clic y se despliega en segundos. React tendra
+    sentido en la Fase 2, cuando haya CRM y catalogo vivo.
+
+6.2 Contenido separado del codigo
+    Que se hizo: todo el texto vive en constantes al inicio de app.js, con su
+    fuente anotada.
+    Por que: Francisdrake o Manuel pueden corregir un texto desde GitHub sin
+    bajar nada ni saber programar.
+
+6.3 Un solo script para las dos paginas
+    Que se hizo: data-pagina distingue portada de tienda, y cada bloque se
+    salta si su contenedor no existe.
+    Por que: sin codigo duplicado, un arreglo se aplica a las dos paginas a la
+    vez.
+
+6.4 Accesibilidad respetada
+    Que se hizo: objetivos tactiles de 44 px, contraste de 18:1 en titulos,
+    navegacion por teclado y respeto a la preferencia de movimiento reducido.
+    Por que: varias organizaciones de la cartera de UpComp son publicas o
+    reguladas, y ahi la accesibilidad se exige.
+
+6.5 Despliegue automatico
+    Que se hizo: cada cambio subido al repositorio se publica solo en Vercel,
+    en menos de un minuto.
+    Por que: si en plena reunion piden cambiar un texto, se corrige y lo ven
+    actualizado al recargar.
+
+
+--------------------------------------------------------------------------------
+7. PARA LA REUNION - LO QUE HAY QUE PREGUNTAR
+--------------------------------------------------------------------------------
+[ ] Cuanto cobran el Puesto de Trabajo Gestionado. Si ya lo cobran, la
+    calculadora vuelve con valores reales y pasa a ser herramienta de venta.
+[ ] Anos de operacion y numero de proyectos. Faltan para poner contadores.
+[ ] Autorizacion para publicar casos de exito. Usar un logo y contar un caso
+    con detalle son cosas distintas.
+[ ] Si ya se pidieron las credenciales de prueba de Intcomex. Asignan un
+    desarrollador guia y eso tiene espera.
+[ ] Como se reparte comercialmente la alianza. Importa mas que la web.
+
+ANTES DE PROYECTAR: revisar que el equipo con el que van a presentar tenga
+activadas las animaciones de Windows (Configuracion > Accesibilidad > Efectos
+visuales). Si estan apagadas, el sitio respeta esa preferencia y se ve
+estatico: sin pantalla de carga, sin marquesina y sin el mazo girando solo.
+
+================================================================================
