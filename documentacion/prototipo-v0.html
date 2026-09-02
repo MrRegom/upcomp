@@ -1,0 +1,978 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UpComp — Tecnología integral para empresas</title>
+<meta name="description" content="Equipamiento especializado, servicios TI, software a medida y alternativas de financiamiento. Un solo partner para diseñar, implementar, mantener y evolucionar la operación tecnológica de tu empresa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   UPCOMP — Prototipo web ejecutiva 2026
+   Contenido: UpComp_Portafolio_2026.pdf
+   Paleta tomada del sitio vigente (upcomp.cl)
+   ========================================================= */
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#050A12;
+  --ink-2:#080F1C;
+  --surface:rgba(255,255,255,.035);
+  --line:rgba(255,255,255,.09);
+  --line-2:rgba(255,255,255,.17);
+  --green:#31B85B;
+  --green-lt:#5FE08A;
+  --green-dk:#1B8340;
+  --text:#EAF0F8;
+  --muted:#93A3B8;
+  --muted-2:#66788F;
+  --shell:1220px;
+  --ease:cubic-bezier(.22,.61,.36,1);
+  --sans:"Albert Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --body:"Open Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+body{
+  font-family:var(--body);
+  background:var(--ink);
+  color:var(--text);
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+img,svg{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+ul{list-style:none}
+h1,h2,h3,h4{font-family:var(--sans);font-weight:800;line-height:1.09;letter-spacing:-.025em}
+
+.shell{width:min(100% - 40px,var(--shell));margin-inline:auto}
+@media (max-width:640px){.shell{width:calc(100% - 32px)}}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ---------- Piezas comunes ---------- */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:11px;
+  font-family:var(--sans);font-size:11.5px;font-weight:700;
+  letter-spacing:.22em;text-transform:uppercase;color:var(--green-lt);
+  margin-bottom:20px;
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:linear-gradient(90deg,transparent,var(--green))}
+
+.section{padding:clamp(76px,9vw,132px) 0;position:relative}
+.section-head{max-width:62ch;margin-bottom:clamp(40px,5vw,64px)}
+.section-head h2{font-size:clamp(1.95rem,4vw,3rem);margin-bottom:18px}
+.section-head p{color:var(--muted);font-size:clamp(.98rem,1.2vw,1.08rem)}
+.hair{height:1px;background:linear-gradient(90deg,transparent,var(--line) 18%,var(--line) 82%,transparent)}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--sans);font-weight:700;font-size:14.5px;letter-spacing:-.01em;
+  padding:14px 26px;border-radius:100px;
+  transition:transform .35s var(--ease),box-shadow .35s var(--ease),background .3s,border-color .3s,color .3s;
+  white-space:nowrap;
+}
+.btn svg{width:15px;height:15px;flex:none;transition:transform .35s var(--ease)}
+.btn-primary{
+  background:linear-gradient(135deg,var(--green-lt),var(--green) 55%,var(--green-dk));
+  color:#04140A;box-shadow:0 10px 30px -10px rgba(49,184,91,.6);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 18px 42px -12px rgba(49,184,91,.8)}
+.btn-primary:hover svg{transform:translateX(3px)}
+.btn-ghost{border:1px solid var(--line-2);background:rgba(255,255,255,.02)}
+.btn-ghost:hover{border-color:var(--green);background:rgba(49,184,91,.09);transform:translateY(-2px)}
+.btn-ghost:hover svg{transform:translateX(3px)}
+
+.mark{display:flex;align-items:center;gap:11px}
+.mark .logo{width:38px;height:38px;flex:none;color:#fff}
+.mark b{font-family:var(--sans);font-weight:800;font-size:19px;letter-spacing:.055em}
+
+/* ---------- Nav ---------- */
+.nav{
+  position:fixed;inset:0 0 auto;z-index:100;padding:18px 0;
+  border-bottom:1px solid transparent;
+  transition:padding .4s var(--ease),background .4s,border-color .4s;
+}
+.nav.is-stuck{
+  padding:11px 0;background:rgba(5,10,18,.84);
+  backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);
+  border-bottom-color:var(--line);
+}
+.nav .shell{display:flex;align-items:center;gap:26px}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:auto}
+.nav-links a{
+  font-family:var(--sans);font-size:13.6px;font-weight:600;color:var(--muted);
+  padding:9px 13px;border-radius:100px;transition:color .25s,background .25s;
+}
+.nav-links a:hover,.nav-links a.on{color:var(--text);background:rgba(255,255,255,.055)}
+.nav-cta{margin-left:10px}
+.nav-cta .btn{padding:11px 20px;font-size:13.5px}
+
+.burger{display:none;margin-left:auto;width:42px;height:42px;border:1px solid var(--line-2);border-radius:12px;align-items:center;justify-content:center}
+.burger span{display:block;width:17px;height:1.5px;background:var(--text);position:relative;transition:.3s var(--ease)}
+.burger span::before,.burger span::after{content:"";position:absolute;left:0;width:17px;height:1.5px;background:var(--text);transition:.3s var(--ease)}
+.burger span::before{top:-6px}.burger span::after{top:6px}
+.nav.is-open .burger span{background:transparent}
+.nav.is-open .burger span::before{top:0;transform:rotate(45deg)}
+.nav.is-open .burger span::after{top:0;transform:rotate(-45deg)}
+
+@media (max-width:1080px){
+  .nav-links{
+    position:fixed;inset:74px 16px auto;flex-direction:column;align-items:stretch;
+    background:rgba(8,15,28,.98);backdrop-filter:blur(20px);
+    border:1px solid var(--line);border-radius:22px;padding:14px;
+    opacity:0;visibility:hidden;transform:translateY(-12px);transition:.35s var(--ease);
+  }
+  .nav.is-open .nav-links{opacity:1;visibility:visible;transform:none}
+  .nav-links a{padding:13px 16px;font-size:15px}
+  .nav-cta{margin:8px 0 0}
+  .nav-cta .btn{width:100%}
+  .burger{display:flex}
+}
+
+/* ---------- Hero ---------- */
+.hero{position:relative;padding:172px 0 88px;overflow:hidden;isolation:isolate}
+.hero-bg{position:absolute;inset:0;z-index:-2}
+.hero-bg::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(900px 620px at 84% 4%,rgba(49,184,91,.20),transparent 62%),
+    radial-gradient(780px 560px at 6% 32%,rgba(24,74,140,.24),transparent 66%),
+    radial-gradient(620px 420px at 50% 104%,rgba(49,184,91,.09),transparent 70%);
+}
+.hero-bg::after{
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:64px 64px;opacity:.55;
+  -webkit-mask-image:radial-gradient(ellipse 80% 64% at 50% 32%,#000 18%,transparent 76%);
+  mask-image:radial-gradient(ellipse 80% 64% at 50% 32%,#000 18%,transparent 76%);
+}
+.orb{position:absolute;border-radius:50%;filter:blur(90px);z-index:-1;pointer-events:none}
+.orb-a{width:520px;height:520px;top:-170px;right:-130px;background:rgba(49,184,91,.19);animation:drift 22s var(--ease) infinite alternate}
+.orb-b{width:440px;height:440px;bottom:-190px;left:-150px;background:rgba(30,90,170,.20);animation:drift 27s var(--ease) infinite alternate-reverse}
+@keyframes drift{to{transform:translate3d(60px,50px,0) scale(1.14)}}
+@media (prefers-reduced-motion:reduce){.orb{animation:none}}
+
+.hero-grid{display:grid;grid-template-columns:1.12fr .88fr;gap:56px;align-items:center}
+@media (max-width:980px){.hero-grid{grid-template-columns:1fr;gap:44px}.hero{padding:140px 0 70px}}
+
+.hero h1{font-size:clamp(2.5rem,6.1vw,4.35rem);margin-bottom:22px}
+.hero h1 em{
+  font-style:normal;
+  background:linear-gradient(120deg,var(--green-lt),var(--green));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero .lead{font-size:clamp(1rem,1.3vw,1.14rem);color:var(--muted);max-width:42ch;margin-bottom:32px}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:32px}
+.hero-note{
+  display:flex;gap:11px;align-items:flex-start;font-size:13.4px;color:var(--muted-2);
+  max-width:46ch;padding-top:26px;border-top:1px solid var(--line);
+}
+.hero-note svg{width:16px;height:16px;flex:none;margin-top:4px;color:var(--green)}
+
+.pillars{display:grid;gap:11px}
+.pillar{
+  position:relative;display:flex;gap:16px;align-items:flex-start;
+  padding:19px 22px;border-radius:16px;
+  background:linear-gradient(140deg,rgba(255,255,255,.055),rgba(255,255,255,.017));
+  border:1px solid var(--line);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  transition:transform .45s var(--ease),border-color .35s,box-shadow .45s var(--ease);
+  overflow:hidden;
+}
+.pillar::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(120deg,rgba(49,184,91,.15),transparent 55%);
+  opacity:0;transition:opacity .35s;
+}
+.pillar:hover{transform:translateX(8px);border-color:rgba(49,184,91,.5);box-shadow:-6px 14px 40px -16px rgba(49,184,91,.5)}
+.pillar:hover::after{opacity:1}
+.pillar b{font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:.06em;color:var(--green);padding-top:4px;flex:none}
+.pillar h3{font-size:16.5px;font-weight:700;margin-bottom:3px;letter-spacing:-.015em}
+.pillar small{font-size:13.1px;color:var(--muted-2);line-height:1.5;display:block}
+.pillar i{
+  margin-left:auto;align-self:center;flex:none;width:26px;height:26px;border-radius:50%;
+  border:1px solid var(--line-2);display:grid;place-items:center;transition:.35s var(--ease);
+}
+.pillar i svg{width:11px;height:11px;color:var(--muted);transition:.35s var(--ease)}
+.pillar:hover i{border-color:var(--green);background:var(--green)}
+.pillar:hover i svg{color:#04140A;transform:translateX(1px)}
+
+/* ---------- Franja clientes ---------- */
+.strip{border-block:1px solid var(--line);background:linear-gradient(180deg,rgba(255,255,255,.022),transparent);padding:28px 0;overflow:hidden}
+.strip-label{text-align:center;font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--muted-2);margin-bottom:20px}
+.marquee-mask{
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 9%,#000 91%,transparent);
+}
+.marquee{display:flex;width:max-content;animation:slide 44s linear infinite}
+.marquee:hover{animation-play-state:paused}
+@keyframes slide{to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.marquee{animation:none}}
+.marquee span{
+  font-family:var(--sans);font-size:17px;font-weight:700;letter-spacing:-.012em;
+  color:var(--muted-2);padding-right:32px;margin-right:32px;white-space:nowrap;
+  display:flex;align-items:center;gap:32px;transition:color .3s;
+}
+.marquee span::after{content:"";width:4px;height:4px;border-radius:50%;background:var(--green);opacity:.5}
+.marquee span:hover{color:var(--text)}
+
+/* ---------- Grillas de tarjetas ---------- */
+.cards{display:grid;gap:16px}
+.g-3{grid-template-columns:repeat(3,1fr)}
+.g-4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:1000px){.g-4{grid-template-columns:repeat(2,1fr)}.g-3{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.g-4,.g-3{grid-template-columns:1fr}}
+
+.card{
+  position:relative;padding:28px 26px 30px;border-radius:20px;
+  background:linear-gradient(160deg,rgba(255,255,255,.048),rgba(255,255,255,.014));
+  border:1px solid var(--line);overflow:hidden;
+  transition:transform .45s var(--ease),border-color .35s,box-shadow .45s var(--ease);
+}
+.card::before{
+  content:"";position:absolute;inset:0 0 auto;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(49,184,91,.85),transparent);
+  opacity:0;transition:opacity .4s;
+}
+.card:hover{transform:translateY(-6px);border-color:rgba(49,184,91,.42);box-shadow:0 26px 55px -28px rgba(49,184,91,.55)}
+.card:hover::before{opacity:1}
+.card .num{
+  font-family:var(--sans);font-size:12px;font-weight:800;letter-spacing:.1em;
+  color:var(--green);display:block;margin-bottom:16px;
+}
+.card .ico{
+  width:44px;height:44px;border-radius:13px;display:grid;place-items:center;margin-bottom:18px;
+  background:rgba(49,184,91,.11);border:1px solid rgba(49,184,91,.28);
+}
+.card .ico svg{width:21px;height:21px;color:var(--green-lt)}
+.card h3{font-size:18.5px;margin-bottom:10px;letter-spacing:-.02em}
+.card p{font-size:14.2px;color:var(--muted);line-height:1.62}
+
+/* ---------- Bloque destacado ---------- */
+.feature{
+  margin-top:20px;padding:clamp(30px,4vw,52px);border-radius:26px;position:relative;overflow:hidden;
+  background:linear-gradient(135deg,rgba(49,184,91,.13),rgba(255,255,255,.026) 46%,rgba(24,74,140,.1));
+  border:1px solid rgba(49,184,91,.26);
+}
+.feature::after{
+  content:"";position:absolute;width:420px;height:420px;right:-140px;top:-170px;border-radius:50%;
+  background:rgba(49,184,91,.14);filter:blur(80px);pointer-events:none;
+}
+.feature-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;position:relative}
+@media (max-width:900px){.feature-grid{grid-template-columns:1fr;gap:28px}}
+.feature h3{font-size:clamp(1.5rem,2.7vw,2.15rem);margin-bottom:14px}
+.feature p{color:var(--muted);font-size:15px;max-width:52ch}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{
+  display:inline-flex;align-items:center;gap:9px;padding:11px 18px;border-radius:100px;
+  background:rgba(255,255,255,.05);border:1px solid var(--line-2);
+  font-family:var(--sans);font-size:13.5px;font-weight:600;
+  transition:.3s var(--ease);
+}
+.chip:hover{border-color:var(--green);background:rgba(49,184,91,.12);transform:translateY(-2px)}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green)}
+
+/* ---------- Garantías ---------- */
+.tiers{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+@media (max-width:640px){.tiers{grid-template-columns:1fr}}
+.tier{padding:22px 24px;border-radius:16px;background:rgba(255,255,255,.03);border:1px solid var(--line)}
+.tier.pro{border-color:rgba(49,184,91,.4);background:rgba(49,184,91,.07)}
+.tier b{
+  font-family:var(--sans);font-size:10.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--muted-2);display:block;margin-bottom:9px;
+}
+.tier.pro b{color:var(--green-lt)}
+.tier p{font-size:13.8px;color:var(--muted);line-height:1.58}
+
+/* ---------- Flujo (stepper) ---------- */
+.flow{margin-top:8px}
+.flow-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.flow-tab{
+  position:relative;display:inline-flex;align-items:center;gap:10px;
+  padding:12px 20px;border-radius:100px;border:1px solid var(--line);
+  font-family:var(--sans);font-size:14px;font-weight:700;color:var(--muted);
+  transition:.35s var(--ease);
+}
+.flow-tab em{font-style:normal;font-size:11px;font-weight:800;color:var(--muted-2);letter-spacing:.06em}
+.flow-tab:hover{color:var(--text);border-color:var(--line-2)}
+.flow-tab.on{background:linear-gradient(135deg,var(--green-lt),var(--green));color:#04140A;border-color:transparent}
+.flow-tab.on em{color:rgba(4,20,10,.62)}
+.flow-panel{
+  padding:30px 32px;border-radius:20px;border:1px solid var(--line);
+  background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.012));
+  min-height:132px;
+}
+.flow-panel h4{font-size:20px;margin-bottom:10px}
+.flow-panel p{color:var(--muted);font-size:14.6px;max-width:70ch}
+.flow-panel.swap{animation:fade .4s var(--ease)}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}}
+
+/* ---------- Clientes ---------- */
+.clients{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media (max-width:900px){.clients{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:520px){.clients{grid-template-columns:1fr}}
+.client{
+  padding:24px 22px;border-radius:16px;border:1px solid var(--line);
+  background:rgba(255,255,255,.026);transition:.4s var(--ease);
+}
+.client:hover{border-color:rgba(49,184,91,.4);background:rgba(49,184,91,.06);transform:translateY(-4px)}
+.client h4{font-family:var(--sans);font-size:16.5px;font-weight:700;margin-bottom:5px;letter-spacing:-.015em}
+.client span{font-size:12.6px;color:var(--muted-2)}
+
+/* ---------- Financiamiento ---------- */
+.fin{position:relative;padding:30px 28px;border-radius:20px;border:1px solid var(--line);background:linear-gradient(160deg,rgba(255,255,255,.045),rgba(255,255,255,.012));transition:.45s var(--ease)}
+.fin:hover{transform:translateY(-6px);border-color:rgba(49,184,91,.42)}
+.fin .num{font-family:var(--sans);font-size:34px;font-weight:800;color:rgba(255,255,255,.1);line-height:1;display:block;margin-bottom:14px}
+.fin h3{font-size:18.5px;margin-bottom:10px}
+.fin p{font-size:14.2px;color:var(--muted)}
+.disclaimer{
+  margin-top:20px;padding:16px 20px;border-radius:14px;
+  border:1px solid var(--line);background:rgba(255,255,255,.022);
+  font-size:12.8px;color:var(--muted-2);display:flex;gap:11px;align-items:flex-start;
+}
+.disclaimer svg{width:15px;height:15px;flex:none;margin-top:3px;color:var(--muted-2)}
+
+/* ---------- CTA final ---------- */
+.cta{position:relative;overflow:hidden;padding:clamp(70px,8vw,110px) 0;text-align:center;isolation:isolate}
+.cta::before{
+  content:"";position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(760px 420px at 50% 0%,rgba(49,184,91,.20),transparent 66%);
+}
+.cta h2{font-size:clamp(2rem,4.4vw,3.15rem);margin-bottom:18px;max-width:20ch;margin-inline:auto}
+.cta p{color:var(--muted);max-width:54ch;margin:0 auto 34px;font-size:1.03rem}
+.cta-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:36px}
+.contact-row{display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.contact-row a{
+  display:inline-flex;align-items:center;gap:10px;padding:13px 22px;border-radius:100px;
+  border:1px solid var(--line);background:rgba(255,255,255,.028);
+  font-family:var(--sans);font-size:14px;font-weight:600;transition:.35s var(--ease);
+}
+.contact-row a:hover{border-color:var(--green);background:rgba(49,184,91,.1);transform:translateY(-2px)}
+.contact-row svg{width:16px;height:16px;color:var(--green-lt)}
+
+/* ---------- Footer ---------- */
+.footer{border-top:1px solid var(--line);padding:52px 0 34px;background:var(--ink-2)}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px;margin-bottom:38px}
+@media (max-width:820px){.footer-grid{grid-template-columns:1fr;gap:28px}}
+.footer p{font-size:13.6px;color:var(--muted-2);max-width:38ch;margin-top:16px}
+.footer h5{font-family:var(--sans);font-size:11px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--muted-2);margin-bottom:14px}
+.footer li{margin-bottom:9px}
+.footer li a{font-size:14px;color:var(--muted);transition:color .25s}
+.footer li a:hover{color:var(--green-lt)}
+.footer-bottom{
+  border-top:1px solid var(--line);padding-top:22px;
+  display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;
+  font-size:12.6px;color:var(--muted-2);
+}
+
+/* ---------- Reveal on scroll ----------
+   Sólo se oculta si hay JS disponible: sin JS la página se ve completa. */
+.js .rv{opacity:0;transform:translateY(24px);transition:opacity .75s var(--ease),transform .75s var(--ease)}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}}
+
+/* ---------- Badge nueva línea ---------- */
+.badge{
+  display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:100px;
+  background:rgba(49,184,91,.13);border:1px solid rgba(49,184,91,.36);
+  font-family:var(--sans);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--green-lt);margin-bottom:18px;
+}
+.badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--green-lt);box-shadow:0 0 0 0 rgba(95,224,138,.7);animation:pulse 2.4s infinite}
+@keyframes pulse{70%{box-shadow:0 0 0 9px rgba(95,224,138,0)}100%{box-shadow:0 0 0 0 rgba(95,224,138,0)}}
+</style>
+</head>
+<body>
+
+<!-- ===== Sprite de íconos ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <linearGradient id="gArrow" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#2A9E52"/><stop offset="1" stop-color="#6FE596"/>
+    </linearGradient>
+  </defs>
+
+  <symbol id="i-logo" viewBox="0 0 64 64">
+    <path d="M45 12H15a5 5 0 0 0-5 5v22a5 5 0 0 0 5 5h30a5 5 0 0 0 5-5V26"
+          fill="none" stroke="currentColor" stroke-width="4.6" stroke-linecap="round"/>
+    <rect x="5" y="47.5" width="54" height="5.6" rx="2.8" fill="currentColor"/>
+    <path d="M17 38c10-1 19-8.5 29-22" fill="none" stroke="url(#gArrow)" stroke-width="5.4" stroke-linecap="round"/>
+    <path d="M57 5 54.6 21.4 41.6 8.8Z" fill="url(#gArrow)" stroke="url(#gArrow)" stroke-width="2.4" stroke-linejoin="round"/>
+  </symbol>
+
+  <symbol id="i-arrow" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 8h10M9 4l4 4-4 4"/>
+  </symbol>
+  <symbol id="i-check" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M2.5 8.5 6 12l7.5-8"/>
+  </symbol>
+  <symbol id="i-info" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+    <circle cx="8" cy="8" r="6.4"/><path d="M8 7.4v4M8 4.8v.2"/>
+  </symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/>
+    <path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/>
+  </symbol>
+  <symbol id="i-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="4" y="5" width="16" height="11" rx="2"/><path d="M2 19.5h20"/>
+  </symbol>
+  <symbol id="i-server" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="6.5" rx="2"/><rect x="3" y="13.5" width="18" height="6.5" rx="2"/>
+    <path d="M7 7.2h.01M7 16.7h.01"/>
+  </symbol>
+  <symbol id="i-video" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2.5" y="6" width="13" height="12" rx="2.5"/><path d="M15.5 10.5 21.5 7v10l-6-3.5"/>
+  </symbol>
+  <symbol id="i-network" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="4.5" r="2.5"/><circle cx="4.8" cy="19" r="2.5"/><circle cx="19.2" cy="19" r="2.5"/>
+    <path d="M12 7v4.5M12 11.5 6.4 16.9M12 11.5l5.6 5.4"/>
+  </symbol>
+  <symbol id="i-wrench" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M15.6 4.4a5.4 5.4 0 0 0-7 7L4 16v4h4l4.6-4.6a5.4 5.4 0 0 0 7-7l-3 3-3-3 3-3Z"/>
+  </symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 3 4.5 6v6c0 4.4 3.1 7.9 7.5 9 4.4-1.1 7.5-4.6 7.5-9V6Z"/><path d="M9 12.2l2.1 2.1L15.2 10"/>
+  </symbol>
+  <symbol id="i-headset" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13.5" width="4" height="6" rx="2"/>
+    <rect x="17.5" y="13.5" width="4" height="6" rx="2"/><path d="M19.5 19.5V21a2 2 0 0 1-2 2H13"/>
+  </symbol>
+  <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 2.8 3.5 7v10L12 21.2 20.5 17V7Z"/><path d="M3.5 7 12 11.4 20.5 7M12 11.4v9.8"/>
+  </symbol>
+  <symbol id="i-window" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M6.5 6.5h.01M9.5 6.5h.01"/>
+  </symbol>
+  <symbol id="i-flow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2.5" y="3" width="7" height="6" rx="1.6"/><rect x="14.5" y="15" width="7" height="6" rx="1.6"/>
+    <path d="M6 9v5a4 4 0 0 0 4 4h4.5M14.5 18l-2.2-2.2M14.5 18l-2.2 2.2"/>
+  </symbol>
+  <symbol id="i-plug" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M9 2v6M15 2v6M6.5 8h11v3.5a5.5 5.5 0 0 1-11 0Z"/><path d="M12 17v5"/>
+  </symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M3 3v16.5A1.5 1.5 0 0 0 4.5 21H21"/><path d="M7 15.5l4-4.5 3.2 3L20 7"/>
+  </symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.8 18.5A4.3 4.3 0 0 1 6.4 10a5.8 5.8 0 0 1 11.1-1.1 3.9 3.9 0 0 1-.6 9.6Z"/>
+  </symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 11.6c0 4.2-4 7.6-9 7.6a10 10 0 0 1-2.8-.4L4 21l1.4-4A7.2 7.2 0 0 1 3 11.6C3 7.4 7 4 12 4s9 3.4 9 7.6Z"/>
+  </symbol>
+  <symbol id="i-brain" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M12 4.5a3 3 0 0 0-5.7 1.3A3 3 0 0 0 4.6 10a3.2 3.2 0 0 0 1.1 4.6A3 3 0 0 0 9.4 19 2.9 2.9 0 0 0 12 20.5Z"/>
+    <path d="M12 4.5a3 3 0 0 1 5.7 1.3A3 3 0 0 1 19.4 10a3.2 3.2 0 0 1-1.1 4.6A3 3 0 0 1 14.6 19 2.9 2.9 0 0 1 12 20.5Z"/>
+  </symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="m3.5 7 8.5 6 8.5-6"/>
+  </symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M6.2 3h3l1.6 4-2 1.4a12 12 0 0 0 5.8 5.8l1.4-2 4 1.6v3a2 2 0 0 1-2.2 2A16.5 16.5 0 0 1 4.2 5.2 2 2 0 0 1 6.2 3Z"/>
+  </symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24" fill="currentColor">
+    <path d="M12 2a10 10 0 0 0-8.6 15L2 22l5.2-1.4A10 10 0 1 0 12 2Zm0 18.2a8.2 8.2 0 0 1-4.2-1.1l-.3-.2-3.1.8.8-3-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.6-6.1c-.3-.1-1.5-.7-1.7-.8s-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.6.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4 0-.5.2-.7l.4-.5c.1-.2.2-.3.3-.5v-.5l-.8-1.9c-.2-.4-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.6 4c1.6.6 2.2.7 3 .6a2.6 2.6 0 0 0 1.7-1.2 2.1 2.1 0 0 0 .1-1.2c-.1-.1-.3-.2-.6-.3Z"/>
+  </symbol>
+</svg>
+
+<!-- ===== NAV ===== -->
+<header class="nav" id="nav">
+  <div class="shell">
+    <a class="mark" href="#top" aria-label="UpComp — inicio">
+      <svg class="logo"><use href="#i-logo"/></svg>
+      <b>UPCOMP</b>
+    </a>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span></button>
+    <nav class="nav-links" id="navLinks">
+      <a href="#equipamiento">Equipamiento</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#software">Software</a>
+      <a href="#nube">Nube &amp; IA</a>
+      <a href="#clientes">Clientes</a>
+      <a href="#financiamiento">Financiamiento</a>
+      <span class="nav-cta"><a class="btn btn-primary" href="#contacto">Cotizar proyecto <svg><use href="#i-arrow"/></svg></a></span>
+    </nav>
+  </div>
+</header>
+
+<!-- ===== HERO ===== -->
+<main id="top">
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="shell hero-grid">
+    <div>
+      <span class="eyebrow">Portafolio corporativo 2026</span>
+      <h1>Tecnología <em>integral</em><br>para empresas</h1>
+      <p class="lead">Equipamiento especializado, servicios TI, software a medida y alternativas de financiamiento en una propuesta B2B clara y conectada.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#contacto">Conversemos tu proyecto <svg><use href="#i-arrow"/></svg></a>
+        <a class="btn btn-ghost" href="#equipamiento">Ver el portafolio <svg><use href="#i-arrow"/></svg></a>
+      </div>
+      <p class="hero-note">
+        <svg><use href="#i-check"/></svg>
+        Un solo partner para diseñar, implementar, mantener y evolucionar la operación tecnológica.
+      </p>
+    </div>
+
+    <div class="pillars">
+      <a class="pillar" href="#equipamiento">
+        <b>01</b>
+        <span><h3>Equipamiento especializado</h3><small>Workstations, notebooks, servidores, salas y redes.</small></span>
+        <i><svg><use href="#i-arrow"/></svg></i>
+      </a>
+      <a class="pillar" href="#servicios">
+        <b>02</b>
+        <span><h3>Servicios integrales</h3><small>Soporte, garantías, outsourcing y continuidad.</small></span>
+        <i><svg><use href="#i-arrow"/></svg></i>
+      </a>
+      <a class="pillar" href="#software">
+        <b>03</b>
+        <span><h3>Software a medida</h3><small>Desarrollo end-to-end, integraciones y automatización.</small></span>
+        <i><svg><use href="#i-arrow"/></svg></i>
+      </a>
+      <a class="pillar" href="#financiamiento">
+        <b>04</b>
+        <span><h3>Financiamiento empresas</h3><small>Compra directa, financiamiento propio o con entidad externa.</small></span>
+        <i><svg><use href="#i-arrow"/></svg></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FRANJA CLIENTES ===== -->
+<section class="strip">
+  <p class="strip-label">Empresas e instituciones que han trabajado con UpComp</p>
+  <div class="marquee-mask">
+    <div class="marquee" id="marquee">
+      <span>Armada de Chile</span><span>Marimaca Copper</span><span>Fresenius Kabi</span><span>Geocom</span>
+      <span>Inmobiliaria PAZ</span><span>Ducati Chile</span><span>Biogram</span><span>GS3 Consultores</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EQUIPAMIENTO ===== -->
+<section class="section" id="equipamiento">
+  <div class="shell">
+    <div class="section-head rv">
+      <span class="eyebrow">01 — Equipamiento</span>
+      <h2>Cinco nichos donde la selección técnica hace la diferencia</h2>
+      <p>El portafolio se concentra en escenarios empresariales donde elegir bien el equipo —y sobre todo implementarlo bien— cambia el resultado de la operación.</p>
+    </div>
+
+    <div class="cards g-3">
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-cpu"/></svg></div>
+        <span class="num">01</span>
+        <h3>Workstations profesionales</h3>
+        <p>Ingeniería, CAD/BIM, render, geociencias, simulación e IA.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-laptop"/></svg></div>
+        <span class="num">02</span>
+        <h3>Notebooks corporativos</h3>
+        <p>Movilidad, flotas, trabajo híbrido y usuarios ejecutivos o técnicos.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-server"/></svg></div>
+        <span class="num">03</span>
+        <h3>Servidores empresariales</h3>
+        <p>Virtualización, almacenamiento, respaldo y operación crítica.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-video"/></svg></div>
+        <span class="num">04</span>
+        <h3>Salas de reuniones</h3>
+        <p>Videocolaboración, audio, cámaras, control y puesta en marcha.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-network"/></svg></div>
+        <span class="num">05</span>
+        <h3>Redes empresariales</h3>
+        <p>Switching, Wi-Fi, seguridad, segmentación y administración.</p>
+      </article>
+      <article class="card rv" style="display:flex;flex-direction:column;justify-content:center;background:linear-gradient(150deg,rgba(49,184,91,.12),rgba(255,255,255,.02));border-color:rgba(49,184,91,.28)">
+        <span class="eyebrow" style="margin-bottom:14px">Alianzas estratégicas</span>
+        <h3 style="margin-bottom:12px">Partners tecnológicos</h3>
+        <p style="margin-bottom:20px">Respaldo oficial de fabricantes líderes para soluciones empresariales UpComp.</p>
+        <a class="btn btn-ghost" href="#contacto" style="align-self:flex-start">Consultar disponibilidad <svg><use href="#i-arrow"/></svg></a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="shell"><div class="hair"></div></div>
+
+<!-- ===== SERVICIOS ===== -->
+<section class="section" id="servicios">
+  <div class="shell">
+    <div class="section-head rv">
+      <span class="eyebrow">02 — Servicios integrales</span>
+      <h2>Operación, soporte y continuidad</h2>
+      <p>Servicios orientados a reducir carga interna, mantener usuarios operativos y extender el ciclo de vida de la tecnología.</p>
+    </div>
+
+    <div class="cards g-3">
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-wrench"/></svg></div>
+        <h3>Servicio técnico</h3>
+        <p>Diagnóstico, mantención preventiva, reparación, upgrades y soporte remoto o presencial según alcance.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-headset"/></svg></div>
+        <h3>Outsourcing IT</h3>
+        <p>Mesa de ayuda, tickets, soporte a usuarios, administración operativa, mantenciones, coordinación y reportabilidad.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-shield"/></svg></div>
+        <h3>Garantías UpComp</h3>
+        <p>Respaldo y gestión ordenada de incidentes, con niveles de atención según el plan contratado.</p>
+        <div class="tiers">
+          <div class="tier"><b>Estándar</b><p>Respaldo y gestión ordenada de incidentes.</p></div>
+          <div class="tier pro"><b>Premium</b><p>Mayor continuidad, prioridad y niveles de atención.</p></div>
+        </div>
+      </article>
+    </div>
+
+    <div class="feature rv">
+      <div class="feature-grid">
+        <div>
+          <span class="eyebrow">Puesto de trabajo gestionado</span>
+          <h3>El cliente se desentiende de la complejidad.</h3>
+          <p>UpComp administra el ciclo completo del puesto de trabajo —hardware y servicios en un solo bundle— para que el cliente se concentre en su operación y no en coordinar proveedores y contingencias.</p>
+        </div>
+        <div class="chips">
+          <span class="chip">Equipo</span>
+          <span class="chip">Soporte</span>
+          <span class="chip">Garantía</span>
+          <span class="chip">Continuidad</span>
+          <span class="chip">Renovación planificada</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="shell"><div class="hair"></div></div>
+
+<!-- ===== SOFTWARE ===== -->
+<section class="section" id="software">
+  <div class="shell">
+    <div class="section-head rv">
+      <span class="eyebrow">03 — Desarrollo</span>
+      <h2>Cuando una plataforma estándar no resuelve el proceso real, la construimos</h2>
+      <p>Desarrollo end-to-end, desde el levantamiento hasta la puesta en producción: arquitectura, experiencia de usuario, desarrollo, integraciones, automatización y soporte evolutivo.</p>
+    </div>
+
+    <div class="flow rv">
+      <div class="flow-tabs" id="flowTabs" role="tablist" aria-label="Flujo de trabajo">
+        <button class="flow-tab on" role="tab" aria-selected="true" data-i="0"><em>01</em> Levantar</button>
+        <button class="flow-tab" role="tab" aria-selected="false" data-i="1"><em>02</em> Diseñar</button>
+        <button class="flow-tab" role="tab" aria-selected="false" data-i="2"><em>03</em> Construir</button>
+        <button class="flow-tab" role="tab" aria-selected="false" data-i="3"><em>04</em> Integrar</button>
+        <button class="flow-tab" role="tab" aria-selected="false" data-i="4"><em>05</em> Evolucionar</button>
+      </div>
+      <div class="flow-panel" id="flowPanel" role="tabpanel" aria-live="polite">
+        <h4>Levantar</h4>
+        <p>Entendemos el proceso real antes de escribir código: quién lo ejecuta hoy, dónde se pierde tiempo y qué reglas del negocio no están escritas en ninguna parte.</p>
+      </div>
+    </div>
+
+    <div class="cards g-4" style="margin-top:22px">
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-window"/></svg></div>
+        <span class="num">01</span>
+        <h3>Aplicaciones y portales</h3>
+        <p>Sistemas web, portales internos, backoffice y soluciones orientadas a usuarios o clientes.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-flow"/></svg></div>
+        <span class="num">02</span>
+        <h3>Automatización de procesos</h3>
+        <p>Flujos, tareas repetitivas, validaciones y procesos que hoy dependen de operación manual.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-plug"/></svg></div>
+        <span class="num">03</span>
+        <h3>Integraciones y APIs</h3>
+        <p>Conexión entre plataformas, servicios externos, sistemas internos y fuentes de datos.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-chart"/></svg></div>
+        <span class="num">04</span>
+        <h3>Sistemas internos y analítica</h3>
+        <p>Herramientas operativas, paneles, trazabilidad y soluciones construidas alrededor del proceso real.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="shell"><div class="hair"></div></div>
+
+<!-- ===== NUBE & IA (nueva línea) ===== -->
+<section class="section" id="nube">
+  <div class="shell">
+    <div class="section-head rv">
+      <span class="badge">Nueva línea 2026</span>
+      <h2>Infraestructura, atención e IA <span class="grn">bajo control del cliente</span></h2>
+      <p>La extensión natural del portafolio: llevar el mismo criterio de continuidad y soporte al servidor, al canal de atención y a los datos de la empresa.</p>
+    </div>
+
+    <div class="cards g-4">
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-cloud"/></svg></div>
+        <h3>Servidor en la nube o privado</h3>
+        <p>Infraestructura dedicada por cliente, con respaldo, monitoreo y continuidad gestionada por UpComp.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-chat"/></svg></div>
+        <h3>Bots de WhatsApp</h3>
+        <p>Atención y contactabilidad automatizada en el canal donde ya están los clientes, integrada a los sistemas de la empresa.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-brain"/></svg></div>
+        <h3>IA local y privada</h3>
+        <p>Modelos ejecutándose sobre infraestructura propia: la información sensible no sale de la empresa.</p>
+      </article>
+      <article class="card rv">
+        <div class="ico"><svg><use href="#i-plug"/></svg></div>
+        <h3>Integración con mayoristas</h3>
+        <p>Catálogo, stock y precios sincronizados vía API para cotizar y publicar sin trabajo manual.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<div class="shell"><div class="hair"></div></div>
+
+<!-- ===== CLIENTES ===== -->
+<section class="section" id="clientes">
+  <div class="shell">
+    <div class="section-head rv">
+      <span class="eyebrow">04 — Experiencia</span>
+      <h2>Algunos clientes destacados</h2>
+      <p>Una selección referencial de empresas e instituciones con las que UpComp ha desarrollado proyectos y servicios tecnológicos.</p>
+    </div>
+
+    <div class="clients">
+      <div class="client rv"><h4>Armada de Chile</h4><span>Equipamiento tecnológico</span></div>
+      <div class="client rv"><h4>Marimaca Copper</h4><span>Equipamiento y networking</span></div>
+      <div class="client rv"><h4>Fresenius Kabi</h4><span>Equipamiento tecnológico</span></div>
+      <div class="client rv"><h4>Geocom</h4><span>Soluciones tecnológicas</span></div>
+      <div class="client rv"><h4>Inmobiliaria PAZ</h4><span>Soporte técnico TI</span></div>
+      <div class="client rv"><h4>Ducati Chile</h4><span>Equipamiento y soporte</span></div>
+      <div class="client rv"><h4>Biogram</h4><span>Equipamiento y upgrade tecnológico</span></div>
+      <div class="client rv"><h4>GS3 Consultores</h4><span>Soporte y soluciones TI</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="shell"><div class="hair"></div></div>
+
+<!-- ===== FINANCIAMIENTO ===== -->
+<section class="section" id="financiamiento">
+  <div class="shell">
+    <div class="section-head rv">
+      <span class="eyebrow">05 — Financiamiento</span>
+      <h2>Financiamiento para empresas</h2>
+      <p>La estructura comercial se define según el tamaño del proyecto, el equipamiento, los servicios asociados y la evaluación correspondiente.</p>
+    </div>
+
+    <div class="cards g-3">
+      <article class="fin rv">
+        <span class="num">01</span>
+        <h3>Compra directa</h3>
+        <p>Pago tradicional de equipamiento y servicios bajo las condiciones comerciales acordadas.</p>
+      </article>
+      <article class="fin rv">
+        <span class="num">02</span>
+        <h3>Financiamiento directo UpComp</h3>
+        <p>Disponible para proyectos seleccionados y sujeto a evaluación comercial interna.</p>
+      </article>
+      <article class="fin rv">
+        <span class="num">03</span>
+        <h3>Financiamiento con entidad externa</h3>
+        <p>Alternativa para proyectos de mayor escala, sujeta a evaluación y aprobación de la entidad financiera.</p>
+      </article>
+    </div>
+
+    <p class="disclaimer rv">
+      <svg><use href="#i-info"/></svg>
+      Toda modalidad de financiamiento está sujeta a evaluación comercial, financiera y aprobación crediticia.
+    </p>
+  </div>
+</section>
+
+<!-- ===== CTA ===== -->
+<section class="cta" id="contacto">
+  <div class="shell">
+    <span class="eyebrow rv">Conversemos</span>
+    <h2 class="rv">Conversemos sobre tu próximo proyecto tecnológico</h2>
+    <p class="rv">Equipamiento, servicios TI, software a medida o una solución integral para tu empresa.</p>
+    <div class="cta-actions rv">
+      <a class="btn btn-primary" href="https://wa.me/56982794984" target="_blank" rel="noopener">
+        <svg><use href="#i-wa"/></svg> Escribir por WhatsApp
+      </a>
+      <a class="btn btn-ghost" href="mailto:contacto@upcomp.cl">Solicitar cotización <svg><use href="#i-arrow"/></svg></a>
+    </div>
+    <div class="contact-row rv">
+      <a href="mailto:contacto@upcomp.cl"><svg><use href="#i-mail"/></svg> contacto@upcomp.cl</a>
+      <a href="tel:+56982794984"><svg><use href="#i-phone"/></svg> +56 9 8279 4984</a>
+      <a href="https://www.upcomp.cl" target="_blank" rel="noopener"><svg><use href="#i-arrow"/></svg> www.upcomp.cl</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+  <div class="shell">
+    <div class="footer-grid">
+      <div>
+        <a class="mark" href="#top"><svg class="logo"><use href="#i-logo"/></svg><b>UPCOMP</b></a>
+        <p>Equipamiento, servicios TI, software a medida y financiamiento empresarial, con cobertura en todo Chile.</p>
+      </div>
+      <div>
+        <h5>Portafolio</h5>
+        <ul>
+          <li><a href="#equipamiento">Equipamiento especializado</a></li>
+          <li><a href="#servicios">Servicios integrales</a></li>
+          <li><a href="#software">Software a medida</a></li>
+          <li><a href="#nube">Nube &amp; IA</a></li>
+          <li><a href="#financiamiento">Financiamiento</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Contacto</h5>
+        <ul>
+          <li><a href="mailto:contacto@upcomp.cl">contacto@upcomp.cl</a></li>
+          <li><a href="tel:+56982794984">+56 9 8279 4984</a></li>
+          <li><a href="https://wa.me/56982794984" target="_blank" rel="noopener">WhatsApp comercial</a></li>
+          <li><a href="https://www.upcomp.cl" target="_blank" rel="noopener">www.upcomp.cl</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 UpComp. Portafolio Corporativo 2026.</span>
+      <span>Prototipo de sitio — contenidos referenciales.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---- Nav sticky + menú móvil ---- */
+  var nav = document.getElementById('nav');
+  var burger = document.getElementById('burger');
+  var links = document.getElementById('navLinks');
+
+  var onScroll = function(){ nav.classList.toggle('is-stuck', window.scrollY > 24); };
+  onScroll();
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  burger.addEventListener('click', function(){
+    var open = nav.classList.toggle('is-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  links.addEventListener('click', function(e){
+    if(e.target.closest('a')){
+      nav.classList.remove('is-open');
+      burger.setAttribute('aria-expanded','false');
+    }
+  });
+
+  /* ---- Sección activa en el nav ---- */
+  var navAnchors = Array.prototype.slice.call(links.querySelectorAll('a[href^="#"]'));
+  var sections = navAnchors
+    .map(function(a){ return document.querySelector(a.getAttribute('href')); })
+    .filter(Boolean);
+
+  if('IntersectionObserver' in window){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(!en.isIntersecting) return;
+        navAnchors.forEach(function(a){
+          a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id);
+        });
+      });
+    }, {rootMargin:'-45% 0px -50% 0px'});
+    sections.forEach(function(s){ spy.observe(s); });
+
+    /* ---- Reveal al hacer scroll ---- */
+    var reveal = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(en, i){
+        if(!en.isIntersecting) return;
+        var el = en.target;
+        var delay = Math.min(i * 70, 280);
+        setTimeout(function(){ el.classList.add('in'); }, delay);
+        obs.unobserve(el);
+      });
+    }, {rootMargin:'0px 0px -12% 0px', threshold:.12});
+    document.querySelectorAll('.rv').forEach(function(el){ reveal.observe(el); });
+  } else {
+    document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+  }
+
+  /* ---- Marquee: duplicar contenido para loop continuo ---- */
+  var marquee = document.getElementById('marquee');
+  marquee.innerHTML += marquee.innerHTML;
+
+  /* ---- Flujo de trabajo (stepper) ---- */
+  var steps = [
+    ['Levantar',    'Entendemos el proceso real antes de escribir código: quién lo ejecuta hoy, dónde se pierde tiempo y qué reglas del negocio no están escritas en ninguna parte.'],
+    ['Diseñar',     'Arquitectura y experiencia de usuario definidas sobre el proceso levantado, no sobre una plantilla. Se acuerda alcance, flujo y criterios de éxito antes de construir.'],
+    ['Construir',   'Desarrollo por etapas con entregas revisables, para que el cliente vea avances concretos y pueda corregir el rumbo temprano.'],
+    ['Integrar',    'Conexión con los sistemas que ya existen: plataformas internas, servicios externos, APIs de terceros y fuentes de datos de la operación.'],
+    ['Evolucionar', 'Puesta en producción, soporte evolutivo y mejoras continuas. La solución sigue el proceso del negocio a medida que cambia.']
+  ];
+  var tabs = document.getElementById('flowTabs');
+  var panel = document.getElementById('flowPanel');
+
+  tabs.addEventListener('click', function(e){
+    var btn = e.target.closest('.flow-tab');
+    if(!btn) return;
+    var i = +btn.dataset.i;
+    tabs.querySelectorAll('.flow-tab').forEach(function(t){
+      var on = t === btn;
+      t.classList.toggle('on', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    panel.innerHTML = '<h4>' + steps[i][0] + '</h4><p>' + steps[i][1] + '</p>';
+    panel.classList.remove('swap');
+    void panel.offsetWidth;
+    panel.classList.add('swap');
+  });
+
+  /* ---- Parallax suave de los orbes del hero ---- */
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(!reduce){
+    var orbs = document.querySelectorAll('.orb');
+    var ticking = false;
+    window.addEventListener('scroll', function(){
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        var y = window.scrollY;
+        if(y < 900){
+          orbs[0].style.translate = '0 ' + (y * .12) + 'px';
+          orbs[1].style.translate = '0 ' + (y * -.08) + 'px';
+        }
+        ticking = false;
+      });
+    }, {passive:true});
+  }
+})();
+</script>
+</body>
+</html>

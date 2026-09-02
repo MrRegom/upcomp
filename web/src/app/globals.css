@@ -1,0 +1,263 @@
+@import "tailwindcss";
+
+/* =====================================================================
+   UpComp — sistema de diseño
+   Base clara institucional. El verde y el negro son los de upcomp.cl
+   (#36B85C / #23984F / near-black), usados con intención: barra superior,
+   franja del sistema, configurador y footer. El resto respira en claro.
+   ===================================================================== */
+
+@theme {
+  /* --- superficies claras --- */
+  --color-paper: #ffffff;
+  --color-ground: #f4f7f5;
+  --color-ground-2: #e9efeb;
+
+  /* --- tinta (negro con sesgo verde, elegido y no heredado) --- */
+  --color-ink: #101614;
+  --color-ink-2: #39443e;
+  --color-muted: #64736b;
+  --color-muted-2: #8a978f;
+
+  /* --- líneas --- */
+  --color-line: #dce3df;
+  --color-line-2: #c3cec8;
+
+  /* --- marca UpComp --- */
+  --color-brand: #23984f;
+  --color-brand-bright: #36b85c;
+  --color-brand-deep: #16713a;
+  --color-brand-wash: #e7f4ec;
+  --color-brand-wash-2: #d3ebde;
+
+  /* --- bandas oscuras --- */
+  --color-dark: #0d1412;
+  --color-dark-2: #141e19;
+  --color-dark-3: #1c2823;
+  --color-dark-line: #26332d;
+  --color-dark-text: #e9efeb;
+  --color-dark-muted: #8ea095;
+
+  /* --- señal --- */
+  --color-flag: #a2621c;
+  --color-flag-wash: #f8efe1;
+
+  /* --- tipografía --- */
+  --font-display: var(--font-albert), "Albert Sans", system-ui, sans-serif;
+  --font-sans: var(--font-plex), "IBM Plex Sans", system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), "IBM Plex Mono", ui-monospace, monospace;
+
+  /* --- movimiento --- */
+  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* =====================================================================
+   Base
+   ===================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* la barra sticky mide 64px; el ancla no debe quedar debajo */
+    scroll-padding-top: 5rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.022em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--color-brand-wash-2);
+    color: var(--color-brand-deep);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+
+  /* Números que se comparan en columna deben alinearse */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+/* =====================================================================
+   Utilidades de composición
+   ===================================================================== */
+
+/* Contenedor principal — 1220px, el mismo ancho que ya usaba UpComp */
+.shell {
+  width: 100%;
+  max-width: 1220px;
+  margin-inline: auto;
+  padding-inline: clamp(1.15rem, 4vw, 2.5rem);
+}
+
+/* Etiqueta técnica: monoespaciada, versalita, verde */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-brand);
+}
+
+.eyebrow-dark {
+  color: var(--color-brand-bright);
+}
+
+/* Regla superior de sección, en el estilo de ficha técnica */
+.rule-top {
+  border-top: 2px solid var(--color-ink);
+  padding-top: 0.85rem;
+}
+
+/* =====================================================================
+   Revelado al hacer scroll
+   Sin librería: IntersectionObserver añade [data-shown]
+   ===================================================================== */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.6s var(--ease-out-soft),
+    transform 0.6s var(--ease-out-soft);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal][data-shown="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* =====================================================================
+   Pulso que recorre el diagrama de operación del hero
+   ===================================================================== */
+
+@keyframes flow-pulse {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  88% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.flow-track {
+  position: relative;
+  overflow: hidden;
+}
+
+.flow-track::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--color-brand-bright),
+    transparent
+  );
+  animation: flow-pulse 2.6s var(--ease-out-soft) infinite;
+  animation-delay: var(--flow-delay, 0s);
+}
+
+/* Marquesina de clientes */
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 42s linear infinite;
+  will-change: transform;
+}
+
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 6rem,
+    #000 calc(100% - 6rem),
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 6rem,
+    #000 calc(100% - 6rem),
+    transparent
+  );
+}
+
+/* Cuadrícula técnica de fondo, muy tenue */
+.grid-bg {
+  background-image:
+    linear-gradient(to right, var(--color-dark-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-dark-line) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* Barra de scroll interna discreta (paneles con overflow) */
+.thin-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-2) transparent;
+}
+
+/* =====================================================================
+   Accesibilidad — respeta la preferencia del sistema
+   ===================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
