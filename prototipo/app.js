@@ -30,6 +30,64 @@ const ECOSISTEMA=[
   {icono:"i-escudo",t:"Continuidad",d:"Protección y respaldo"}
 ];
 
+/* ---------- Fichas de producto (upcomp.cl, páginas de cada equipo)
+     Texto literal de sus fichas. Los equipos sin ficha completa muestran
+     lo que sí tenemos y lo dicen, en vez de rellenar con invento. ---------- */
+const SERVICIOS_UPCOMP=[
+  "Venta con factura para empresas e instituciones.",
+  "Asesoría para dimensionar workstations según aplicaciones, cargas de trabajo y flujos profesionales.",
+  "Selección y validación de compatibilidad entre componentes.",
+  "Armado profesional, ordenamiento interno y pruebas de estabilidad.",
+  "Configuración de memoria, almacenamiento, gráficos y conectividad.",
+  "Instalación de Windows 11 Pro, controladores y actualizaciones.",
+  "Pruebas de rendimiento, temperatura y funcionamiento general.",
+  "Soporte técnico especializado y servicio postventa.",
+  "Opciones de mantenimiento preventivo, ampliación y actualización."
+];
+const NOTA_DISPONIBILIDAD="La disponibilidad de componentes, marcas, modelos específicos, configuración final, sistema operativo, plazo de entrega y precio pueden variar según el stock de los proveedores y la validación técnica y comercial de la solución.";
+
+const FICHAS={
+  1:{ /* Intel Core Ultra 9 285K */
+    sku:"UPC-WKS-UPC-002",
+    desc:"Workstation Intel Core Ultra 9 285K es una plataforma de alto rendimiento diseñada para cargas profesionales que requieren potencia de procesamiento, aceleración gráfica y alta capacidad de respuesta. Su configuración con procesador Intel Core Ultra 9, 64 GB de memoria DDR5 y tarjeta gráfica NVIDIA GeForce RTX 5090 de 32 GB entrega una base sólida para inteligencia artificial, renderizado, ingeniería, modelamiento 3D, creación de contenido y procesamiento intensivo de información.",
+    carac:[
+      ["Procesador Intel Core Ultra 9 285K","incorpora 24 núcleos, frecuencia de hasta 5,7 GHz y capacidad de procesamiento de IA de 36 TOPS."],
+      ["64 GB de memoria DDR5-5600","configuración de 2 × 32 GB para multitarea avanzada, aplicaciones profesionales y proyectos de alta exigencia."],
+      ["NVIDIA GeForce RTX 5090 de 32 GB GDDR7","tarjeta gráfica de alto rendimiento para inteligencia artificial, renderizado, visualización 3D y procesos acelerados por GPU."],
+      ["SSD NVMe PCIe 4.0 de 1 TB","almacenamiento de alta velocidad para el sistema operativo, aplicaciones, modelos, proyectos y archivos profesionales."],
+      ["Placa madre ASUS TUF GAMING B860-PLUS WIFI","plataforma preparada para componentes de alto rendimiento, expansión y conectividad moderna."],
+      ["Wi-Fi 7, Bluetooth y Ethernet 2.5 GbE","conectividad de alta velocidad para redes empresariales, periféricos, servidores y almacenamiento compartido."],
+      ["Fuente de poder de 1250W","unidad con certificación 80 PLUS Platinum, compatible con ATX 3.0 y PCIe 5.0."],
+      ["Refrigeración líquida Asetek Serie 6 de 360 mm","solución térmica preparada para mantener una operación estable durante cargas intensivas."],
+      ["Gabinete Cooler Master CM695","formato ATX con conectividad USB-C y espacio para componentes de alto rendimiento."],
+      ["Windows 11 Pro","disponible según la configuración final seleccionada para seguridad, administración y productividad profesional."],
+      ["Garantía de 1 año","respaldo sujeto a las condiciones comerciales y de cobertura informadas en la cotización."]
+    ],
+    ideal:["Inteligencia artificial y aprendizaje automático.","Procesamiento local de modelos y datos.","Renderizado y visualización 3D.","Ingeniería, arquitectura y diseño técnico.","Modelamiento, fotogrametría y procesamiento geoespacial.","Edición de video y creación de contenido profesional.","Desarrollo de software y compilación de proyectos.","Simulación y cálculo técnico.","Empresas que requieren una workstation de alto rendimiento."],
+    specs:[["Tipo de equipo","Workstation profesional de alto rendimiento"],["Procesador","Intel Core Ultra 9 285K"],["Núcleos","24 núcleos"],["Frecuencia máxima","Hasta 5,7 GHz"],["Rendimiento IA","36 TOPS"],["Memoria RAM","64 GB DDR5-5600"],["Configuración de memoria","2 × 32 GB DDR5"],["Almacenamiento","SSD NVMe PCIe 4.0 de 1 TB"],["Tarjeta gráfica","NVIDIA GeForce RTX 5090"],["Memoria gráfica","32 GB GDDR7"],["Placa madre","ASUS TUF GAMING B860-PLUS WIFI"],["Conectividad inalámbrica","Wi-Fi 7 y Bluetooth"],["Red cableada","Ethernet 2.5 GbE"],["Fuente de poder","1250W 80 PLUS Platinum"],["Refrigeración líquida","Asetek Serie 6 de 360 mm"],["Gabinete","Cooler Master CM695 ATX con USB-C"],["Sistema operativo","Windows 11 Pro, según configuración"],["Garantía","1 año"],["Modalidad","Disponible para cotización"]]
+  },
+  0:{ /* AMD Threadripper 9960X */
+    sku:"UPC-WKS-UPC-001",
+    desc:"Workstation AMD Threadripper 9960X es una plataforma de alto cómputo diseñada para cargas profesionales que requieren gran capacidad de procesamiento, memoria ECC y potencia gráfica avanzada. Su configuración con procesador AMD Ryzen Threadripper de 24 núcleos, 256 GB de memoria DDR5 ECC y tarjeta gráfica NVIDIA GeForce RTX 5090 entrega una base de alto rendimiento para inteligencia artificial, ingeniería, simulación, renderizado, creación de contenido y procesamiento intensivo de información.",
+    carac:[
+      ["AMD Ryzen Threadripper 9960X","procesador de 24 núcleos y 48 hilos, con frecuencia de hasta 5,4 GHz, diseñado para cargas altamente paralelas."],
+      ["256 GB de memoria DDR5 ECC","cuatro módulos de 64 GB, orientada a proyectos de gran escala y procesos que requieren estabilidad de memoria."],
+      ["NVIDIA GeForce RTX 5090 de 32 GB GDDR7","alto rendimiento para inteligencia artificial, renderizado, visualización 3D y procesamiento acelerado por GPU."],
+      ["SSD NVMe PCIe Gen5 de 2 TB","almacenamiento de alta velocidad para sistema operativo, aplicaciones, modelos y archivos de gran tamaño."],
+      ["Placa madre Gigabyte TRX50 AERO D","plataforma desarrollada para procesadores AMD Threadripper, expansión avanzada y configuraciones profesionales."],
+      ["Red Ethernet de alta velocidad","conectividad 10 GbE y 2,5 GbE para transferencia de archivos, almacenamiento en red y entornos colaborativos."],
+      ["Wi-Fi 7 y Bluetooth","conectividad inalámbrica moderna para redes de alta velocidad, accesorios y periféricos."],
+      ["Fuente de poder de 1250W","unidad 80 PLUS Platinum, compatible con ATX 3.0 y PCIe 5.0."],
+      ["Refrigeración optimizada","tres ventiladores ARCTIC P12 PWM y un ARCTIC P14 Max para apoyar el flujo de aire interno."],
+      ["Gabinete Gigabyte AORUS C500 Glass","formato E-ATX con panel de vidrio y espacio para componentes de gran tamaño."],
+      ["Windows 11 Pro","disponible según la configuración final seleccionada."],
+      ["Garantía de 1 año","respaldo de hardware sujeto a las condiciones comerciales informadas en la cotización."]
+    ],
+    ideal:["Inteligencia artificial y entrenamiento de modelos.","Simulación y cálculo técnico de gran escala.","Renderizado y visualización 3D.","Ingeniería, CAD/BIM y diseño técnico.","Fotogrametría y procesamiento geoespacial.","Virtualización y cargas altamente paralelas.","Empresas que requieren alto cómputo sostenido."],
+    specs:[["Tipo de equipo","Workstation profesional de alto cómputo"],["Procesador","AMD Ryzen Threadripper 9960X"],["Núcleos / Hilos","24 núcleos / 48 hilos"],["Frecuencia máxima","Hasta 5,4 GHz"],["Memoria RAM","256 GB DDR5 ECC"],["Configuración de memoria","4 × 64 GB DDR5 ECC"],["Almacenamiento","SSD NVMe PCIe Gen5 de 2 TB"],["Tarjeta gráfica","NVIDIA GeForce RTX 5090"],["Memoria gráfica","32 GB GDDR7"],["Placa madre","Gigabyte TRX50 AERO D"],["Conectividad inalámbrica","Wi-Fi 7 y Bluetooth"],["Red cableada","Ethernet 10 GbE y 2,5 GbE"],["Fuente de poder","1250W 80 PLUS Platinum"],["Estándar de fuente","ATX 3.0 y PCIe 5.0"],["Ventiladores","3 × ARCTIC P12 PWM + 1 × ARCTIC P14 Max"],["Gabinete","Gigabyte AORUS C500 Glass E-ATX"],["Sistema operativo","Windows 11 Pro, según configuración"],["Garantía","1 año"],["Modalidad","Disponible para cotización"]]
+  }
+};
+
 /* ---------- Soluciones destacadas (upcomp.cl, home) ---------- */
 const SOLUCIONES=[
   {icono:"i-laptop",t:"Notebooks Corporativos",d:"Equipos para productividad, movilidad, trabajo híbrido y usuarios administrativos, comerciales o ejecutivos.",cta:"Ver categoría"},
@@ -247,6 +305,30 @@ function avisar(txt){
 }
 
 /* ==========================================================================
+   Pantalla de carga
+   Dura menos de dos segundos y se puede saltar con un clic. Con movimiento
+   reducido no se muestra: se entra directo.
+   ========================================================================== */
+(function pantallaCarga(){
+  const cap=$("#cargando");
+  if(!cap) return;
+  if(suave){ cap.remove(); return; }
+  document.body.classList.add("sin-scroll");
+  let fuera=false;
+  const salir=()=>{
+    if(fuera) return;
+    fuera=true;
+    cap.classList.add("is-fuera");
+    document.body.classList.remove("sin-scroll");
+    setTimeout(()=>cap.remove(),650);
+  };
+  const t=setTimeout(salir,1950);
+  cap.addEventListener("click",()=>{clearTimeout(t);salir();});
+  /* Si algo falla y la página tarda, no dejar la portada pegada */
+  setTimeout(salir,5000);
+})();
+
+/* ==========================================================================
    FONDO DE SEÑAL
    Trazos que ascienden de izquierda a derecha, como una curva de rendimiento.
    Viene del propio logo de UpComp (flecha subiendo sobre un gráfico).
@@ -336,6 +418,10 @@ function revisarVisibles(){
   header.classList.toggle("is-scrolled",scrollY>12);
   const alto=document.documentElement.scrollHeight-innerHeight;
   $("#progresoScroll").style.width=(alto>0?(scrollY/alto)*100:0)+"%";
+  /* Se consulta en cada pase en vez de guardar la referencia arriba: el
+     listener de scroll se registra antes de que exista el botón. */
+  const arriba=$("#fabArriba");
+  if(arriba) arriba.classList.toggle("is-on",scrollY>600);
   marcarNav();
 }
 const alScroll=()=>{if(!pendiente){pendiente=true;requestAnimationFrame(revisarVisibles);}};
@@ -389,6 +475,7 @@ function engancharArrastre(){
   let arrastrando=false,x0=0,y0=0,dx=0,dy=0,vx=0,ultimaX=0,ultimoT=0;
   carta.addEventListener("pointerdown",e=>{
     if(e.button!==undefined&&e.button!==0) return;
+    detenerAutoMazo();            /* al tomar el control, deja de avanzar solo */
     arrastrando=true;
     try{carta.setPointerCapture(e.pointerId);}catch{}
     carta.classList.add("is-drag"); carta.style.transition="none";
@@ -424,9 +511,31 @@ function engancharArrastre(){
     if(e.key==="ArrowRight"||e.key===" "||e.key==="Enter"){e.preventDefault();expulsar(1);}
   });
 }
-$("#mazoSig").onclick=()=>expulsar(1);
-$("#mazoAnt").onclick=()=>rotar(false);
+/* El mazo avanza solo hasta que alguien lo toca: así tiene movimiento
+   propio sin quitarle el control a quien quiera arrastrarlo. */
+let autoMazo=null, mazoIntervenido=false;
+function arrancarAutoMazo(){
+  if(suave||mazoIntervenido) return;
+  clearInterval(autoMazo);
+  autoMazo=setInterval(()=>{
+    if(document.hidden) return;
+    const r=mazo.getBoundingClientRect();
+    if(r.bottom<80||r.top>innerHeight-80) return;   /* fuera de vista: no gastar */
+    expulsar(1);
+  },4200);
+}
+function detenerAutoMazo(){ mazoIntervenido=true; clearInterval(autoMazo); }
+
+$("#mazoSig").onclick=()=>{detenerAutoMazo();expulsar(1);};
+$("#mazoAnt").onclick=()=>{detenerAutoMazo();rotar(false);};
 pintarMazo();
+arrancarAutoMazo();
+
+/* ==========================================================================
+   Botón volver arriba
+   ========================================================================== */
+const fabArriba=$("#fabArriba");
+fabArriba.onclick=()=>scrollTo({top:0,behavior:suave?"auto":"smooth"});
 
 /* ==========================================================================
    Render de secciones con contenido real
@@ -627,6 +736,8 @@ function cerrarTodo(){
   velo.classList.remove("is-on");
   panelCarro.classList.remove("is-open"); panelCarro.setAttribute("aria-hidden","true");
   modalCot.classList.remove("is-open"); modalCot.setAttribute("aria-hidden","true");
+  const pf=$("#panelFicha");
+  if(pf){ pf.classList.remove("is-open"); pf.setAttribute("aria-hidden","true"); }
   document.body.classList.remove("sin-scroll");
 }
 function abrirCarro(){
@@ -698,8 +809,136 @@ function pintarModal(){
   if(modalEstado.extras.length) l.push(`Servicios: ${modalEstado.extras.join(", ")}`);
   $("#mEnviar").href=wa(l.join("\n"));
 }
-$$("[data-cotizar]").forEach(b=>b.onclick=()=>abrirModal(+b.dataset.cotizar));
+$$("[data-cotizar]").forEach(b=>b.onclick=e=>{e.stopPropagation();abrirModal(+b.dataset.cotizar);});
 pintarCarro();
+
+/* ==========================================================================
+   FICHA DE PRODUCTO
+   Estructura tomada de las fichas reales de upcomp.cl: SKU, descripción,
+   características destacadas, ideal para, especificaciones y servicios.
+   Los equipos sin ficha completa lo dicen en vez de rellenar con invento.
+   ========================================================================== */
+const panelFicha=$("#panelFicha");
+let fichaActual=0, pestanaActual="descripcion";
+
+const REDES=[
+  {id:"wa",   nombre:"WhatsApp", url:t=>`https://wa.me/?text=${encodeURIComponent(t.titulo+" — "+t.url)}`},
+  {id:"fb",   nombre:"Facebook", url:t=>`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(t.url)}`},
+  {id:"x",    nombre:"X",        url:t=>`https://twitter.com/intent/tweet?text=${encodeURIComponent(t.titulo)}&url=${encodeURIComponent(t.url)}`},
+  {id:"in",   nombre:"LinkedIn", url:t=>`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(t.url)}`}
+];
+
+function abrirFicha(i){
+  fichaActual=i; pestanaActual="descripcion";
+  pintarFicha();
+  velo.classList.add("is-on");
+  panelFicha.classList.add("is-open");
+  panelFicha.setAttribute("aria-hidden","false");
+  document.body.classList.add("sin-scroll");
+  panelFicha.scrollTop=0;
+}
+
+function pintarFicha(){
+  const e=EQUIPOS[fichaActual], f=FICHAS[fichaActual];
+  const compartir={titulo:e.t, url:location.origin+location.pathname+"#equipos"};
+
+  const pest=[["descripcion","Descripción"],["detalles","Detalles"],["archivos","Archivos"]];
+
+  let cuerpo="";
+  if(pestanaActual==="descripcion"){
+    cuerpo = f ? `
+      <p class="ficha__desc">${esc(f.desc)}</p>
+      <h3 class="ficha__h">Características destacadas</h3>
+      <ul class="ficha__carac">${f.carac.map(([t,d])=>`<li>${ico("i-check")}<span><b>${esc(t)}:</b> ${esc(d)}</span></li>`).join("")}</ul>
+      <h3 class="ficha__h">Ideal para</h3>
+      <ul class="ficha__ideal">${f.ideal.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`
+    : `<p class="ficha__desc">${esc(e.t)} — equipo del catálogo vigente de UpComp, configurado según los requerimientos de cada proyecto.</p>
+       <h3 class="ficha__h">Configuración</h3>
+       <ul class="ficha__ideal">${e.specs.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+       <p class="alcance" style="margin-top:1.5rem"><b>Ficha técnica completa:</b> el detalle extendido de este equipo se entrega junto con la cotización.</p>`;
+  }else if(pestanaActual==="detalles"){
+    cuerpo = (f?`
+      <h3 class="ficha__h" style="margin-top:0">Especificaciones técnicas</h3>
+      <div class="ficha__tabla"><table><tbody>
+        ${f.specs.map(([k,v])=>`<tr><th scope="row">${esc(k)}</th><td>${esc(v)}</td></tr>`).join("")}
+      </tbody></table></div>`:`
+      <h3 class="ficha__h" style="margin-top:0">Configuración</h3>
+      <div class="ficha__tabla"><table><tbody>
+        ${e.specs.map(s=>`<tr><td colspan="2">${esc(s)}</td></tr>`).join("")}
+      </tbody></table></div>`)
+    + `<h3 class="ficha__h">Servicios UpComp</h3>
+       <ul class="ficha__ideal">${SERVICIOS_UPCOMP.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+       <p class="alcance" style="margin-top:1.5rem">${esc(NOTA_DISPONIBILIDAD)}</p>`;
+  }else{
+    cuerpo = `<div class="ficha__archivos">
+      ${ico("i-caja")}
+      <h3>Documentación del equipo</h3>
+      <p>La ficha técnica en PDF, el detalle de componentes y la garantía aplicable se adjuntan junto con la cotización formal.</p>
+      <button class="btn btn--tinta btn--chico" id="fichaPedirDoc">Pedir documentación ${ico("i-flecha")}</button>
+    </div>`;
+  }
+
+  panelFicha.innerHTML=`
+    <div class="ficha">
+      <button class="ficha__cerrar" id="cerrarFicha" aria-label="Cerrar ficha">${ico("i-x")}</button>
+      <div class="ficha__top">
+        <div class="ficha__img"><img src="${e.img}" alt="${esc(e.t)}"></div>
+        <div class="ficha__info">
+          ${f?`<p class="ficha__sku">SKU: ${esc(f.sku)}</p>`:`<p class="ficha__sku">Catálogo UpComp</p>`}
+          <p class="carta__tag">${esc(e.tag)}</p>
+          <h2>${esc(e.t)}</h2>
+          <ul class="ficha__chips">${e.specs.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+          <div class="ficha__acciones">
+            <button class="btn btn--tinta" id="fichaCotizar">Cotizar ${ico("i-flecha")}</button>
+            <button class="btn btn--linea" id="fichaAgregar">Agregar a la lista ${ico("i-mas")}</button>
+          </div>
+          <div class="ficha__compartir">
+            <p>Compartir este producto</p>
+            <div class="ficha__redes">
+              ${REDES.map(r=>`<a href="${r.url(compartir)}" target="_blank" rel="noopener" aria-label="Compartir en ${r.nombre}" title="${r.nombre}"><span>${r.id==="wa"?"":""}</span>${r.id==="wa"?ico("i-wa"):`<b>${r.nombre[0]}</b>`}</a>`).join("")}
+              <button id="fichaCopiar" aria-label="Copiar enlace" title="Copiar enlace">${ico("i-enlace")}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ficha__pest" role="tablist">
+        ${pest.map(([id,l])=>`<button role="tab" aria-selected="${pestanaActual===id}" data-pest="${id}">${l}</button>`).join("")}
+      </div>
+      <div class="ficha__cuerpo">${cuerpo}</div>
+      <div class="ficha__relacionados">
+        <h3 class="ficha__h" style="margin-top:0">También podría interesarte</h3>
+        <div class="ficha__rel">
+          ${EQUIPOS.map((o,k)=>k===fichaActual?"":`
+            <button class="rel" data-ficha="${k}">
+              <img src="${o.img}" alt="" loading="lazy">
+              <span>${esc(o.t)}</span>
+            </button>`).join("")}
+        </div>
+      </div>
+    </div>`;
+
+  $("#cerrarFicha").onclick=cerrarTodo;
+  $("#fichaCotizar").onclick=()=>{cerrarTodo();setTimeout(()=>abrirModal(fichaActual),260);};
+  $("#fichaAgregar").onclick=()=>agregar(fichaActual);
+  $("#fichaCopiar").onclick=async()=>{
+    try{ await navigator.clipboard.writeText(compartir.url); avisar("Enlace copiado"); }
+    catch{ avisar("No se pudo copiar el enlace"); }
+  };
+  const doc=$("#fichaPedirDoc");
+  if(doc) doc.onclick=()=>{cerrarTodo();setTimeout(()=>$("#contacto").scrollIntoView({behavior:"smooth"}),260);};
+  $$("[data-pest]",panelFicha).forEach(b=>b.onclick=()=>{pestanaActual=b.dataset.pest;pintarFicha();});
+  $$("[data-ficha]",panelFicha).forEach(b=>b.onclick=()=>{abrirFicha(+b.dataset.ficha);});
+}
+
+/* La tarjeta completa abre la ficha; los botones internos no la disparan. */
+$$("#catalogo .equipo").forEach((el,i)=>{
+  el.style.cursor="pointer";
+  el.setAttribute("tabindex","0");
+  el.setAttribute("role","button");
+  el.setAttribute("aria-label","Ver ficha de "+EQUIPOS[i].t);
+  el.addEventListener("click",ev=>{ if(ev.target.closest("button")) return; abrirFicha(i); });
+  el.addEventListener("keydown",ev=>{ if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();abrirFicha(i);} });
+});
 
 /* ==========================================================================
    Configurador
