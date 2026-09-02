@@ -49,23 +49,35 @@ la pantalla de importación:
 - **Root Directory:** `prototipo`
 - **Framework Preset:** Other
 
+## De dónde sale cada contenido
+
+Regla del proyecto: **todo sale de upcomp.cl.** En `app.js` cada bloque de datos
+lleva anotada su página de origen.
+
+| Sección | Origen |
+| --- | --- |
+| Hero, Soluciones destacadas, Guía de selección, Validación técnica, Catálogo | upcomp.cl (home) |
+| Ecosistema UpComp, los 5 Servicios, Puntos de partida A/B/C, Enfoque, Cómo trabajamos | upcomp.cl/servicios-empresas |
+| Nuestra mirada, Compromiso | upcomp.cl/quienes-somos-1 |
+| Cuatro datos, Canales, Qué información incluir, Preguntas frecuentes | upcomp.cl/contacto |
+| Logos de partners y clientes, fotos de producto | descargados de upcomp.cl |
+| **Desarrollo e integración** | **Único bloque que NO está en su sitio.** Es la capacidad que aporta la alianza, y va marcada como propuesta dentro de la propia página. |
+
 ## Qué está implementado
 
 | Sección | Interacción |
 | --- | --- |
-| Hero | Mazo de tarjetas arrastrable con física (mouse, dedo y teclado) |
-| Ciclo de operación | Adquisición → Implementación → Soporte → Continuidad |
-| Soluciones destacadas | Las 4 categorías reales de upcomp.cl |
+| Hero | Marca que se traza sola + mazo de tarjetas arrastrable con física (mouse, dedo y teclado) |
+| Ecosistema | Equipamiento → Infraestructura → Soporte → Continuidad, con rieles que se animan al entrar |
 | Partners | Marquesina en movimiento con los 5 logos oficiales |
-| Portafolio | Los 4 pilares en paneles que se expanden |
+| Servicios | Los 5 servicios reales, con Continuidad Operacional destacada (Garantía Shield) |
 | Desarrollo | 6 capacidades + flujo Levantar → Diseñar → Construir → Integrar → Evolucionar |
-| Qué resolvemos | 6 problemas concretos con su solución |
 | Equipos | Catálogo real con lista de cotización y modal de consulta |
-| Guía de selección | Las 3 plataformas con el texto literal del sitio |
 | Configurador | 3 preguntas con scoring en vivo entre plataformas |
-| Calculadora | Puesto de trabajo gestionado según usuarios y plan |
+| Calculadora | Puesto de Trabajo Gestionado según usuarios y plan |
 | Clientes | Logos reales con filtro por industria |
-| Contacto | Formulario calificador de 3 pasos → WhatsApp o correo |
+| Contacto | Cuatro datos, canales, qué incluir, formulario de 3 pasos → WhatsApp o correo |
+| FAQ | Las 4 preguntas frecuentes reales, con sus respuestas |
 | Asistente | Bot con guion que sugiere equipos y los agrega a la cotización |
 
 ## Lo que todavía no es real
@@ -74,15 +86,15 @@ Está marcado dentro del sitio para no presentar como cerrado algo que no lo est
 
 - **Tarifas de la calculadora.** Los valores por usuario y los tramos por
   volumen son de ejemplo. Falta la política comercial real de UpComp.
-- **Contadores.** Solo se muestran cifras que se pueden contar del portafolio
-  (pilares, nichos, clientes publicados, partners). Faltan años de operación y
-  número de proyectos.
 - **Casos de éxito.** Hay nombres y logos de clientes (los que ya publica
   upcomp.cl) pero no casos con desafío, solución y resultado: publicarlos
   requiere autorización de cada cliente.
 - **El formulario no persiste.** Abre WhatsApp o el correo con los datos ya
   escritos. Conectarlo a un CRM es trabajo posterior.
 - **El bot sigue un guion fijo.** No hay modelo detrás todavía.
+- **No hay contadores.** Se quitaron: las cifras que había salían del PDF, no
+  del sitio. Si UpComp confirma años de operación y número de proyectos, se
+  reponen con datos reales.
 
 ## Nota sobre dos logos
 
