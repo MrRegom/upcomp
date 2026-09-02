@@ -90,7 +90,6 @@ equipos en la tienda — mismo componente, distinto contenido.
 | Desarrollo | 6 capacidades + flujo Levantar → Diseñar → Construir → Integrar → Evolucionar |
 | Equipos | Catálogo real con lista de cotización y modal de consulta |
 | Configurador | 3 preguntas con scoring en vivo entre plataformas |
-| Calculadora | Puesto de Trabajo Gestionado según usuarios y plan |
 | Clientes | Logos reales con filtro por industria |
 | Contacto | Cuatro datos, canales, qué incluir, formulario de 3 pasos → WhatsApp o correo |
 | FAQ | Las 4 preguntas frecuentes reales, con sus respuestas |
@@ -100,8 +99,10 @@ equipos en la tienda — mismo componente, distinto contenido.
 
 Está marcado dentro del sitio para no presentar como cerrado algo que no lo está:
 
-- **Tarifas de la calculadora.** Los valores por usuario y los tramos por
-  volumen son de ejemplo. Falta la política comercial real de UpComp.
+- **No hay estimador de precios.** Se quitó la calculadora del Puesto de
+  Trabajo Gestionado: mostraba una tarifa inventada y en una reunión eso solo
+  abre preguntas que UpComp todavía no puede responder. Vuelve cuando exista
+  la política comercial real.
 - **Casos de éxito.** Hay nombres y logos de clientes (los que ya publica
   upcomp.cl) pero no casos con desafío, solución y resultado: publicarlos
   requiere autorización de cada cliente.

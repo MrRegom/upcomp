@@ -98,9 +98,8 @@
     <a href="#areas"><span>01</span>Áreas de negocio</a>
     <a href="#desarrollo"><span>02</span>Desarrollo e integración</a>
     <a href="#mirada"><span>03</span>Nosotros</a>
-    <a href="#calculadora"><span>04</span>Puesto gestionado</a>
-    <a href="#clientes"><span>05</span>Clientes</a>
-    <a href="#contacto"><span>06</span>Contacto</a>
+    <a href="#clientes"><span>04</span>Clientes</a>
+    <a href="#contacto"><span>05</span>Contacto</a>
     <a href="tienda.html" class="btn btn--linea-clara">Ir a la tienda <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-carro"/></svg></a>
     <a href="#contacto" class="btn btn--primario">Hablar con un asesor <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-flecha"/></svg></a>
   </nav>
@@ -198,18 +197,6 @@
   </div>
 </section>
 
-<!-- ===================== SERVICIOS (5 reales) ===================== -->
-<section class="seccion seccion--fondo" id="servicios">
-  <div class="shell">
-    <div data-reveal>
-      <p class="eyebrow">Soluciones empresariales</p>
-      <h2 class="titulo-seccion">Elige el punto de partida de tu empresa</h2>
-      <p class="bajada">Podemos resolver una necesidad puntual o integrar equipamiento, soporte, mantención y continuidad en una sola propuesta.</p>
-    </div>
-    <div class="servicios" data-reveal id="servicios-lista"></div>
-  </div>
-</section>
-
 <!-- ===================== PUNTOS DE PARTIDA ===================== -->
 <section class="seccion seccion--oscura">
   <canvas class="senal" aria-hidden="true"></canvas>
@@ -246,41 +233,6 @@
 
 
 
-
-<!-- ===================== CALCULADORA ===================== -->
-<section class="seccion" id="calculadora">
-  <div class="shell">
-    <div data-reveal>
-      <p class="eyebrow">Herramienta · estimador</p>
-      <h2 class="titulo-seccion">¿Cuánto costaría gestionar los puestos de trabajo?</h2>
-      <p class="bajada">
-        El Puesto de Trabajo Gestionado <strong>no se compra una vez: se paga mensualmente por cada
-        usuario cubierto</strong>. Cada usuario incluye el equipo, su preparación, el soporte, la
-        garantía y la renovación planificada. Mueve el control para ver cómo escala el servicio
-        según cuánta gente tenga que cubrir tu empresa.
-      </p>
-    </div>
-    <div class="calc" data-reveal>
-      <div class="calc__controles">
-        <div class="calc__fila"><label for="usuarios">Usuarios a cubrir</label><output class="calc__valor tabular" id="salidaUsuarios">25</output></div>
-        <input type="range" id="usuarios" min="1" max="300" step="1" value="25">
-        <div class="rangos"><span>1</span><span>300</span></div>
-        <div class="atajos" id="atajos"></div>
-        <fieldset style="border:0;margin-top:2rem">
-          <legend style="font-size:1.02rem;font-weight:700">Nivel de servicio</legend>
-          <div class="planes" id="planes"></div>
-          <ul class="incluye" id="incluye"></ul>
-        </fieldset>
-      </div>
-      <aside class="calc__salida">
-        <p style="font-family:var(--mono);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;color:#7F9189">Así se calcula</p>
-        <div class="formula" id="calcFormula"></div>
-        <a href="#contacto" class="btn btn--primario" style="width:100%;margin-top:1.75rem">Pedir propuesta formal <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-flecha"/></svg></a>
-        <p class="nota-oscura"><strong style="color:#E9EFEB">Ojo: los valores son de ejemplo.</strong> UpComp todavía no define la tarifa de este servicio, así que el precio por usuario y los descuentos por volumen son un supuesto para mostrar cómo funcionaría la herramienta.</p>
-      </aside>
-    </div>
-  </div>
-</section>
 
 <!-- ===================== ENFOQUE ===================== -->
 <section class="seccion seccion--fondo">
@@ -381,21 +333,21 @@
       </div>
       <div class="footer__cols">
         <nav aria-label="Soluciones"><h3>Soluciones</h3><ul>
-          <li><a href="#equipos">Workstations IA y alto cómputo</a></li>
-          <li><a href="#soluciones">Notebooks corporativos</a></li>
-          <li><a href="#soluciones">Servidores e infraestructura</a></li>
-          <li><a href="#soluciones">Networking y videoconferencia</a></li>
+          <li><a href="tienda.html#equipos">Workstations IA y alto cómputo</a></li>
+          <li><a href="tienda.html#soluciones">Notebooks corporativos</a></li>
+          <li><a href="tienda.html#soluciones">Servidores e infraestructura</a></li>
+          <li><a href="tienda.html#soluciones">Networking y videoconferencia</a></li>
         </ul></nav>
         <nav aria-label="Servicios"><h3>Servicios empresas</h3><ul>
-          <li><a href="#calculadora">Puesto de Trabajo Gestionado</a></li>
-          <li><a href="#servicios">Soporte TI</a></li>
-          <li><a href="#servicios">Mantención y Optimización</a></li>
-          <li><a href="#servicios">Continuidad Operacional</a></li>
+          <li><a href="#areas">Puesto de Trabajo Gestionado</a></li>
+          <li><a href="#areas">Soporte TI</a></li>
+          <li><a href="#areas">Mantención y Optimización</a></li>
+          <li><a href="#areas">Continuidad Operacional</a></li>
         </ul></nav>
         <nav aria-label="Información"><h3>Información</h3><ul>
           <li><a href="#mirada">¿Quiénes somos?</a></li>
           <li><a href="#desarrollo">Desarrollo e integración</a></li>
-          <li><a href="#herramientas">Configurador</a></li>
+          <li><a href="tienda.html#herramientas">Configurador</a></li>
           <li><a href="#contacto">Contacto / Cotiza aquí</a></li>
         </ul></nav>
       </div>

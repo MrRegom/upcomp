@@ -295,7 +295,7 @@ const GUION={
   workstation:{r:["Para eso hay un configurador en esta misma página: tres preguntas y te sugiere la plataforma según la carga real."],
     o:[{l:"Ir al configurador",ir:"#herramientas"},{l:"Ver mi lista de cotización",ir:"@carro"},{l:"Prefiero que me contacten",ir:"derivar"}]},
   puesto:{r:["El Puesto de Trabajo Gestionado define equipos, configuración y servicios asociados según el cargo, las aplicaciones y la criticidad de cada usuario."],
-    o:[{l:"Ver la calculadora",ir:"#calculadora"},{l:"Quiero una propuesta",ir:"derivar"}]},
+    o:[{l:"Quiero una propuesta",ir:"derivar"}]},
   estabilizar:{r:["Ahí entran Soporte TI, Mantención y Optimización, y Continuidad Operacional con Garantía Shield.","¿Cuál te suena más a lo tuyo?"],
     o:[{l:"Resolver incidentes del día a día",ir:"derivar"},{l:"Prevenir fallas y recuperar rendimiento",ir:"derivar"},{l:"Respaldo ante una falla",ir:"shield"}]},
   shield:{r:["Continuidad Operacional incluye Garantía Shield según el plan contratado, gestión y seguimiento de casos, y equipo temporal sujeto a disponibilidad."],
@@ -768,8 +768,10 @@ function pintarCarro(){
   if(!cotizacion.length){
     $("#carroCuerpo").innerHTML=`<div class="vacio">${ico("i-carro")}
       <p>Tu lista de cotización está vacía.<br>Agrega equipos desde el catálogo.</p></div>`;
-    $("#carroPie").innerHTML=`<a href="#equipos" class="btn btn--linea" id="irCatalogo">Ver equipos</a>`;
-    $("#irCatalogo").onclick=cerrarTodo;
+    /* En la portada la tienda es otra página; en la tienda basta con bajar. */
+    const aCatalogo=PAGINA==="tienda"?"#equipos":"tienda.html#equipos";
+    $("#carroPie").innerHTML=`<a href="${aCatalogo}" class="btn btn--linea" id="irCatalogo">Ver equipos</a>`;
+    if(PAGINA==="tienda") $("#irCatalogo").onclick=cerrarTodo;
     return;
   }
   $("#carroCuerpo").innerHTML=cotizacion.map((x,k)=>{
@@ -1117,63 +1119,6 @@ function pintarConfigurador(){
   }).join("");
 }
 if($("#preg")) pintarConfigurador();
-
-/* ==========================================================================
-   Calculadora — valores DE EJEMPLO, pendientes de definición comercial
-   ========================================================================== */
-const PLANES=[
-  {id:"estandar",nombre:"Estándar",d:"Respaldo y gestión ordenada de incidentes.",ref:34000,
-   incluye:["Preparación y despliegue del equipo","Mesa de ayuda en horario hábil","Mantención preventiva programada","Gestión de garantía de fabricante"]},
-  {id:"premium",nombre:"Premium",d:"Mayor continuidad, prioridad y niveles de atención.",ref:52000,
-   incluye:["Todo lo del plan Estándar","Prioridad de atención y tiempos acotados","Equipo temporal sujeto a disponibilidad","Reportabilidad y revisión periódica"]}
-];
-const TRAMOS=[{desde:1,desc:0},{desde:11,desc:.05},{desde:51,desc:.10},{desde:201,desc:.15}];
-let planActivo="estandar";
-const inputUsuarios=D("#usuarios");
-D("#atajos").innerHTML=[10,25,50,100,200].map(n=>`<button class="atajo" data-n="${n}">${n}</button>`).join("");
-D("#planes").innerHTML=PLANES.map(p=>`
-  <button class="plan" data-plan="${p.id}">
-    <b>${esc(p.nombre)}<svg viewBox="0 0 24 24" aria-hidden="true" style="display:none"><use href="#i-check"/></svg></b>
-    <span>${esc(p.d)}</span></button>`).join("");
-function pintarCalculadora(){
-  const n=+inputUsuarios.value;
-  const plan=PLANES.find(p=>p.id===planActivo);
-  const tramo=[...TRAMOS].reverse().find(t=>n>=t.desde);
-  const unitario=Math.round(plan.ref*(1-tramo.desc));
-  const mensual=unitario*n;
-  D("#salidaUsuarios").textContent=n;
-  /* La cuenta se muestra escrita, no solo el total: quien la mira tiene que
-     entender de dónde sale la cifra sin preguntar. */
-  D("#calcFormula").innerHTML=`
-    <div class="formula__fila">
-      <span class="formula__op"></span>
-      <span class="formula__val tabular">${n}</span>
-      <span class="formula__et">${n===1?"usuario cubierto":"usuarios cubiertos"}</span>
-    </div>
-    <div class="formula__fila">
-      <span class="formula__op">×</span>
-      <span class="formula__val tabular">${clp.format(unitario)}</span>
-      <span class="formula__et">por usuario, cada mes${tramo.desc>0?` <b>(lista ${clp.format(plan.ref)} − ${Math.round(tramo.desc*100)}% por volumen)</b>`:""}</span>
-    </div>
-    <div class="formula__fila formula__fila--total">
-      <span class="formula__op">=</span>
-      <span class="formula__val tabular">${clp.format(mensual)}</span>
-      <span class="formula__et">al mes, plan ${esc(plan.nombre)}</span>
-    </div>
-    <p class="formula__anual">Equivale a <b class="tabular">${clp.format(mensual*12)}</b> al año.
-      Reemplaza la compra de ${n} ${n===1?"equipo":"equipos"} más su soporte, garantía y renovación.</p>`;
-  D("#incluye").innerHTML=plan.incluye.map(i=>`<li>${ico("i-check")}${esc(i)}</li>`).join("");
-  $$("#atajos .atajo").forEach(b=>b.classList.toggle("is-sel",+b.dataset.n===n));
-  $$("#planes .plan").forEach(b=>{
-    const on=b.dataset.plan===planActivo;
-    b.classList.toggle("is-sel",on);
-    $("svg",b).style.display=on?"block":"none";
-  });
-}
-inputUsuarios.oninput=pintarCalculadora;
-$$("#atajos .atajo").forEach(b=>b.onclick=()=>{inputUsuarios.value=b.dataset.n;pintarCalculadora();});
-$$("#planes .plan").forEach(b=>b.onclick=()=>{planActivo=b.dataset.plan;pintarCalculadora();});
-if($("#usuarios")) pintarCalculadora();
 
 /* ==========================================================================
    Clientes
