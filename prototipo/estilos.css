@@ -1036,3 +1036,49 @@ textarea{resize:vertical;min-height:5.5rem}
 
 /* La marca del hero y de la carga usan el logo real de UpComp */
 .marca-hero img,.cargando__marca img{width:100%;height:auto;object-fit:contain}
+
+/* ==========================================================================
+   ÁREAS DE NEGOCIO
+   La portada es una empresa de servicios: esta grilla es su columna
+   vertebral. La tienda vive aparte, en tienda.html.
+   ========================================================================== */
+.areas{display:grid;gap:1px;background:var(--linea);margin-top:2.75rem}
+@media(min-width:680px){ .areas{grid-template-columns:repeat(2,1fr)} }
+@media(min-width:1040px){ .areas{grid-template-columns:repeat(3,1fr)} }
+.area{background:var(--papel);padding:1.9rem 1.6rem;position:relative;display:flex;flex-direction:column;gap:.9rem;transition:background-color .3s}
+.area:hover{background:var(--fondo)}
+.area::after{content:"";position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--verde-deep);transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease)}
+.area:hover::after{transform:scaleX(1)}
+.area--nueva{background:var(--verde-wash)}
+.area--nueva:hover{background:var(--verde-wash-2)}
+.area__n{font-family:var(--mono);font-size:.68rem;letter-spacing:.13em;color:var(--gris)}
+.area__i{width:2.9rem;height:2.9rem;display:grid;place-items:center;background:var(--verde-wash);color:var(--verde-oscuro)}
+.area--nueva .area__i{background:var(--papel)}
+.area__i svg{width:1.4rem;height:1.4rem}
+.area h3{font-size:1.14rem;display:flex;align-items:center;gap:.6rem;flex-wrap:wrap}
+.area__badge{font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;background:var(--verde-deep);color:#fff;padding:.2rem .45rem}
+.area>p{font-size:.9rem;color:var(--tinta-2);line-height:1.6;flex:1}
+.area ul{display:flex;flex-wrap:wrap;gap:.4rem}
+.area li{font-family:var(--mono);font-size:.68rem;color:var(--gris);border:1px solid var(--linea);background:var(--fondo);padding:.25rem .5rem}
+.area--nueva li{background:var(--papel);border-color:var(--verde-wash-2)}
+
+/* Botón de tienda en el encabezado */
+.header__tienda{display:none}
+@media(min-width:900px){ .header__tienda{display:inline-flex} }
+
+/* Cartas del mazo cuando muestran áreas en vez de equipos */
+.carta--area{background:var(--negro-2);color:#E9EFEB;border-color:var(--linea-oscura)}
+.carta__icono{height:34%;display:grid;place-items:center;background:var(--negro-3);border-bottom:1px solid var(--linea-oscura);position:relative}
+.carta__icono svg{width:2.75rem;height:2.75rem;color:var(--verde)}
+.carta__nuevo{position:absolute;top:.75rem;right:.75rem;font-family:var(--mono);font-size:.58rem;letter-spacing:.1em;text-transform:uppercase;background:var(--verde);color:#06110A;padding:.2rem .45rem}
+.carta--area .carta__tag{color:var(--verde)}
+.carta__d{font-size:.82rem;color:#93A79D;line-height:1.5}
+.carta--area .carta__specs li{color:#A9BAB1;border-color:var(--linea-oscura)}
+
+/* Cabecera de la tienda */
+.tienda-cinta{background:var(--verde-wash);border-bottom:1px solid var(--verde-wash-2)}
+.tienda-cinta__in{max-width:var(--shell);margin-inline:auto;padding:.7rem clamp(1.15rem,4vw,2.5rem);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.tienda-cinta p{font-size:.85rem;color:var(--verde-oscuro)}
+.tienda-cinta a{font-size:.85rem;font-weight:600;color:var(--verde-oscuro);display:inline-flex;align-items:center;gap:.5rem}
+.tienda-cinta a:hover{text-decoration:underline}
+.tienda-cinta svg{width:1rem;height:1rem}

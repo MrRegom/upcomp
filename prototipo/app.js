@@ -21,6 +21,32 @@ const EQUIPOS=[
   {img:"assets/productos/latitude-rugged.jpg",tag:"Uso en terreno",t:"Dell Latitude 5430 Rugged",specs:["i5-1145G7","32GB","4G LTE","GPS"]}
 ];
 
+/* ---------- Áreas de negocio
+     Son los 5 servicios reales de upcomp.cl/servicios-empresas más
+     Desarrollo e Integración, que es lo que aporta la alianza.
+     Estructuran la portada: UpComp es una empresa de servicios y la
+     tienda vive aparte, en /tienda. ---------- */
+const AREAS=[
+  {icono:"i-caja",tag:"Usuarios y equipos",t:"Puesto de Trabajo Gestionado",
+   d:"Equipos, configuración y servicios asociados definidos según el cargo, las aplicaciones y la criticidad de cada usuario.",
+   specs:["Notebooks y workstations","Configuración por perfil","Renovación planificada"]},
+  {icono:"i-soporte",tag:"Operación diaria",t:"Soporte TI para Empresas",
+   d:"Un canal técnico para resolver incidentes, asistir usuarios y coordinar acciones sobre equipos que afectan la productividad.",
+   specs:["Remoto o presencial","Hardware y software","Puntual o recurrente"]},
+  {icono:"i-engranaje",tag:"Rendimiento",t:"Mantención y Optimización",
+   d:"Evaluamos el estado de los equipos para prevenir fallas, recuperar rendimiento y decidir qué mantener, mejorar o renovar.",
+   specs:["Mantención preventiva","Revisión térmica","Upgrades"]},
+  {icono:"i-escudo",tag:"Respaldo",t:"Continuidad Operacional",
+   d:"Coberturas y alternativas de respaldo para reducir el impacto de una falla sobre usuarios y equipos relevantes para la operación.",
+   specs:["Garantía Shield","Seguimiento de casos","Equipo temporal"]},
+  {icono:"i-red",tag:"Implementación",t:"Proyectos e Infraestructura TI",
+   d:"Diseñamos soluciones para oficinas nuevas, ampliaciones y renovación de infraestructura con mirada técnica y comercial integrada.",
+   specs:["Networking y Wi-Fi","Servidores","Videoconferencia"]},
+  {icono:"i-codigo",tag:"Capacidad nueva",t:"Desarrollo e Integración",nuevo:true,
+   d:"Cuando una plataforma estándar no resuelve el proceso real, diseñamos y construimos la solución que conecta la operación.",
+   specs:["Software a medida","APIs e integraciones","IA privada"]}
+];
+
 /* ---------- Ecosistema UpComp (upcomp.cl/servicios-empresas y /quienes-somos-1)
      Es el marco real de ellos, presente en las dos páginas. ---------- */
 const ECOSISTEMA=[
@@ -287,6 +313,17 @@ const GUION={
    Utilidades
    ========================================================================== */
 const $=(s,c=document)=>c.querySelector(s), $$=(s,c=document)=>[...c.querySelectorAll(s)];
+
+/* El mismo script sirve a las dos páginas: el sitio de servicios y la
+   tienda. Cada bloque de render se salta si su contenedor no existe. */
+const PAGINA=document.body.dataset.pagina||"home";
+/* Contenedor tolerante: si el elemento no existe en esta página, las
+   escrituras se descartan en silencio en vez de reventar el script. */
+const NULO={set innerHTML(v){},get innerHTML(){return""},style:{},textContent:"",
+  classList:{add(){},remove(){},toggle(){},contains(){return false}},
+  setAttribute(){},addEventListener(){},querySelector(){return null},
+  querySelectorAll(){return[]},getBoundingClientRect(){return{top:0,bottom:0,left:0,right:0,width:0,height:0}},click(){},focus(){}};
+const D=sel=>$(sel)||NULO;
 const esc=s=>String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 const wa=t=>`https://wa.me/${TELEFONO}?text=${encodeURIComponent(t)}`;
 const clp=new Intl.NumberFormat("es-CL",{style:"currency",currency:"CLP",maximumFractionDigits:0});
@@ -432,15 +469,23 @@ addEventListener("resize",alScroll);
    MAZO DE TARJETAS ARRASTRABLE
    ========================================================================== */
 const mazo=$("#mazo"), PROF=3;
-let orden=EQUIPOS.map((_,i)=>i);
+/* En la portada el mazo muestra las áreas de negocio; en la tienda, los
+   equipos. Es el mismo componente con distinto contenido. */
+const MAZO=PAGINA==="tienda"?EQUIPOS:AREAS;
+let orden=MAZO.map((_,i)=>i);
 function pintarMazo(){
+  if(!mazo) return;
   mazo.innerHTML=orden.map((idx,pos)=>{
-    const e=EQUIPOS[idx];
-    return `<article class="carta" data-pos="${pos}" ${pos===0?'tabindex="0"':'aria-hidden="true"'}>
-      <div class="carta__img"><img src="${e.img}" alt="${esc(e.t)}" loading="${pos<2?"eager":"lazy"}" draggable="false"></div>
+    const e=MAZO[idx];
+    const cara=e.img
+      ? `<div class="carta__img"><img src="${e.img}" alt="${esc(e.t)}" loading="${pos<2?"eager":"lazy"}" draggable="false"></div>`
+      : `<div class="carta__icono">${ico(e.icono)}${e.nuevo?'<span class="carta__nuevo">Nuevo</span>':''}</div>`;
+    return `<article class="carta ${e.img?"":"carta--area"}" data-pos="${pos}" ${pos===0?'tabindex="0"':'aria-hidden="true"'}>
+      ${cara}
       <div class="carta__cuerpo">
         <p class="carta__tag">${esc(e.tag)}</p>
         <h3 class="carta__t">${esc(e.t)}</h3>
+        ${e.d?`<p class="carta__d">${esc(e.d)}</p>`:""}
         <ul class="carta__specs">${e.specs.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
       </div></article>`;
   }).join("");
@@ -457,7 +502,8 @@ function colocar(){
   });
 }
 function pintarPuntos(){
-  $("#mazoPuntos").innerHTML=EQUIPOS.map((_,i)=>`<span class="mazo__punto ${orden[0]===i?"is-on":""}"></span>`).join("");
+  if(!D("#mazoPuntos")) return;
+  D("#mazoPuntos").innerHTML=MAZO.map((_,i)=>`<span class="mazo__punto ${orden[0]===i?"is-on":""}"></span>`).join("");
 }
 function rotar(adelante=true){
   if(adelante) orden.push(orden.shift()); else orden.unshift(orden.pop());
@@ -557,13 +603,23 @@ fabArriba.onclick=()=>scrollTo({top:0,behavior:suave?"auto":"smooth"});
 /* ==========================================================================
    Render de secciones con contenido real
    ========================================================================== */
-$("#ecosistema").innerHTML=ECOSISTEMA.map((e,i)=>
+/* Áreas de negocio: la grilla que estructura la portada */
+D("#areasGrid").innerHTML=AREAS.map((a,i)=>`
+  <article class="area ${a.nuevo?"area--nueva":""}">
+    <span class="area__n">0${i+1}</span>
+    <span class="area__i">${ico(a.icono)}</span>
+    <h3>${esc(a.t)}${a.nuevo?'<span class="area__badge">Nuevo</span>':''}</h3>
+    <p>${esc(a.d)}</p>
+    <ul>${a.specs.map(s=>`<li>${esc(s)}</li>`).join("")}</ul>
+  </article>`).join("");
+
+D("#ecosistema").innerHTML=ECOSISTEMA.map((e,i)=>
   `<div class="eco__p"><span class="eco__n">0${i+1}</span>${ico(e.icono)}<b>${esc(e.t)}</b><span>${esc(e.d)}</span></div>`).join("");
 
-$("#marquee").innerHTML=[...CLIENTES,...CLIENTES]
+D("#marquee").innerHTML=[...CLIENTES,...CLIENTES]
   .map((c,i)=>`<li${i>=CLIENTES.length?' aria-hidden="true"':''}>${esc(c.n)}</li>`).join("");
 
-$("#soluciones-grid").innerHTML=SOLUCIONES.map(s=>`
+D("#soluciones-grid").innerHTML=SOLUCIONES.map(s=>`
   <article class="solu__c">
     <span class="solu__i">${ico(s.icono)}</span>
     <h3>${esc(s.t)}</h3><p>${esc(s.d)}</p>
@@ -574,14 +630,14 @@ const tarjetaPartner=p=>`<li class="partner">
   <div class="partner__logo"><img src="${p.logo}" alt="${esc(p.n)}" loading="lazy"></div>
   <span class="partner__badge">Partner tecnológico</span>
   <p class="partner__d">${esc(p.d)}</p></li>`;
-$("#listaPartners").innerHTML=[...PARTNERS,...PARTNERS,...PARTNERS,...PARTNERS].map(tarjetaPartner).join("");
+D("#listaPartners").innerHTML=[...PARTNERS,...PARTNERS,...PARTNERS,...PARTNERS].map(tarjetaPartner).join("");
 
-$("#miradaTitulo").textContent=MIRADA.titulo;
-$("#miradaBajada").textContent=MIRADA.bajada;
-$("#miradaPuntos").innerHTML=MIRADA.puntos.map(([n,t,d])=>
+D("#miradaTitulo").textContent=MIRADA.titulo;
+D("#miradaBajada").textContent=MIRADA.bajada;
+D("#miradaPuntos").innerHTML=MIRADA.puntos.map(([n,t,d])=>
   `<div class="mirada__p"><span class="mirada__n">${n}</span><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join("");
 
-$("#servicios-lista").innerHTML=SERVICIOS.map(s=>`
+D("#servicios-lista").innerHTML=SERVICIOS.map(s=>`
   <article class="serv2 ${s.destacado?"serv2--destacado":""}">
     <div class="serv2__cab">
       <span class="serv2__i">${ico(s.icono)}</span>
@@ -592,46 +648,46 @@ $("#servicios-lista").innerHTML=SERVICIOS.map(s=>`
     <a class="solu__link" href="#contacto">${esc(s.cta)} ${ico("i-flecha")}</a>
   </article>`).join("");
 
-$("#partida").innerHTML=PARTIDA.map(p=>`
+D("#partida").innerHTML=PARTIDA.map(p=>`
   <button class="partida__c" data-partida="${esc(p.t)}">
     <span class="partida__k">${p.k}</span>
     <h3>${esc(p.t)}</h3><p>${esc(p.d)}</p>
     <span class="solu__link">Conversar con UpComp ${ico("i-flecha")}</span>
   </button>`).join("");
 
-$("#enfoque").innerHTML=ENFOQUE.map(([t,d])=>
+D("#enfoque").innerHTML=ENFOQUE.map(([t,d])=>
   `<div class="enfoque__p"><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join("");
 
-$("#proceso").innerHTML=PROCESO.map(([n,t,d])=>
+D("#proceso").innerHTML=PROCESO.map(([n,t,d])=>
   `<div class="proceso__p"><span class="proceso__n">${n}</span><h3>${esc(t)}</h3><p>${esc(d)}</p></div>`).join("");
 
-$("#devGrid").innerHTML=DESARROLLO.map(d=>`
+D("#devGrid").innerHTML=DESARROLLO.map(d=>`
   <article class="dev-card">
     <span class="dev-card__icono">${ico(d.icono)}</span>
     <h3>${esc(d.t)}</h3><p>${esc(d.d)}</p>
     <ul>${d.tags.map(t=>`<li>${esc(t)}</li>`).join("")}</ul></article>`).join("");
-$("#flujoPasos").innerHTML=FLUJO_DEV.map(([t,d],i)=>`
+D("#flujoPasos").innerHTML=FLUJO_DEV.map(([t,d],i)=>`
   <div class="flujo__paso"><p class="flujo__n">0${i+1}</p><p class="flujo__t">${esc(t)}</p><p class="flujo__d">${esc(d)}</p></div>`).join("");
 
-$("#plataformas").innerHTML=PLATAFORMAS.map(p=>`
+D("#plataformas").innerHTML=PLATAFORMAS.map(p=>`
   <article class="plat ${p.destacada?"plat--destacada":""}">
     <div class="plat__cab"><span class="plat__i">${ico(p.icono)}</span><span class="plat__badge">${esc(p.etiqueta)}</span></div>
     <h3>${esc(p.nombre)}</h3><p>${esc(p.resumen)}</p>
     <ul>${p.para.map(x=>`<li>${ico("i-check")}<span>${esc(x)}</span></li>`).join("")}</ul>
     <button class="btn btn--tinta btn--chico" data-plat="${p.iEquipo}">Cotizar plataforma ${ico("i-flecha")}</button>
   </article>`).join("");
-$("#validaItems").innerHTML=VALIDACION.map(v=>`<li>${ico("i-check")}<span>${esc(v)}</span></li>`).join("");
+D("#validaItems").innerHTML=VALIDACION.map(v=>`<li>${ico("i-check")}<span>${esc(v)}</span></li>`).join("");
 
-$("#cuatroDatos").innerHTML=CUATRO_DATOS.map(([n,t,d])=>
+D("#cuatroDatos").innerHTML=CUATRO_DATOS.map(([n,t,d])=>
   `<div class="dato"><span class="dato__n">${n}</span><b>${esc(t)}</b><span class="dato__d">${esc(d)}</span></div>`).join("");
-$("#canales").innerHTML=CANALES.map(c=>`
+D("#canales").innerHTML=CANALES.map(c=>`
   <article class="canal">
     <span class="canal__i">${ico(c.icono)}</span>
     <h3>${esc(c.k)}</h3><p>${esc(c.d)}</p>
     <b>${esc(c.v)}</b>
   </article>`).join("");
-$("#queIncluir").innerHTML=QUE_INCLUIR.map(x=>`<li>${ico("i-check")}<span>${esc(x)}</span></li>`).join("");
-$("#faq").innerHTML=FAQ.map(([q,a],i)=>`
+D("#queIncluir").innerHTML=QUE_INCLUIR.map(x=>`<li>${ico("i-check")}<span>${esc(x)}</span></li>`).join("");
+D("#faq").innerHTML=FAQ.map(([q,a],i)=>`
   <div class="faq__i" data-faq>
     <button class="faq__btn" aria-expanded="false">
       <span class="faq__n">0${i+1}</span><span class="faq__q">${esc(q)}</span>
@@ -662,7 +718,7 @@ let cotizacion=[];
 try{ const g=localStorage.getItem("upcomp_cot"); if(g) cotizacion=JSON.parse(g)||[]; }catch{}
 const guardar=()=>{ try{ localStorage.setItem("upcomp_cot",JSON.stringify(cotizacion)); }catch{} };
 
-$("#catalogo").innerHTML=EQUIPOS.map((e,i)=>`
+D("#catalogo").innerHTML=EQUIPOS.map((e,i)=>`
   <article class="equipo">
     <div class="equipo__img"><img src="${e.img}" alt="${esc(e.t)}" loading="lazy"></div>
     <div class="equipo__cuerpo">
@@ -1011,14 +1067,14 @@ function pintarConfigurador(){
   const max=Math.max(1,...Object.values(pts));
   const ganadora=[...PLATAFORMAS].sort((a,b)=>pts[b.id]-pts[a.id])[0];
   const listo=paso>=PREGUNTAS.length;
-  $("#progreso").innerHTML=PREGUNTAS.map((p,i)=>{
+  D("#progreso").innerHTML=PREGUNTAS.map((p,i)=>{
     const hecha=!!respuestas[p.id], ahora=i===paso&&!listo;
     return `<div class="progreso__item ${hecha?"is-done":""} ${ahora?"is-now":""}">
       <span class="progreso__n">0${i+1}</span><span class="progreso__barra"></span></div>`;
   }).join("");
   if(!listo){
     const p=PREGUNTAS[paso];
-    $("#preg").innerHTML=`
+    D("#preg").innerHTML=`
       <h3>${esc(p.titulo)}</h3><p class="preg__ayuda">${esc(p.ayuda)}</p>
       <div class="opciones">${p.opciones.map(o=>`
         <button class="opcion ${respuestas[p.id]===o.id?"is-sel":""}" data-op="${o.id}">
@@ -1030,7 +1086,7 @@ function pintarConfigurador(){
     });
     const v=$("#volver"); if(v)v.onclick=()=>{paso=Math.max(0,paso-1);pintarConfigurador();};
   }else{
-    $("#preg").innerHTML=`
+    D("#preg").innerHTML=`
       <p class="eyebrow eyebrow--claro">Plataforma sugerida</p>
       <h3 style="margin-top:.75rem;font-size:clamp(1.35rem,3.2vw,1.8rem)">${esc(ganadora.nombre)}</h3>
       <p style="margin-top:.35rem;font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--verde)">${esc(ganadora.etiqueta)}</p>
@@ -1047,7 +1103,7 @@ function pintarConfigurador(){
     $("#reiniciarCfg").onclick=()=>{paso=0;respuestas={};pintarConfigurador();};
     $("#cfgAgregar").onclick=()=>{agregar(ganadora.iEquipo);abrirCarro();};
   }
-  $("#barras").innerHTML=PLATAFORMAS.map(p=>{
+  D("#barras").innerHTML=PLATAFORMAS.map(p=>{
     const lider=listo&&p.id===ganadora.id;
     const pct=respondidas===0?0:(pts[p.id]/max)*100;
     return `<div>
@@ -1059,7 +1115,7 @@ function pintarConfigurador(){
     </div>`;
   }).join("");
 }
-pintarConfigurador();
+if($("#preg")) pintarConfigurador();
 
 /* ==========================================================================
    Calculadora — valores DE EJEMPLO, pendientes de definición comercial
@@ -1072,9 +1128,9 @@ const PLANES=[
 ];
 const TRAMOS=[{desde:1,desc:0},{desde:11,desc:.05},{desde:51,desc:.10},{desde:201,desc:.15}];
 let planActivo="estandar";
-const inputUsuarios=$("#usuarios");
-$("#atajos").innerHTML=[10,25,50,100,200].map(n=>`<button class="atajo" data-n="${n}">${n}</button>`).join("");
-$("#planes").innerHTML=PLANES.map(p=>`
+const inputUsuarios=D("#usuarios");
+D("#atajos").innerHTML=[10,25,50,100,200].map(n=>`<button class="atajo" data-n="${n}">${n}</button>`).join("");
+D("#planes").innerHTML=PLANES.map(p=>`
   <button class="plan" data-plan="${p.id}">
     <b>${esc(p.nombre)}<svg aria-hidden="true" style="display:none"><use href="#i-check"/></svg></b>
     <span>${esc(p.d)}</span></button>`).join("");
@@ -1084,14 +1140,14 @@ function pintarCalculadora(){
   const tramo=[...TRAMOS].reverse().find(t=>n>=t.desde);
   const unitario=Math.round(plan.ref*(1-tramo.desc));
   const mensual=unitario*n;
-  $("#salidaUsuarios").textContent=n;
-  $("#calcTotal").textContent=clp.format(mensual);
-  $("#calcSub").textContent=`mensual · ${n} ${n===1?"usuario":"usuarios"} · plan ${plan.nombre}`;
-  $("#calcDetalle").innerHTML=`
+  D("#salidaUsuarios").textContent=n;
+  D("#calcTotal").textContent=clp.format(mensual);
+  D("#calcSub").textContent=`mensual · ${n} ${n===1?"usuario":"usuarios"} · plan ${plan.nombre}`;
+  D("#calcDetalle").innerHTML=`
     <div><dt>Por usuario</dt><dd class="tabular">${clp.format(unitario)}</dd></div>
     <div><dt>Ajuste por volumen</dt><dd class="tabular">${tramo.desc===0?"—":"−"+Math.round(tramo.desc*100)+"%"}</dd></div>
     <div><dt>Proyección anual</dt><dd class="tabular">${clp.format(mensual*12)}</dd></div>`;
-  $("#incluye").innerHTML=plan.incluye.map(i=>`<li>${ico("i-check")}${esc(i)}</li>`).join("");
+  D("#incluye").innerHTML=plan.incluye.map(i=>`<li>${ico("i-check")}${esc(i)}</li>`).join("");
   $$("#atajos .atajo").forEach(b=>b.classList.toggle("is-sel",+b.dataset.n===n));
   $$("#planes .plan").forEach(b=>{
     const on=b.dataset.plan===planActivo;
@@ -1102,7 +1158,7 @@ function pintarCalculadora(){
 inputUsuarios.oninput=pintarCalculadora;
 $$("#atajos .atajo").forEach(b=>b.onclick=()=>{inputUsuarios.value=b.dataset.n;pintarCalculadora();});
 $$("#planes .plan").forEach(b=>b.onclick=()=>{planActivo=b.dataset.plan;pintarCalculadora();});
-pintarCalculadora();
+if($("#usuarios")) pintarCalculadora();
 
 /* ==========================================================================
    Clientes
@@ -1110,9 +1166,9 @@ pintarCalculadora();
 let filtro="Todas";
 const VERTICALES=["Todas",...new Set(CLIENTES.map(c=>c.v))];
 function pintarClientes(){
-  $("#chips").innerHTML=VERTICALES.map(v=>`<button class="chip ${v===filtro?"is-sel":""}" data-v="${esc(v)}">${esc(v)}</button>`).join("");
+  D("#chips").innerHTML=VERTICALES.map(v=>`<button class="chip ${v===filtro?"is-sel":""}" data-v="${esc(v)}">${esc(v)}</button>`).join("");
   const vis=filtro==="Todas"?CLIENTES:CLIENTES.filter(c=>c.v===filtro);
-  $("#listaClientes").innerHTML=vis.map(c=>`
+  D("#listaClientes").innerHTML=vis.map(c=>`
     <article class="cliente">
       <div class="cliente__tile ${c.oscuro?"cliente__tile--oscuro":""}">
         ${c.logo?`<img src="${c.logo}" alt="${esc(c.n)}" loading="lazy">`:`<b>${esc(c.n.split(" ")[0])}</b>`}
@@ -1121,7 +1177,7 @@ function pintarClientes(){
     </article>`).join("");
   $$("#chips .chip").forEach(b=>b.onclick=()=>{filtro=b.dataset.v;pintarClientes();});
 }
-pintarClientes();
+if($("#listaClientes")) pintarClientes();
 
 /* ==========================================================================
    Formulario calificador
@@ -1150,13 +1206,13 @@ const resumen=()=>{
 const chipsDe=(arr,campo)=>`<div class="grupo__chips">${arr.map(o=>
   `<button class="chip ${F[campo]===o?"is-sel":""}" data-campo="${campo}" data-val="${esc(o)}">${esc(o)}</button>`).join("")}</div>`;
 function pintarFormulario(){
-  $("#formPasos").innerHTML=NOMBRES_PASOS.map((p,i)=>{
+  D("#formPasos").innerHTML=NOMBRES_PASOS.map((p,i)=>{
     const hecho=i<fPaso||enviado, ahora=i===fPaso&&!enviado;
     return `<div class="form__paso ${ahora?"is-now":""} ${hecho?"is-done":""}">
       <i>${hecho?ico("i-check"):i+1}</i><span>${p}</span></div>`;
   }).join("");
   if(enviado){
-    $("#formCuerpo").innerHTML=`
+    D("#formCuerpo").innerHTML=`
       <h3>Solicitud lista</h3>
       <p style="margin-top:.5rem;font-size:.92rem;color:var(--tinta-2)">Revisa el resumen y elige por dónde enviarla.</p>
       <pre class="resumen">${esc(resumen())}</pre>
@@ -1193,7 +1249,7 @@ function pintarFormulario(){
       <button class="volver" id="fVolver" style="color:var(--gris);${fPaso===0?"visibility:hidden":""}">← Volver</button>
       <button class="btn btn--tinta" id="fSiguiente" ${puedeAvanzar()?"":"disabled"}>
         ${fPaso===2?"Revisar solicitud":"Continuar"} ${ico("i-flecha")}</button></div>`;
-  $("#formCuerpo").innerHTML=html;
+  D("#formCuerpo").innerHTML=html;
   $$("#formCuerpo [data-nec]").forEach(b=>b.onclick=()=>{F.necesidad=b.dataset.nec;pintarFormulario();});
   $$("#formCuerpo [data-campo]").forEach(b=>b.onclick=()=>{F[b.dataset.campo]=b.dataset.val;pintarFormulario();});
   const liga=(id,campo)=>{const el=$(id);if(el)el.oninput=e=>{F[campo]=e.target.value;$("#fSiguiente").disabled=!puedeAvanzar();};};
@@ -1201,7 +1257,7 @@ function pintarFormulario(){
   $("#fVolver").onclick=()=>{fPaso=Math.max(0,fPaso-1);pintarFormulario();};
   $("#fSiguiente").onclick=()=>{if(fPaso===2){enviado=true;}else{fPaso++;}pintarFormulario();};
 }
-pintarFormulario();
+if($("#formCuerpo")) pintarFormulario();
 
 /* ==========================================================================
    Asistente

@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>UpComp — Tecnología para mantener activa tu operación</title>
-<meta name="description" content="Equipamiento, soporte e infraestructura TI para empresas en todo Chile. Puesto de trabajo gestionado, soporte, mantención, continuidad operacional y proyectos de infraestructura.">
+<title>Tienda UpComp — Equipamiento profesional para empresas</title>
+<meta name="description" content="Catálogo de workstations, notebooks corporativos, servidores y networking de UpComp. Arma tu lista de cotización y recibe propuesta con precio, disponibilidad y plazo.">
 <meta name="theme-color" content="#0F1614">
 <link rel="icon" href="assets/marcas/upcomp-logo.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,21 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="estilos.css">
 </head>
-<body data-pagina="home">
-
-<!-- Pantalla de carga: la flecha del logo se traza y entra la marca -->
-<div class="cargando" id="cargando" role="status" aria-label="Cargando UpComp">
-  <div class="cargando__caja">
-    <span class="cargando__marca" aria-hidden="true">
-      <span class="cargando__anillo"></span>
-      <img src="assets/marcas/upcomp-logo.webp" alt="" width="140" height="140">
-    </span>
-    <p class="cargando__palabra">UPCOMP</p>
-    <p class="cargando__bienvenida">Bienvenidos</p>
-    <div class="cargando__barra"><span></span></div>
-    <p class="cargando__saltar">Toca para entrar</p>
-  </div>
-</div>
+<body data-pagina="tienda">
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <g id="i-flecha" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15m0 0-5.5-5.5M19 12l-5.5 5.5"/></g>
@@ -70,17 +56,15 @@
 
 <header class="header" id="header">
   <div class="shell header__row">
-    <a href="#top" class="logo" aria-label="UpComp — inicio"><img src="assets/marcas/upcomp-logo.webp" alt="" width="32" height="32">UPCOMP</a>
+    <a href="index.html" class="logo" aria-label="UpComp — inicio"><img src="assets/marcas/upcomp-logo.webp" alt="" width="32" height="32">UPCOMP</a>
     <nav class="nav" aria-label="Principal">
-      <a href="#areas">Áreas de negocio</a>
-      <a href="#desarrollo">Desarrollo</a>
-      <a href="#mirada">Nosotros</a>
-      <a href="#clientes">Clientes</a>
-      <a href="#contacto">Contacto</a>
+      <a href="index.html">Servicios</a>
+      <a href="#equipos">Equipos</a>
+      <a href="#guia">Guía de selección</a>
+      <a href="#herramientas">Configurador</a>
     </nav>
     <div class="header__acciones">
-      <a href="tienda.html" class="btn btn--linea-clara header__tienda">Tienda <svg aria-hidden="true"><use href="#i-carro"/></svg></a>
-      <a href="#contacto" class="btn btn--primario header__cta">Hablar con un asesor <svg aria-hidden="true"><use href="#i-flecha"/></svg></a>
+      <a href="index.html#contacto" class="btn btn--primario header__cta">Hablar con un asesor <svg aria-hidden="true"><use href="#i-flecha"/></svg></a>
       <button class="icono-btn" id="abrirCarro" aria-label="Abrir lista de cotización">
         <svg aria-hidden="true"><use href="#i-carro"/></svg><span class="badge" id="badgeCarro">0</span>
       </button>
@@ -95,48 +79,45 @@
     <button class="icono-btn" id="cerrarDrawer" aria-label="Cerrar menú"><svg aria-hidden="true"><use href="#i-x"/></svg></button>
   </div>
   <nav class="shell drawer__nav" aria-label="Menú móvil">
-    <a href="#areas"><span>01</span>Áreas de negocio</a>
-    <a href="#desarrollo"><span>02</span>Desarrollo e integración</a>
-    <a href="#mirada"><span>03</span>Nosotros</a>
-    <a href="#calculadora"><span>04</span>Puesto gestionado</a>
-    <a href="#clientes"><span>05</span>Clientes</a>
-    <a href="#contacto"><span>06</span>Contacto</a>
-    <a href="tienda.html" class="btn btn--linea-clara">Ir a la tienda <svg aria-hidden="true"><use href="#i-carro"/></svg></a>
-    <a href="#contacto" class="btn btn--primario">Hablar con un asesor <svg aria-hidden="true"><use href="#i-flecha"/></svg></a>
+    <a href="#equipos"><span>01</span>Equipos</a>
+    <a href="#guia"><span>02</span>Guía de selección</a>
+    <a href="#herramientas"><span>03</span>Configurador</a>
+    <a href="index.html" class="btn btn--linea-clara">Volver al sitio de servicios</a>
+    <a href="index.html#contacto" class="btn btn--primario">Hablar con un asesor <svg aria-hidden="true"><use href="#i-flecha"/></svg></a>
   </nav>
+</div>
+
+<div class="tienda-cinta">
+  <div class="tienda-cinta__in">
+    <p><strong>Estás en la tienda.</strong> Aquí se cotiza equipamiento. Los servicios TI viven en el sitio principal.</p>
+    <a href="index.html"><svg aria-hidden="true"><use href="#i-izq"/></svg> Volver a servicios</a>
+  </div>
 </div>
 
 <main id="top">
 
-<!-- ===================== HERO ===================== -->
+<!-- ===================== HERO TIENDA ===================== -->
 <section class="hero">
   <canvas class="senal" aria-hidden="true"></canvas>
   <div class="hero__glow"></div>
   <div class="shell hero__inner">
     <div>
-      <div style="display:flex;align-items:center;gap:1.15rem">
-        <span class="marca-hero" aria-hidden="true">
-          <span class="marca-hero__halo"></span>
-          <img src="assets/marcas/upcomp-logo.webp" alt="" width="96" height="96">
-        </span>
-        <p class="eyebrow eyebrow--claro">Soluciones empresariales con cobertura en todo Chile</p>
-      </div>
-
-      <h1>Tecnología para mantener <em>activa tu operación</em></h1>
-      <p class="hero__sub">Somos una empresa de servicios TI: puesto de trabajo gestionado, soporte, mantención, continuidad y proyectos de infraestructura. Y ahora también desarrollo e integración.</p>
+      <p class="eyebrow eyebrow--claro">Tienda UpComp</p>
+      <h1>Equipamiento profesional <em>para tu operación</em></h1>
+      <p class="hero__sub">Workstations, notebooks corporativos, servidores y networking. Arma tu lista y recibe una propuesta con precio, disponibilidad y plazo de entrega.</p>
       <div class="hero__acciones">
-        <a href="#contacto" class="btn btn--primario">Contacto / Cotiza aquí <svg aria-hidden="true"><use href="#i-flecha"/></svg></a>
-        <a href="#" class="btn btn--linea-clara" data-wa="Hola UpComp, quiero hablar con un asesor."><svg aria-hidden="true" style="width:1.15rem;height:1.15rem"><use href="#i-wa"/></svg> Hablar con un asesor</a>
+        <a href="#equipos" class="btn btn--primario">Ver catálogo <svg aria-hidden="true"><use href="#i-flecha"/></svg></a>
+        <a href="#herramientas" class="btn btn--linea-clara">No sé cuál elegir</a>
       </div>
       <div class="hero__ficha">
-        <span>Atención <b>B2B</b></span>
-        <span>Propuesta <b>A medida</b></span>
-        <span>Cobertura <b>En Chile</b></span>
+        <span>Cotización <b>Sin compromiso</b></span>
+        <span>Venta <b>Con factura</b></span>
+        <span>Cobertura <b>Todo Chile</b></span>
       </div>
     </div>
     <div class="mazo-zona">
       <div class="mazo" id="mazo" role="group" aria-label="Equipos destacados, arrastra para cambiar"></div>
-      <div class="mazo__ayuda"><svg aria-hidden="true"><use href="#i-arrastrar"/></svg><span>Arrastra para ver las áreas</span></div>
+      <div class="mazo__ayuda"><svg aria-hidden="true"><use href="#i-arrastrar"/></svg><span>Arrastra las tarjetas</span></div>
       <div class="mazo__ctrl">
         <button class="mazo__btn" id="mazoAnt" aria-label="Equipo anterior"><svg aria-hidden="true"><use href="#i-izq"/></svg></button>
         <div class="mazo__puntos" id="mazoPuntos" aria-hidden="true"></div>
@@ -144,221 +125,70 @@
       </div>
     </div>
   </div>
-
-  <!-- Ecosistema UpComp — marco real de upcomp.cl/servicios-empresas -->
-  <div class="shell" style="position:relative;z-index:1;margin-top:clamp(2.5rem,6vw,4rem);border-top:1px solid var(--linea-oscura);padding-top:clamp(2rem,4vw,2.5rem)">
-    <p class="eyebrow eyebrow--claro">Ecosistema UpComp</p>
-    <h2 style="font-size:clamp(1.35rem,3vw,1.85rem);margin-top:.85rem">Un solo partner para el ciclo tecnológico</h2>
-    <div class="eco" id="ecosistema"></div>
-  </div>
 </section>
 
-<section class="tira" aria-label="Clientes de UpComp">
-  <p class="shell tira__label">Empresas e instituciones que confían en UpComp</p>
-  <div class="marquee marquee--clientes"><ul id="marquee"></ul></div>
-</section>
-
-
-
-<!-- ===================== ÁREAS DE NEGOCIO ===================== -->
-<section class="seccion" id="areas">
+<!-- ===================== SOLUCIONES DESTACADAS ===================== -->
+<section class="seccion" id="soluciones">
   <div class="shell">
     <div data-reveal>
-      <p class="eyebrow">Áreas de negocio</p>
-      <h2 class="titulo-seccion">Servicios TI para que la operación no se detenga</h2>
-      <p class="bajada">Podemos resolver una necesidad puntual o integrar equipamiento, soporte, mantención y continuidad en una sola propuesta.</p>
+      <p class="eyebrow">Soluciones empresariales UpComp</p>
+      <h2 class="titulo-seccion">Soluciones destacadas para empresas</h2>
+      <p class="bajada">Equipamiento, infraestructura y servicios tecnológicos para empresas que necesitan operar con rendimiento, soporte y continuidad.</p>
     </div>
-    <div class="areas" data-reveal id="areasGrid"></div>
-    <div data-reveal style="margin-top:2.5rem;display:flex;flex-wrap:wrap;gap:.75rem;align-items:center">
-      <a href="#contacto" class="btn btn--tinta">Solicitar evaluación <svg aria-hidden="true"><use href="#i-flecha"/></svg></a>
-      <a href="tienda.html" class="btn btn--linea">¿Buscas equipos? Ir a la tienda <svg aria-hidden="true"><use href="#i-carro"/></svg></a>
-    </div>
+    <div class="solu" data-reveal id="soluciones-grid"></div>
   </div>
 </section>
 
-<!-- ===================== PARTNERS ===================== -->
-<section class="seccion seccion--fondo">
-  <div class="shell" data-reveal>
-    <p class="eyebrow">Alianzas estratégicas</p>
-    <h2 class="titulo-seccion">Partners tecnológicos</h2>
-    <p class="bajada">En UpComp somos partners de fabricantes tecnológicos líderes a nivel mundial, entregando soluciones empresariales con respaldo oficial, asesoría especializada y tecnología de primer nivel.</p>
-  </div>
-  <div class="marquee marquee--partners"><ul id="listaPartners"></ul></div>
-</section>
-
-<!-- ===================== NUESTRA MIRADA ===================== -->
-<section class="seccion" id="mirada">
+<!-- ===================== CATÁLOGO ===================== -->
+<section class="seccion seccion--fondo" id="equipos">
   <div class="shell">
     <div data-reveal>
-      <p class="eyebrow">Nuestra mirada</p>
-      <h2 class="titulo-seccion" id="miradaTitulo"></h2>
-      <p class="bajada" id="miradaBajada"></p>
+      <p class="eyebrow">Alto rendimiento profesional</p>
+      <h2 class="titulo-seccion">Workstations profesionales</h2>
+      <p class="bajada">Equipos configurados para ingeniería, diseño, IA y cargas de trabajo exigentes. Agrega a tu lista de cotización o pídelo directo.</p>
     </div>
-    <div class="mirada" data-reveal id="miradaPuntos"></div>
+    <div class="catalogo" data-reveal id="catalogo"></div>
   </div>
 </section>
 
-<!-- ===================== SERVICIOS (5 reales) ===================== -->
-<section class="seccion seccion--fondo" id="servicios">
+<!-- ===================== GUÍA DE SELECCIÓN ===================== -->
+<section class="seccion" id="guia">
   <div class="shell">
     <div data-reveal>
-      <p class="eyebrow">Soluciones empresariales</p>
-      <h2 class="titulo-seccion">Elige el punto de partida de tu empresa</h2>
-      <p class="bajada">Podemos resolver una necesidad puntual o integrar equipamiento, soporte, mantención y continuidad en una sola propuesta.</p>
+      <p class="eyebrow">Guía de selección UpComp</p>
+      <h2 class="titulo-seccion">Elige tu workstation según tu carga de trabajo</h2>
+      <p class="bajada">Cada plataforma tiene un foco distinto. En UpComp te ayudamos a definir una estación de trabajo adecuada según software, rendimiento esperado, presupuesto, disponibilidad de componentes y tipo de operación.</p>
     </div>
-    <div class="servicios" data-reveal id="servicios-lista"></div>
+    <div class="plats" data-reveal id="plataformas"></div>
+    <div class="valida" data-reveal>
+      <div>
+        <p class="eyebrow">Validación técnica UpComp</p>
+        <h3>Antes de cotizar, revisamos la necesidad real.</h3>
+        <p>Una workstation no debería definirse solo por procesador o tarjeta gráfica. Evaluamos software, carga de trabajo, memoria, GPU, almacenamiento, fuente, refrigeración, disponibilidad y garantía aplicable antes de preparar una propuesta.</p>
+      </div>
+      <ul class="valida__items" id="validaItems"></ul>
+    </div>
+    <p class="nota-legal" data-reveal><strong>Importante:</strong> las plataformas mostradas son referenciales. La configuración final, marca de componentes, precio, disponibilidad y plazo de entrega serán definidos según requerimiento técnico, stock de proveedor y cotización vigente.</p>
   </div>
 </section>
 
-<!-- ===================== PUNTOS DE PARTIDA ===================== -->
-<section class="seccion seccion--oscura">
+<!-- ===================== CONFIGURADOR ===================== -->
+<section class="seccion seccion--oscura" id="herramientas">
   <canvas class="senal" aria-hidden="true"></canvas>
   <div class="shell">
     <div data-reveal>
-      <p class="eyebrow eyebrow--claro">Una propuesta, distintos puntos de partida</p>
-      <h2 class="titulo-seccion">No necesitas saber exactamente qué comprar</h2>
-      <p class="bajada">Cuéntanos qué está ocurriendo en tu operación. Podemos convertir el requerimiento en una recomendación técnica y comercial comprensible.</p>
+      <p class="eyebrow eyebrow--claro">Herramienta</p>
+      <h2 class="titulo-seccion">¿No sabes cuál plataforma elegir?</h2>
+      <p class="bajada">Cuéntanos qué software usas y qué cargas procesas. Te ayudamos a definir una configuración adecuada para tu operación.</p>
     </div>
-    <div class="partida" data-reveal id="partida"></div>
-  </div>
-</section>
-
-<!-- ===================== DESARROLLO (la capacidad nueva) ===================== -->
-<section class="seccion" id="desarrollo">
-  <div class="shell">
-    <div data-reveal>
-      <p class="eyebrow">Propuesta de la alianza · capacidad nueva</p>
-      <h2 class="titulo-seccion">Desarrollo e integración</h2>
-      <p class="bajada">Cuando una plataforma estándar no resuelve el proceso real, diseñamos y construimos la solución. Es la capacidad que se suma al portafolio para cerrar el ciclo: además de entregar y sostener la infraestructura, construir el software que la conecta con el resto del negocio.</p>
-      <p class="alcance"><b>Nota para la reunión:</b> esta sección es la propuesta nueva y todavía no existe en upcomp.cl. Todo el resto de la página es contenido real del sitio actual.</p>
-    </div>
-    <div class="servicios" data-reveal id="devGrid"></div>
-    <div class="flujo" data-reveal style="border-top-color:var(--linea)">
-      <p class="eyebrow">Flujo de trabajo</p>
-      <h3 style="margin-top:.9rem;font-size:clamp(1.3rem,3vw,1.8rem)">Del levantamiento a producción</h3>
-      <div class="flujo__pasos" id="flujoPasos"></div>
-    </div>
-  </div>
-</section>
-
-
-
-
-
-
-
-<!-- ===================== CALCULADORA ===================== -->
-<section class="seccion" id="calculadora">
-  <div class="shell">
-    <div data-reveal>
-      <p class="eyebrow">Herramienta</p>
-      <h2 class="titulo-seccion">Puesto de Trabajo Gestionado</h2>
-      <p class="bajada">Equipos corporativos, configuración y servicios asociados definidos según el cargo, las aplicaciones y la criticidad de cada usuario.</p>
-    </div>
-    <div class="calc" data-reveal>
-      <div class="calc__controles">
-        <div class="calc__fila"><label for="usuarios">Usuarios a cubrir</label><output class="calc__valor tabular" id="salidaUsuarios">25</output></div>
-        <input type="range" id="usuarios" min="1" max="300" step="1" value="25">
-        <div class="rangos"><span>1</span><span>300</span></div>
-        <div class="atajos" id="atajos"></div>
-        <fieldset style="border:0;margin-top:2rem">
-          <legend style="font-size:1.02rem;font-weight:700">Nivel de servicio</legend>
-          <div class="planes" id="planes"></div>
-          <ul class="incluye" id="incluye"></ul>
-        </fieldset>
-      </div>
-      <aside class="calc__salida">
-        <p style="font-family:var(--mono);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;color:#7F9189">Estimación referencial</p>
-        <p class="calc__total tabular" id="calcTotal">$807.500</p>
-        <p style="margin-top:.5rem;font-size:.85rem;color:#7F9189" id="calcSub">mensual · 25 usuarios · plan Estándar</p>
-        <dl class="calc__detalle" id="calcDetalle"></dl>
-        <a href="#contacto" class="btn btn--primario" style="width:100%;margin-top:1.75rem">Pedir propuesta formal <svg aria-hidden="true"><use href="#i-flecha"/></svg></a>
-        <p class="nota-oscura"><strong style="color:#E9EFEB">Valores de ejemplo para esta demo.</strong> Las tarifas y los tramos por volumen están pendientes de definición comercial de UpComp.</p>
+    <div class="herr" data-reveal>
+      <div class="herr__col"><div class="progreso" id="progreso"></div><div class="preg" id="preg"></div></div>
+      <aside class="herr__col">
+        <p style="font-family:var(--mono);font-size:.66rem;letter-spacing:.11em;text-transform:uppercase;color:#7F9189">Cálculo en curso</p>
+        <div class="barras" id="barras"></div>
+        <p class="nota-oscura">Esta recomendación es orientativa. Antes de cotizar revisamos software, memoria, GPU, almacenamiento, refrigeración, disponibilidad y garantía aplicable.</p>
       </aside>
     </div>
-  </div>
-</section>
-
-<!-- ===================== ENFOQUE ===================== -->
-<section class="seccion seccion--fondo">
-  <div class="shell">
-    <div data-reveal>
-      <p class="eyebrow">Enfoque UpComp</p>
-      <h2 class="titulo-seccion">Decisiones tecnológicas con contexto</h2>
-      <p class="bajada">La recomendación considera el uso real, la compatibilidad, la continuidad, la disponibilidad y el presupuesto del proyecto.</p>
-    </div>
-    <div class="enfoque" data-reveal id="enfoque"></div>
-  </div>
-</section>
-
-<!-- ===================== CLIENTES ===================== -->
-<section class="seccion" id="clientes">
-  <div class="shell">
-    <div data-reveal>
-      <p class="eyebrow">Clientes UpComp</p>
-      <h2 class="titulo-seccion">Empresas que confían en UpComp</h2>
-      <p class="bajada">Acompañamos a empresas e instituciones con equipamiento, soporte técnico, abastecimiento tecnológico, networking y continuidad operacional.</p>
-    </div>
-    <div class="chips" data-reveal id="chips" role="group" aria-label="Filtrar por industria"></div>
-    <div class="clientes" id="listaClientes"></div>
-  </div>
-</section>
-
-<!-- ===================== CONTACTO ===================== -->
-<section class="seccion seccion--oscura" id="contacto">
-  <canvas class="senal" aria-hidden="true"></canvas>
-  <div class="shell">
-    <div data-reveal>
-      <p class="eyebrow eyebrow--claro">Contacto / Cotiza aquí</p>
-      <h2 class="titulo-seccion">Conversemos sobre lo que necesita tu empresa</h2>
-      <p class="bajada">Cuéntanos tu requerimiento de equipamiento, infraestructura o servicios TI. Revisaremos el contexto para preparar una recomendación técnica y comercial clara.</p>
-    </div>
-    <div data-reveal>
-      <p class="eyebrow eyebrow--claro" style="margin-top:2.5rem">Para comenzar</p>
-      <h3 style="font-size:clamp(1.3rem,3vw,1.75rem);margin-top:.85rem">Cuatro datos ayudan a responder mejor</h3>
-      <div class="datos4" id="cuatroDatos"></div>
-    </div>
-  </div>
-</section>
-
-<section class="seccion">
-  <div class="shell">
-    <div class="canales" data-reveal id="canales"></div>
-    <div class="contacto" style="margin-top:clamp(2.5rem,5vw,4rem)">
-      <div data-reveal>
-        <p class="eyebrow">Cotización más precisa</p>
-        <h2 class="titulo-seccion">Qué información conviene incluir</h2>
-        <p class="bajada">No necesitas tener todo definido. Estos antecedentes nos ayudan a reducir preguntas y preparar una propuesta más coherente.</p>
-        <ul class="incluir2" id="queIncluir" style="grid-template-columns:1fr"></ul>
-      </div>
-      <div data-reveal>
-        <div class="form"><div class="form__pasos" id="formPasos"></div><div class="form__cuerpo" id="formCuerpo"></div></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ===================== CÓMO TRABAJAMOS ===================== -->
-<section class="seccion seccion--fondo">
-  <div class="shell">
-    <div data-reveal>
-      <p class="eyebrow">Cómo trabajamos</p>
-      <h2 class="titulo-seccion">Del requerimiento a una solución implementable</h2>
-      <p class="bajada">Cada propuesta comienza entendiendo el contexto técnico, los usuarios, la urgencia y el resultado que la empresa necesita conseguir.</p>
-    </div>
-    <div class="proceso" data-reveal id="proceso"></div>
-  </div>
-</section>
-
-<!-- ===================== FAQ ===================== -->
-<section class="seccion">
-  <div class="shell">
-    <div data-reveal>
-      <p class="eyebrow">Preguntas frecuentes</p>
-      <h2 class="titulo-seccion">Antes de escribirnos</h2>
-      <p class="bajada">Respuestas breves para iniciar tu solicitud con claridad.</p>
-    </div>
-    <div class="faq" data-reveal id="faq"></div>
   </div>
 </section>
 

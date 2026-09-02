@@ -12,9 +12,10 @@ confirmado va marcado como tal dentro del propio sitio.
 ```
 upcomp/
 ├── prototipo/              ← ESTO ES LO QUE SE DESPLIEGA
-│   ├── index.html            estructura
-│   ├── estilos.css           diseño
-│   ├── app.js                contenido + interacciones
+│   ├── index.html            portada: empresa de servicios
+│   ├── tienda.html           tienda: catálogo y cotización  → /tienda
+│   ├── estilos.css           diseño (compartido)
+│   ├── app.js                contenido + interacciones (compartido)
 │   └── assets/               logos y fotos reales de upcomp.cl
 ├── web/                    versión anterior en Next.js (referencia)
 ├── documentacion/
@@ -62,6 +63,21 @@ lleva anotada su página de origen.
 | Cuatro datos, Canales, Qué información incluir, Preguntas frecuentes | upcomp.cl/contacto |
 | Logos de partners y clientes, fotos de producto | descargados de upcomp.cl |
 | **Desarrollo e integración** | **Único bloque que NO está en su sitio.** Es la capacidad que aporta la alianza, y va marcada como propuesta dentro de la propia página. |
+
+## Dos páginas, dos identidades
+
+UpComp es una **empresa de servicios**, no una tienda. Por eso el sitio se
+divide en dos:
+
+| | |
+| --- | --- |
+| **`/`** | Portada de servicios. Las 6 **áreas de negocio** son la columna vertebral. Sin catálogo. |
+| **`/tienda`** | El catálogo: equipos, fichas, guía de selección, configurador y lista de cotización. |
+
+El mismo `app.js` sirve a las dos: `<body data-pagina="home">` o `"tienda"`, y
+cada bloque de render se salta si su contenedor no existe en esa página. El
+mazo arrastrable del hero muestra las áreas de negocio en la portada y los
+equipos en la tienda — mismo componente, distinto contenido.
 
 ## Qué está implementado
 
