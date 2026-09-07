@@ -53,7 +53,7 @@ misma promesa con títulos distintos; el detalle corresponde a páginas internas
 | | |
 | --- | --- |
 | **`/`** | La empresa de servicios. Sin catálogo y sin carrito. |
-| **`/tienda`** | Catálogo de equipamiento: fichas y lista de cotización. |
+| **`/tienda`** | Equipamiento: catálogo, fichas y lista de cotización. |
 
 El mismo `app.js` sirve a las dos: `<body data-pagina="home">` o `"tienda"`, y
 cada render se salta si su contenedor no existe en esa página.
@@ -66,20 +66,33 @@ con el mensaje ya redactado, y se guarda en el navegador.
 
 ## Diseño
 
-Base clara institucional, un solo acento y reglas de 1 px en vez de sombras.
+Vitrina oscura. El sistema está tomado de la página de producto de Apple
+(escenas negras a pantalla completa, bandas claras alternadas, tipografía
+enorme con tracking negativo, radios restringidos y cero sombras) y adaptado
+a UpComp.
 
 | | |
 | --- | --- |
-| Superficies | Blanco `#FFFFFF` y gris `#F5F7F6` |
-| Tinta | `#14201A` |
-| Acento de texto | `#15703B` — 6,1:1 sobre blanco |
-| Marca gráfica | Verde UpComp `#36B85C` |
-| Banda oscura | `#0F1614`, solo en el diferenciador |
+| Escena / héroe / pie | `#000000` |
+| Un paso sobre el negro | `#111111` |
+| Tarjetas sobre escena | `#1d1d1f` |
+| Campos y paneles | `#333336` |
+| Texto sobre oscuro | `#f5f5f7` · secundario `#86868b` |
+| Bandas claras | `#f5f5f7` y `#ffffff`, cuerpo en `#57575c` (7,2:1) |
+| **Acción** | Verde UpComp `#36B85C` con texto `#04120A` (7,4:1) |
+| Enlaces sobre oscuro | `#5BD97F` |
 | Tipografía | Albert Sans, la que ya usa upcomp.cl |
 
-Radio de 2 px, sin degradados, sin sombras, todo alineado a la izquierda. El
-sitio es monotema claro a propósito, como los sitios corporativos de
-fabricante: cada color se declara explícito y no se hereda del navegador.
+**La única diferencia deliberada con la referencia:** donde Apple pone su azul
+`#0071e3` como el único botón lleno de la página, aquí va el verde de UpComp.
+Un solo color de acción en todo el sitio; el resto es negro, blanco y gris.
+
+Radios restringidos a propósito: 10 px enlaces y campos, 28 px tarjetas,
+36 px botones, 980 px la barra pastilla y los contadores. Sin sombras — la
+profundidad sale del contraste entre superficies. El único degradado del
+sistema es el negro a carbón del héroe.
+
+Ritmo de página: negro → claro → negro → carbón → blanco → blanco → negro.
 
 ## De dónde sale cada contenido
 

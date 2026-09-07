@@ -100,7 +100,7 @@ const CLIENTES=[
    upcomp.cl/servicios-empresas en los cuatro bloques que pidió la auditoría:
    el detalle vive en las páginas internas, no en la portada. */
 const SOLUCIONES=[
-  {n:"01",t:"Equipamiento TI",d:"Notebooks, workstations, servidores y equipos corporativos.",href:"tienda.html",cta:"Ver catálogo"},
+  {n:"01",t:"Equipamiento TI",d:"Notebooks, workstations, servidores y equipos corporativos.",href:"tienda.html",cta:"Ver equipamiento"},
   {n:"02",t:"Servicios TI",d:"Soporte, mantención, outsourcing y continuidad operacional.",href:"#contacto",cta:"Conocer soluciones"},
   {n:"03",t:"Infraestructura",d:"Networking, Wi-Fi, videoconferencia y proyectos TI.",href:"#contacto",cta:"Conocer soluciones"},
   {n:"04",t:"Desarrollo e integración",d:"Software, automatización e integración de procesos.",href:"#contacto",cta:"Conocer soluciones"}
@@ -290,7 +290,7 @@ function pintarCatalogo(){
         <h3>${esc(e.t)}</h3>
         <p>${esc(e.specs.join(" · "))}</p>
         <div class="eq__pie">
-          <button class="btn btn--solido" data-agregar="${i}">Cotizar</button>
+          <button class="btn btn--accion" data-agregar="${i}">Cotizar</button>
           <button class="eq__mas" data-ficha="${i}" aria-label="Ver ficha de ${esc(e.t)}">${ico("i-flecha")}</button>
         </div>
       </div>
@@ -361,7 +361,7 @@ function pintarFicha(i){
         <p class="ficha__desc">${esc(f?f.desc:e.specs.join(" · "))}</p>
         ${f?`<ul class="ficha__lista">${f.ideal.slice(0,6).map(x=>
           `<li>${ico("i-check")}<span>${esc(x)}</span></li>`).join("")}</ul>`:""}
-        <button class="btn btn--solido btn--full" data-agregar="${i}" style="margin-top:1.5rem">Agregar a la cotización</button>
+        <button class="btn btn--accion btn--full" data-agregar="${i}" style="margin-top:32px">Agregar a la cotización</button>
       </div>
     </div>
     <dl class="ficha__specs">
