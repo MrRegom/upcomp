@@ -1,4 +1,14 @@
 ================================================================================
+NOTA (7 de septiembre de 2026)
+Este documento describe la version PRESENTADA en la reunion del 6 de
+septiembre. Despues de esa reunion UpComp pidio: 100% B2B sin comercio
+electronico, portada minimalista de 7 bloques y paleta clara. Varios puntos
+de abajo ya no aplican: se elimino la pantalla de bienvenida, el mazo
+arrastrable salio de la portada y el carrito quedo solo en el catalogo.
+Se conserva como registro de lo que se mostro ese dia.
+================================================================================
+
+================================================================================
 UPCOMP - QUE SE MEJORO, POR QUE, Y CON QUE ESTRATEGIA
 Prototipo: https://upcomp.vercel.app   Repo: github.com/MrRegom/upcomp
 ================================================================================
