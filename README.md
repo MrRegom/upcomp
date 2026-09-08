@@ -96,7 +96,18 @@ profesional y no una torre con luces: la torre leía como equipo gamer.
 riel, casos en columnas con filete. Las únicas superficies son las que
 contienen algo: el formulario, las piezas del carril y el catálogo.
 
-**Movimiento.** Cuatro momentos, todos ligados al scroll o a la carga:
+**El héroe dice qué hace UpComp.** No es una foto de un portátil: es un
+conjunto de tres equipos de trabajo reales (Dell Pro Max, ThinkPad P1 y
+P16s) que se arma al cargar, con las cuatro áreas de negocio como etiquetas
+sobre el conjunto. Al hacer scroll cada equipo se desplaza a un ritmo
+distinto según su capa: profundidad con tres fotos planas.
+
+**Intro.** Un segundo con el logo grande y una cortina que sube; recién
+entonces se arma el héroe. Se salta con clic, tecla, rueda o toque, y sin
+JavaScript no existe. A diferencia de la pantalla "toca para entrar" que
+retiró la auditoría, no pide nada: pasa sola.
+
+**Movimiento.** Seis momentos, todos ligados al scroll o a la carga:
 
 - *Coreografía de carga.* Las piezas del héroe entran por turno y el
   producto se asienta.
@@ -108,12 +119,17 @@ contienen algo: el formulario, las piezas del carril y el catálogo.
   desplazamiento nativo.
 - *Texto que se ilumina.* En la escena negra, cada palabra pasa de 18% a
   100% en orden y al final aparecen los cuatro pasos del ciclo.
+- *Escena que se expande.* La escena negra entra como un panel con esquinas
+  y crece hasta el ancho completo al llegar arriba.
+- *Logos en cascada.* Clientes y partners aparecen logo a logo.
 
 El estado oculto lo pone JavaScript: si falla el script, todo queda visible.
 Con menos movimiento (`prefers-reduced-motion`) quedan solo los fundidos y
 las secciones no se fijan. Para demostrar el sitio desde un equipo con las
 animaciones apagadas, `upcomp.vercel.app/?movimiento=1` fuerza el
-movimiento en esa visita (`body.forzado` deja de lado esas preferencias).
+movimiento y **lo recuerda en ese navegador**: las visitas siguientes sin
+parámetro también lo fuerzan. `?movimiento=0` lo borra. (`body.forzado`
+deja de lado esas preferencias.)
 
 **Hojas con resorte.** Los paneles del catálogo siguen *Designing Fluid
 Interfaces* de Apple: un resorte con amortiguación y respuesta integrado

@@ -214,10 +214,10 @@ const tileLogo=c=>c.logo
   ? `<img src="${c.logo}" alt="${esc(c.n)}" loading="lazy">`
   : `<span class="muro__txt">${esc(c.n)}</span>`;
 
-pinta("#muroClientes",CLIENTES.map(c=>`<li title="${esc(c.n)}">${tileLogo(c)}</li>`).join(""));
+pinta("#muroClientes",CLIENTES.map(c=>`<li title="${esc(c.n)}" data-rev>${tileLogo(c)}</li>`).join(""));
 
 pinta("#muroPartners",PARTNERS.map(p=>
-  `<li title="${esc(p.n)}"><img src="${p.logo}" alt="${esc(p.n)}" loading="lazy"></li>`).join(""));
+  `<li title="${esc(p.n)}" data-rev><img src="${p.logo}" alt="${esc(p.n)}" loading="lazy"></li>`).join(""));
 
 pinta("#rejillaSoluciones",SOLUCIONES.map(s=>`
   <a class="fila" href="${s.href}" data-rev>
@@ -305,7 +305,15 @@ Pueden contactarme en: ${d.contacto}`;
 /* ?movimiento=1 fuerza el movimiento aunque el sistema pida menos. Existe para
    demostrar el sitio desde un equipo con las animaciones apagadas; por defecto
    se respeta la preferencia. */
-const forzarMovimiento = new URLSearchParams(location.search).has("movimiento");
+const parametros = new URLSearchParams(location.search);
+if(parametros.has("movimiento")){
+  try{
+    if(parametros.get("movimiento")==="0") localStorage.removeItem("upcomp_movimiento");
+    else localStorage.setItem("upcomp_movimiento","1");
+  }catch{}
+}
+let forzarMovimiento = false;
+try{ forzarMovimiento = localStorage.getItem("upcomp_movimiento")==="1"; }catch{}
 const quietud = !forzarMovimiento && matchMedia("(prefers-reduced-motion: reduce)").matches;
 if(forzarMovimiento) document.body.classList.add("forzado");
 
@@ -315,10 +323,30 @@ const recorte = e => e.img.replace("productos/","productos-negro/").replace(".jp
 /* Coreografía de carga: las piezas del héroe entran por turno. Al terminar
    cada animación se retira, para que su último cuadro no pise los transforms
    que el scroll aplica después. */
-document.body.classList.add("is-cargada");
 document.addEventListener("animationend", e=>{
   if(e.target && e.target.hasAttribute && e.target.hasAttribute("data-carga")) e.target.classList.add("cargado");
 });
+
+/* ---------- Intro ----------
+   Un segundo con el logo y la cortina sube; recién entonces se arma el héroe.
+   Se salta con clic, tecla, rueda o toque. Sin script no existe. */
+const intro = $("#intro");
+function levantarIntro(){
+  if(!intro || intro.classList.contains("is-fuera")) return;
+  intro.classList.add("is-fuera");
+  document.body.classList.remove("intro-activa");
+  document.body.classList.add("is-cargada");
+  setTimeout(()=>intro.remove(), 900);
+}
+if(intro && PAGINA==="home"){
+  intro.classList.add("is-activa");
+  document.body.classList.add("intro-activa");
+  const tIntro = setTimeout(levantarIntro, quietud ? 700 : 1250);
+  ["click","keydown","wheel","touchstart"].forEach(ev=>
+    addEventListener(ev, ()=>{ clearTimeout(tIntro); levantarIntro(); }, {once:true, passive:true}));
+}else{
+  document.body.classList.add("is-cargada");
+}
 /* Con menos movimiento el CSS convierte el revelado en un fundido; no se apaga. */
 const revelables = $$("[data-rev]");
 
@@ -342,7 +370,7 @@ function revelar(){
    y su interior queda fijado: el producto se asienta mientras el texto cambia
    por tiempos, como en una página de producto de Apple. Sin movimiento, o en
    pantallas angostas, el héroe es una pantalla normal con un leve paralaje. */
-const hero = $(".hero"), heroObj = $("#heroObj"), beats = $$(".beat");
+const hero = $(".hero"), heroObj = $("#conjunto") || $("#heroObj"), beats = $$(".beat");
 /* La secuencia corre siempre en pantalla ancha. Con menos movimiento se queda
    solo con los fundidos: ni desplazamientos ni escala, que es lo que Apple
    pide para esa preferencia — no que desaparezca la secuencia. */
@@ -441,11 +469,35 @@ function iluminar(){
 medirCarril();
 addEventListener("resize", medirCarril, {passive:true});
 
+/* ---------- Paralaje por capas y escena que se expande ----------
+   Cada equipo del conjunto se desplaza a un ritmo distinto según su capa
+   (el de adelante, más): profundidad real con tres fotos planas. La escena
+   negra entra como un panel con esquinas y se expande al llegar arriba. */
+const capas = $$(".conjunto__eq");
+function paralaje(){
+  if(quietud || !capas.length) return;
+  const y = Math.min(scrollY, innerHeight);
+  capas.forEach(el=>{
+    const k = parseFloat(el.dataset.capa || "1");
+    el.style.transform = `translate3d(0,${y * .14 * k}px,0)`;
+  });
+}
+const fijo = fijada ? fijada.querySelector(".fijo") : null;
+function expandirEscena(){
+  if(quietud || !fijo || !fijadaActiva) return;
+  const p = Math.max(0, Math.min(1, 1 - fijada.getBoundingClientRect().top / innerHeight));
+  const e = suave(p);
+  fijo.style.transform = `scale(${.92 + .08 * e})`;
+  fijo.style.borderRadius = `${Math.round(28 * (1 - e))}px`;
+}
+
 let pendienteMov = false;
 function alScrollMov(){
   pendienteMov = false;
   revelar();
   escenaHeroe();
+  paralaje();
+  expandirEscena();
   moverCarril();
   iluminar();
 }

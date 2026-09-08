@@ -11,9 +11,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&display=swap">
 <link rel="preload" as="image" href="assets/productos-negro/dell-pro-max-18.webp">
+<link rel="preload" as="image" href="assets/productos-negro/thinkpad-p1.webp">
+<link rel="preload" as="image" href="assets/productos-negro/thinkpad-p16s.webp">
 <link rel="stylesheet" href="estilos.css">
 </head>
 <body data-pagina="home">
+
+<div class="intro" id="intro" aria-hidden="true">
+  <img class="intro__logo" src="assets/marcas/upcomp-logo.webp" alt="" width="512" height="512">
+</div>
 
 <a class="saltar" href="#principal">Saltar al contenido</a>
 
@@ -75,9 +81,17 @@
           <p class="beat beat--n t-beat" aria-hidden="true">Cobertura nacional.</p>
         </div>
 
-        <figure class="hero__obj" data-carga="obj">
-          <img id="heroObj" src="assets/productos-negro/dell-pro-max-18.webp"
-               alt="Dell Pro Max 18 Plus" width="843" height="663" fetchpriority="high">
+        <figure class="hero__obj" role="img" aria-label="Equipamiento profesional de UpComp: notebooks de trabajo Dell y Lenovo">
+          <div class="conjunto" id="conjunto">
+            <img class="conjunto__eq conjunto__eq--3" src="assets/productos-negro/thinkpad-p16s.webp" alt="" width="888" height="647" data-carga="eq" data-capa=".35">
+            <img class="conjunto__eq conjunto__eq--2" src="assets/productos-negro/thinkpad-p1.webp" alt="" width="876" height="692" data-carga="eq" data-capa=".6">
+            <img id="heroObj" class="conjunto__eq conjunto__eq--1" src="assets/productos-negro/dell-pro-max-18.webp" alt="" width="843" height="663" fetchpriority="high" data-carga="eq" data-capa="1">
+            <!-- Las cuatro áreas de negocio, como etiquetas sobre el conjunto -->
+            <span class="etiqueta etiqueta--a" data-carga="et">Equipamiento TI</span>
+            <span class="etiqueta etiqueta--b" data-carga="et">Servicios TI</span>
+            <span class="etiqueta etiqueta--c" data-carga="et">Infraestructura</span>
+            <span class="etiqueta etiqueta--d" data-carga="et">Desarrollo e integración</span>
+          </div>
         </figure>
       </div>
 
@@ -91,7 +105,7 @@
   <section class="banda banda--gris" id="clientes">
     <div class="marco">
       <p class="rotulo" data-rev>Empresas que confían en UpComp</p>
-      <ul class="muro" id="muroClientes" data-rev></ul>
+      <ul class="muro" id="muroClientes"></ul>
     </div>
   </section>
 
@@ -133,7 +147,7 @@
     <div class="marco">
       <h2 class="t-display" data-rev>Respaldo de fabricante.</h2>
       <p class="t-cuerpo t-cuerpo--ancho" data-rev>Trabajamos con fabricantes líderes para entregar soluciones empresariales con respaldo y soporte especializado.</p>
-      <ul class="muro muro--partners" id="muroPartners" data-rev></ul>
+      <ul class="muro muro--partners" id="muroPartners"></ul>
     </div>
   </section>
 
