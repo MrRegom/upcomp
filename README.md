@@ -89,10 +89,12 @@ a UpComp.
 `#0071e3` como el único botón lleno de la página, aquí va el verde de UpComp.
 Un solo color de acción en todo el sitio; el resto es negro, blanco y gris.
 
-Radios restringidos a propósito: 10 px enlaces y campos, 28 px tarjetas,
-36 px botones, 980 px la barra pastilla y los contadores. Sin sombras — la
-profundidad sale del contraste entre superficies. El único degradado del
-sistema es el negro a carbón del héroe.
+Geometría de Windows moderno (Fluent): 4 px en controles, 8 px en
+superficies, barra plana a todo el ancho con acrílico al hacer scroll. Lo
+redondo queda solo para puntos y contadores. Titulares en Albert Sans (la
+marca); interfaz en la fuente del sistema (Segoe UI en Windows). Sin sombras
+— la profundidad sale del contraste entre superficies. El único degradado
+del sistema es el negro a carbón del héroe.
 
 Ritmo de página: negro → claro → negro → negro → carbón → blanco → blanco → negro.
 
@@ -119,7 +121,8 @@ movimiento, la página queda visible desde el principio.
 héroe mide casi dos pantallas y su interior queda fijado: el producto se
 asienta mientras el texto cambia por tiempos con el scroll (la propuesta, y
 luego *Empresas. · Proyectos TI. · Cobertura nacional.*, las palabras del pie
-del héroe). Sin movimiento, o en pantallas angostas, es una pantalla normal.
+del héroe). Con menos movimiento corre igual, solo con fundidos; en pantallas
+angostas es una pantalla normal.
 
 **Demostrar con las animaciones apagadas.** El sitio respeta
 `prefers-reduced-motion`; en Windows eso se activa al apagar "Efectos de

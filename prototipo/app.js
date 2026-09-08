@@ -286,7 +286,8 @@ Pueden contactarme en: ${d.contacto}`;
    se respeta la preferencia. */
 const forzarMovimiento = new URLSearchParams(location.search).has("movimiento");
 const quietud = !forzarMovimiento && matchMedia("(prefers-reduced-motion: reduce)").matches;
-const revelables = quietud ? [] : $$("[data-rev]");
+/* Con menos movimiento el CSS convierte el revelado en un fundido; no se apaga. */
+const revelables = $$("[data-rev]");
 
 revelables.forEach(el=>{
   el.classList.add("rev");
@@ -309,7 +310,10 @@ function revelar(){
    por tiempos, como en una página de producto de Apple. Sin movimiento, o en
    pantallas angostas, el héroe es una pantalla normal con un leve paralaje. */
 const hero = $(".hero"), heroObj = $("#heroObj"), beats = $$(".beat");
-const secuencia = !!hero && !quietud && beats.length > 3 && matchMedia("(min-width:981px)").matches;
+/* La secuencia corre siempre en pantalla ancha. Con menos movimiento se queda
+   solo con los fundidos: ni desplazamientos ni escala, que es lo que Apple
+   pide para esa preferencia — no que desaparezca la secuencia. */
+const secuencia = !!hero && beats.length > 3 && matchMedia("(min-width:981px)").matches;
 if(secuencia) hero.classList.add("hero--secuencia");
 
 const rampa = (p,a,b)=>Math.max(0,Math.min(1,(p-a)/(b-a)));
@@ -319,18 +323,19 @@ const suave = t=>t*t*(3-2*t);
 const VENTANAS = [[.20,.30,.42,.50],[.48,.58,.70,.78],[.76,.86,1.2,1.3]];
 
 function escenaHeroe(){
-  if(!heroObj || quietud) return;
+  if(!heroObj) return;
   if(!secuencia){
+    if(quietud) return;
     const y = Math.min(scrollY, innerHeight);
     heroObj.style.transform = `translate3d(0,${y * .10}px,0) scale(${1 - y / innerHeight * .06})`;
     return;
   }
   const p = Math.max(0, Math.min(1, scrollY / Math.max(1, hero.offsetHeight - innerHeight)));
-  heroObj.style.transform = `translate3d(0,${-p * 24}px,0) scale(${1 - p * .08})`;
+  if(!quietud) heroObj.style.transform = `translate3d(0,${-p * 24}px,0) scale(${1 - p * .08})`;
 
   const s0 = suave(rampa(p,.04,.24));           /* el primer tiempo se retira */
   beats[0].style.opacity = String(1 - s0);
-  beats[0].style.transform = `translate3d(0,${-s0 * 32}px,0)`;
+  if(!quietud) beats[0].style.transform = `translate3d(0,${-s0 * 32}px,0)`;
   beats[0].style.pointerEvents = s0 > .5 ? "none" : "";
 
   VENTANAS.forEach(([a,b,c,d],i)=>{
@@ -338,7 +343,7 @@ function escenaHeroe(){
     const entra = suave(rampa(p,a,b)), sale = suave(rampa(p,c,d));
     el.style.opacity = String(entra * (1 - sale));
     /* entra subiendo y sale subiendo: la trayectoria anticipa el destino */
-    el.style.transform = `translate3d(0,${(1 - entra) * 28 - sale * 28}px,0)`;
+    if(!quietud) el.style.transform = `translate3d(0,${(1 - entra) * 28 - sale * 28}px,0)`;
   });
 }
 

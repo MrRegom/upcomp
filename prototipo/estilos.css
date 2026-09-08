@@ -38,17 +38,21 @@
   --verde-halo:#5BD97F;   /* enlaces sobre oscuro */
   --verde-link:#15703B;   /* enlaces sobre claro — 6,1:1 */
 
-  /* Tipografía */
-  --display:"Albert Sans",-apple-system,"SF Pro Display","Segoe UI",system-ui,sans-serif;
+  /* Tipografía: la marca en los titulares, la fuente del sistema en la
+     interfaz (Segoe UI Variable en Windows, SF en Mac). */
+  --display:"Albert Sans","Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
+  --ui:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
 
-  /* Radios — el set está restringido a propósito */
-  --r-link:10px;
-  --r-card:28px;
-  --r-btn:36px;
-  --r-pill:980px;
+  /* Radios — geometría de Windows moderno (Fluent): 4 px en controles,
+     8 px en superficies. Lo redondo queda solo para puntos y contadores. */
+  --r-link:4px;
+  --r-card:8px;
+  --r-btn:4px;
+  --r-pill:4px;
+  --r-redondo:980px;
 
   --marco:1120px;
-  --barra-alto:88px;
+  --barra-alto:64px;
   --transicion:.25s cubic-bezier(.28,.11,.32,1);
 }
 
@@ -59,7 +63,7 @@ body{
   margin:0;
   background:var(--negro);
   color:var(--frost);
-  font-family:var(--display);
+  font-family:var(--ui);
   font-size:1.0625rem;
   line-height:1.47;
   letter-spacing:-.01em;
@@ -128,48 +132,48 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
    ========================================================================== */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  min-height:48px;padding:12px 28px;border-radius:var(--r-btn);
-  font-size:1.0625rem;font-weight:600;letter-spacing:-.012em;
+  min-height:44px;padding:10px 20px;border-radius:var(--r-btn);
+  font-family:var(--ui);font-size:.9375rem;font-weight:600;
   border:1px solid transparent;
   transition:background var(--transicion),border-color var(--transicion),color var(--transicion);
 }
 .btn--sm{min-height:36px;padding:8px 18px;font-size:.875rem;letter-spacing:-.015em}
 .btn--full{width:100%}
-.btn--accion{background:var(--accion);color:var(--accion-tinta);border-color:var(--accion)}
-.btn--accion:hover{background:var(--accion-alta);border-color:var(--accion-alta)}
-.btn--fantasma{background:transparent;color:var(--frost);border-color:var(--humo)}
-.btn--fantasma:hover{border-color:var(--frost)}
+.btn--accion{background:var(--accion);color:var(--accion-tinta);border-color:var(--accion);border-bottom-color:rgba(0,0,0,.28)}
+.btn--accion:hover{background:var(--accion-alta);border-color:var(--accion-alta);border-bottom-color:rgba(0,0,0,.28)}
+.btn--fantasma{background:rgba(255,255,255,.06);color:var(--frost);border-color:rgba(255,255,255,.09);border-bottom-color:rgba(255,255,255,.05)}
+.btn--fantasma:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.14)}
 
 .acciones{display:flex;flex-wrap:wrap;gap:16px;margin-top:44px}
 
 /* ==========================================================================
    Barra de navegación — pastilla flotante de 980px
    ========================================================================== */
-.barra{position:fixed;inset:16px 0 auto;z-index:90;padding-inline:clamp(16px,4vw,32px);pointer-events:none}
+.barra{position:fixed;inset:0 0 auto;z-index:90;pointer-events:none}
 .barra__pill{
-  max-width:var(--marco);margin-inline:auto;pointer-events:auto;
-  display:flex;align-items:center;gap:24px;
-  height:56px;padding:0 12px 0 24px;
-  border:1px solid transparent;border-radius:var(--r-pill);
-  background:rgba(22,22,24,0);
+  pointer-events:auto;display:flex;align-items:center;gap:24px;
+  height:var(--barra-alto);
+  /* El contenido de la barra alinea con el marco de la página. */
+  padding-inline:max(clamp(20px,5vw,40px),calc((100% - var(--marco)) / 2 + clamp(20px,5vw,40px)));
+  background:rgba(12,12,14,0);
+  border-bottom:1px solid transparent;
   backdrop-filter:blur(0px) saturate(100%);
   transition:background .35s ease,border-color .35s ease,backdrop-filter .35s ease;
 }
-/* El material aparece cuando hay contenido debajo. El borde superior más
-   claro es la luz que toca el vidrio; los otros tres quedan apenas. */
+/* El material (acrílico) aparece cuando hay contenido debajo. */
 .barra.is-material .barra__pill{
-  background:rgba(22,22,24,.72);
-  backdrop-filter:blur(20px) saturate(180%);
-  border-color:rgba(255,255,255,.07);
-  border-top-color:rgba(255,255,255,.16);
+  background:rgba(12,12,14,.72);
+  backdrop-filter:blur(30px) saturate(150%);
+  border-bottom-color:rgba(255,255,255,.08);
 }
 .barra__marca{flex:none;display:flex;align-items:center}
 /* El logo viene con la marca oscura: sobre negro hay que invertirlo. */
 .barra__marca img{height:24px;width:auto;filter:brightness(0) invert(1)}
 
 .barra__nav{display:flex;align-items:center;gap:28px;margin-inline:auto}
-.barra__nav a{font-size:.875rem;font-weight:400;letter-spacing:-.012em;color:var(--frost);opacity:.82;transition:opacity var(--transicion)}
-.barra__nav a:hover,.barra__nav a.is-act{opacity:1}
+.barra__nav a{font-size:.875rem;font-weight:400;color:var(--frost);opacity:.82;padding:6px 0;border-bottom:2px solid transparent;transition:opacity var(--transicion),border-color var(--transicion)}
+.barra__nav a:hover{opacity:1}
+.barra__nav a.is-act{opacity:1;border-bottom-color:var(--accion)}
 
 .barra__fin{flex:none;display:flex;align-items:center;gap:8px}
 .barra__burger{display:none;width:40px;height:40px;place-items:center;border-radius:var(--r-pill);color:var(--frost)}
@@ -291,7 +295,7 @@ body.menu-abierto{overflow:hidden}
 /* Punto sobre el riel: marca el paso sin necesidad de una tarjeta. */
 .ciclo li::before{
   content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;
-  border-radius:var(--r-pill);background:var(--accion);
+  border-radius:var(--r-redondo);background:var(--accion);
 }
 .ciclo__n{font-size:.75rem;font-weight:600;letter-spacing:.1em;color:var(--accion);font-variant-numeric:tabular-nums}
 .ciclo h3{margin-top:14px;font-size:clamp(1.25rem,2vw,1.6rem);font-weight:700;letter-spacing:-.02em;color:var(--frost)}
@@ -358,7 +362,7 @@ body.menu-abierto{overflow:hidden}
    ========================================================================== */
 .flota{position:fixed;right:clamp(16px,3vw,32px);bottom:clamp(16px,3vw,32px);z-index:80;display:flex;flex-direction:column;gap:12px}
 .flota__b{
-  width:52px;height:52px;display:grid;place-items:center;border-radius:var(--r-pill);
+  width:48px;height:48px;display:grid;place-items:center;border-radius:var(--r-card);
   background:rgba(29,29,31,.82);backdrop-filter:blur(16px);
   border:1px solid rgba(255,255,255,.12);color:var(--frost);
   transition:background var(--transicion),border-color var(--transicion);
@@ -373,7 +377,7 @@ body.menu-abierto{overflow:hidden}
 .toast{
   position:fixed;left:50%;bottom:28px;transform:translate(-50%,180%) scale(.96);z-index:120;
   background:rgba(245,245,247,.96);backdrop-filter:blur(20px);color:var(--negro);
-  padding:14px 24px;border-radius:var(--r-pill);
+  padding:14px 20px;border-radius:var(--r-card);
   font-size:.875rem;font-weight:600;letter-spacing:-.015em;max-width:min(92vw,32rem);
   transition:transform .45s cubic-bezier(.2,.8,.2,1);
 }
@@ -418,7 +422,7 @@ body.menu-abierto{overflow:hidden}
 .badge{
   position:absolute;top:0;right:0;min-width:18px;height:18px;padding:0 5px;
   display:grid;place-items:center;background:var(--accion);color:var(--accion-tinta);
-  font-size:.6875rem;font-weight:700;border-radius:var(--r-pill);
+  font-size:.6875rem;font-weight:700;border-radius:var(--r-redondo);
 }
 .badge[hidden]{display:none}
 
@@ -483,9 +487,8 @@ body.menu-abierto{overflow:hidden}
 }
 
 @media (max-width:860px){
-  .barra__pill{padding-right:8px}
   .barra__nav{
-    position:fixed;inset:88px clamp(16px,4vw,32px) auto;flex-direction:column;align-items:stretch;
+    position:fixed;inset:calc(var(--barra-alto) + 8px) clamp(16px,4vw,32px) auto;flex-direction:column;align-items:stretch;
     gap:0;margin:0;padding:8px 20px 16px;
     background:rgba(22,22,24,.9);
     border:1px solid rgba(255,255,255,.09);border-top-color:rgba(255,255,255,.16);
@@ -579,7 +582,7 @@ body.menu-abierto{overflow:hidden}
   /* Asa: dice "esto se arrastra" sin necesidad de explicarlo. */
   .panel__cab::before{
     content:"";position:absolute;top:12px;left:50%;width:40px;height:5px;margin-left:-20px;
-    border-radius:var(--r-pill);background:rgba(255,255,255,.28);
+    border-radius:var(--r-redondo);background:rgba(255,255,255,.28);
   }
 }
 
@@ -589,11 +592,19 @@ body.menu-abierto{overflow:hidden}
    ========================================================================== */
 @media (prefers-reduced-transparency:reduce){
   .barra.is-material .barra__pill,.barra__nav,.flota__b,.toast,.velo{backdrop-filter:none}
-  .barra.is-material .barra__pill,.barra__nav{background:#161618}
+  .barra.is-material .barra__pill{background:#161618}
   .velo{background:rgba(0,0,0,.74)}
+}
+/* El fondo sólido del menú solo cuando es un desplegable (pantallas angostas):
+   en escritorio los enlaces van en línea y un fondo sería una caja gris. */
+@media (prefers-reduced-transparency:reduce) and (max-width:860px){
+  .barra__nav{background:#161618}
 }
 @media (prefers-contrast:more){
   .barra.is-material .barra__pill,.barra__nav{border-color:rgba(255,255,255,.55)}
   .btn--fantasma{border-color:var(--frost)}
   .platino,.t-cuerpo,.t-sub{color:#B9C6BF}
 }
+
+/* Los titulares llevan la marca; la interfaz, la fuente del sistema. */
+h1,h2,h3,.t-beat{font-family:var(--display)}
