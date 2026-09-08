@@ -96,13 +96,14 @@ profesional y no una torre con luces: la torre leía como equipo gamer.
 riel, casos en columnas con filete. Las únicas superficies son las que
 contienen algo: el formulario, las piezas del carril y el catálogo.
 
-**El héroe es tipográfico y centrado, como una página de producto de Apple
-sin el producto.** Titular grande y fino, una línea, dos acciones, y debajo
-los logos reales de los clientes (Armada de Chile, Marimaca, Fresenius…):
-un cliente potencial capta en dos segundos qué es UpComp y quién confía en
-ella. No hay foto de equipo en el héroe a propósito: cualquier laptop dice
-"vendemos laptops". Las fotos viven en el carril de equipamiento. El titular
-entra palabra a palabra al cargar.
+**El héroe es oscuro, con un campo de partículas en onda dibujado en canvas
+y el titular al centro.** Es el modelo de la portada de Intellicore, la
+referencia que UpComp pidió seguir, pero generado en vivo (una superficie de
+puntos en perspectiva que ondula despacio, en el verde de la marca) en vez
+de una imagen de stock. Corre solo mientras el héroe está a la vista; con
+menos movimiento queda un solo cuadro. Debajo, los logos de los clientes y
+las **cuatro áreas como cuadrícula de íconos** con título en mayúsculas
+finas y una línea: corto y preciso, que es lo que se pidió.
 
 **Intro.** Un segundo con el logo grande y una cortina que sube; recién
 entonces se arma el héroe. Se salta con clic, tecla, rueda o toque, y sin

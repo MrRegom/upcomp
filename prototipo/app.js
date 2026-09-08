@@ -100,10 +100,10 @@ const CLIENTES=[
    upcomp.cl/servicios-empresas en los cuatro bloques que pidió la auditoría:
    el detalle vive en las páginas internas, no en la portada. */
 const SOLUCIONES=[
-  {n:"01",t:"Equipamiento TI",d:"Notebooks, workstations, servidores y equipos corporativos.",href:"tienda.html",cta:"Ver equipamiento"},
-  {n:"02",t:"Servicios TI",d:"Soporte, mantención, outsourcing y continuidad operacional.",href:"#contacto",cta:"Conocer soluciones"},
-  {n:"03",t:"Infraestructura",d:"Networking, Wi-Fi, videoconferencia y proyectos TI.",href:"#contacto",cta:"Conocer soluciones"},
-  {n:"04",t:"Desarrollo e integración",d:"Software, automatización e integración de procesos.",href:"#contacto",cta:"Conocer soluciones"}
+  {n:"01",icono:"i-laptop",t:"Equipamiento TI",d:"Notebooks, workstations, servidores y equipos corporativos.",href:"tienda.html",cta:"Ver equipamiento"},
+  {n:"02",icono:"i-soporte",t:"Servicios TI",d:"Soporte, mantención, outsourcing y continuidad operacional.",href:"#contacto",cta:"Conocer soluciones"},
+  {n:"03",icono:"i-red",t:"Infraestructura",d:"Networking, Wi-Fi, videoconferencia y proyectos TI.",href:"#contacto",cta:"Conocer soluciones"},
+  {n:"04",icono:"i-codigo",t:"Desarrollo e integración",d:"Software, automatización e integración de procesos.",href:"#contacto",cta:"Conocer soluciones"}
 ];
 
 /* Cómo trabajamos (upcomp.cl/servicios-empresas). Los nombres de los pasos
@@ -220,10 +220,11 @@ pinta("#muroPartners",PARTNERS.map(p=>
   `<li title="${esc(p.n)}" data-rev><img src="${p.logo}" alt="${esc(p.n)}" loading="lazy"></li>`).join(""));
 
 pinta("#rejillaSoluciones",SOLUCIONES.map(s=>`
-  <a class="fila" href="${s.href}" data-rev>
+  <a class="area" href="${s.href}" data-rev>
+    <span class="area__ic">${ico(s.icono)}</span>
     <h3>${esc(s.t)}</h3>
     <p>${esc(s.d)}</p>
-    <span class="fila__ir">${esc(s.cta)} ${ico("i-flecha")}</span>
+    <span class="area__ir">${esc(s.cta)} ${ico("i-flecha")}</span>
   </a>`).join(""));
 
 pinta("#pasosCiclo",CICLO.map(([t,d],i)=>`
@@ -473,6 +474,58 @@ function iluminar(){
 medirCarril();
 addEventListener("resize", medirCarril, {passive:true});
 
+/* ---------- Campo de partículas en onda ----------
+   Una superficie de puntos en perspectiva que ondula despacio, dibujada en
+   canvas: es lo que da fondo al héroe sin recurrir a una imagen de stock.
+   Corre solo mientras el héroe está a la vista; con menos movimiento se
+   dibuja un solo cuadro y queda quieta. */
+function crearOnda(cv){
+  const ctx = cv.getContext("2d");
+  let W = 0, H = 0, raf = null, t = 0;
+  const COLS = 120, FILAS = 34;
+  function medir(){
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  function cuadro(){
+    ctx.clearRect(0, 0, W, H);
+    const horizonte = H * .40, prof = H * .78;
+    for(let j = 0; j < FILAS; j++){
+      const v = j / (FILAS - 1);                 /* 0 lejos … 1 cerca */
+      const y0 = horizonte + v * v * prof;
+      const esc = .3 + v * .7;
+      const cerca = v > .55;
+      for(let i = 0; i < COLS; i++){
+        const u = i / (COLS - 1);
+        const x = W / 2 + (u - .5) * W * 1.7 * esc;
+        const z = Math.sin(u * 6.5 + t * .9 + v * 3) * Math.cos(v * 4.5 - t * .6) * (14 + v * 46);
+        const brillo = .5 + .5 * Math.sin(u * 9 + t * 1.3 + v * 4);
+        const a = (.10 + v * .55) * (.55 + .45 * brillo);
+        const r = .7 + v * 1.8;
+        ctx.fillStyle = cerca ? `rgba(54,184,92,${a})` : `rgba(92,214,196,${a})`;
+        ctx.beginPath(); ctx.arc(x, y0 + z, r, 0, 6.2832); ctx.fill();
+      }
+    }
+  }
+  function paso(){ t += .011; cuadro(); raf = requestAnimationFrame(paso); }
+  const onda = {
+    arrancar(){ if(!raf && !quietud && !document.hidden) raf = requestAnimationFrame(paso); },
+    detener(){ if(raf){ cancelAnimationFrame(raf); raf = null; } },
+    cuadro
+  };
+  medir(); cuadro();
+  addEventListener("resize", ()=>{ medir(); cuadro(); }, {passive:true});
+  document.addEventListener("visibilitychange", ()=>{ if(document.hidden) onda.detener(); else onda.arrancar(); });
+  return onda;
+}
+const onda = $("#onda") ? crearOnda($("#onda")) : null;
+function velarOnda(){
+  if(!onda || !hero) return;
+  if(scrollY < hero.offsetHeight) onda.arrancar(); else onda.detener();
+}
+
 /* ---------- Paralaje por capas y escena que se expande ----------
    Cada equipo del conjunto se desplaza a un ritmo distinto según su capa
    (el de adelante, más): profundidad real con tres fotos planas. La escena
@@ -500,6 +553,7 @@ function alScrollMov(){
   pendienteMov = false;
   revelar();
   escenaHeroe();
+  velarOnda();
   paralaje();
   expandirEscena();
   moverCarril();

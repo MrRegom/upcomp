@@ -186,68 +186,62 @@ h1,h2,h3,.t-beat{font-family:var(--display)}
 body.menu-abierto{overflow:hidden}
 
 /* ==========================================================================
-   01 · Héroe — coreografía de carga, luego secuencia fijada por scroll
+   01 · Héroe — oscuro, con un campo de partículas en onda dibujado en canvas
    ========================================================================== */
-.hero{position:relative;background:var(--fondo);overflow:clip}
+.hero{
+  position:relative;overflow:clip;color:#fff;
+  background:radial-gradient(120% 90% at 50% 100%,#0c2f1f 0%,#07150f 48%,#040a07 100%);
+}
 .hero__pin{
-  min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+  position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   padding:calc(var(--barra-alto) + 40px) 0 clamp(24px,4vw,40px);
 }
-/* margin-inline:auto de .marco lo encogería a su contenido dentro del flex. */
-.hero__pin > .marco{width:100%}
-/* El producto apaisado recibe la columna mayor, como en una página de portátil. */
-.hero__centro{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center}
-/* grid de una celda: los tiempos se apilan y beat--0 fija la altura */
+.hero__onda{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
+/* Velo suave para que el titular lea sobre la onda. */
+.hero__pin::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 42%,rgba(4,10,7,.55),rgba(4,10,7,0) 70%),linear-gradient(to bottom,rgba(4,10,7,0) 58%,rgba(4,10,7,.72) 100%);pointer-events:none}
+.hero__pin > .marco{width:100%;position:relative;z-index:2}
+.hero__centro{display:flex;flex-direction:column;align-items:center;text-align:center}
 .hero__texto{position:relative;z-index:2;display:grid;justify-items:center;width:100%}
 .beat{grid-area:1/1;will-change:transform,opacity;width:100%}
 .beat--n{display:none}
-.t-beat{font-size:clamp(2.5rem,5.6vw,4.75rem);font-weight:300;line-height:1.05;letter-spacing:.05em;text-transform:uppercase;color:var(--tinta)}
-.hero .t-hero{margin-inline:auto}
-.hero .t-sub{margin-inline:auto;text-align:center}
+.t-beat{font-size:clamp(2.5rem,5.6vw,4.75rem);font-weight:300;line-height:1.05;letter-spacing:.05em;text-transform:uppercase;color:#fff}
+.hero .cejilla{color:#7fd39a;margin-bottom:24px}
+.hero .t-hero{color:#fff;margin-inline:auto}
+.hero .t-sub{color:#b3c4ba;margin-inline:auto;text-align:center}
 .hero .acciones{justify-content:center}
-.hero .cejilla{margin-bottom:24px}
-
-/* ---------- Los clientes, dentro del héroe: la prueba antes que la explicación ---------- */
-.hero__confian{width:100%;max-width:1040px;margin-top:clamp(56px,9vh,104px)}
-.hero__confian .rotulo{margin-bottom:28px;color:var(--tinta-3)}
-.muro--hero{grid-template-columns:repeat(4,1fr);gap:24px clamp(24px,4vw,56px)}
-.muro--hero img{max-height:34px;max-width:140px}
-.muro--hero .muro__txt{font-size:1rem}
+.hero .btn--fantasma{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.16);border-bottom-color:rgba(255,255,255,.08)}
+.hero .btn--fantasma:hover{background:rgba(255,255,255,.14)}
 
 /* Palabra a palabra al cargar: cada una entra por turno. */
 .pc{display:inline-block;opacity:0}
 .is-cargada .pc{animation:subir .7s var(--curva) both;animation-delay:calc(.12s + var(--i) * .055s)}
 .is-cargada .pc.cargado{animation:none;opacity:1}
 
-
 /* Secuencia: el héroe mide casi dos pantallas, su interior queda fijado. */
 .hero--secuencia{height:190svh}
 .hero--secuencia .hero__pin{position:sticky;top:0;height:100svh;min-height:0}
 .hero--secuencia .beat--n{display:block;opacity:0;pointer-events:none}
 
-/* Coreografía de carga: cada pieza entra por su turno; el producto se asienta.
-   El estado inicial oculto solo existe cuando el script ya corre. */
+/* La barra sobre el héroe oscuro: texto y logo en blanco hasta que aparece el material. */
+body[data-pagina="home"] .barra:not(.is-material) .barra__nav a,
+body[data-pagina="home"] .barra:not(.is-material) .barra__burger{color:#fff}
+body[data-pagina="home"] .barra:not(.is-material) .barra__marca img{filter:brightness(0) invert(1)}
+
 @keyframes subir{from{opacity:0;transform:translate3d(0,18px,0)}to{opacity:1;transform:none}}
-@keyframes asentar{from{opacity:0;transform:scale(.94) translate3d(0,14px,0)}to{opacity:1;transform:none}}
 @keyframes aparecer{from{opacity:0}to{opacity:1}}
 .is-cargada [data-carga]{opacity:0;animation:subir .9s var(--curva) both}
 .is-cargada [data-carga="1"]{animation-delay:.05s}
-.is-cargada [data-carga="2"]{animation-delay:.15s}
 .is-cargada [data-carga="3"]{animation-delay:.62s}
 .is-cargada [data-carga="4"]{animation-delay:.78s}
-.is-cargada [data-carga="5"]{animation-delay:1.0s}
-/* Al terminar se retira la animación: si no, su último cuadro pisaría los
-   transforms que el scroll pone después. */
 .is-cargada [data-carga].cargado{animation:none;opacity:1}
 
-/* ---------- Intro: el logo, y la cortina que sube ---------- */
-.intro{display:none;position:fixed;inset:0;z-index:300;background:var(--fondo);place-items:center;transition:transform .75s var(--curva),opacity .45s ease}
+/* ---------- Intro: el logo sobre el mismo oscuro del héroe, y la cortina que sube ---------- */
+.intro{display:none;position:fixed;inset:0;z-index:300;background:#07150f;place-items:center;transition:transform .75s var(--curva),opacity .45s ease}
 .intro.is-activa{display:grid}
-.intro__logo{width:min(48vw,240px);height:auto;opacity:0;transform:scale(.84);animation:introLogo .85s var(--curva) .08s both}
+.intro__logo{width:min(48vw,240px);height:auto;opacity:0;transform:scale(.84);filter:brightness(0) invert(1);animation:introLogo .85s var(--curva) .08s both}
 @keyframes introLogo{to{opacity:1;transform:none}}
 .intro.is-fuera{transform:translate3d(0,-100%,0);pointer-events:none}
 body.intro-activa{overflow:hidden}
-
 
 /* ==========================================================================
    Muros de logotipos
@@ -262,30 +256,19 @@ body.intro-activa{overflow:hidden}
 .muro--partners img{max-height:32px;max-width:130px}
 
 /* ==========================================================================
-   03 · Soluciones — filas con filete, no tarjetas
+   03 · Soluciones — cuatro áreas: ícono, título en mayúsculas finas, una línea
    ========================================================================== */
-.filas{margin-top:clamp(40px,5vw,64px);border-top:1px solid var(--linea)}
-.fila{
-  position:relative;
-  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) auto;
-  align-items:baseline;gap:clamp(16px,3vw,40px);
-  padding:clamp(28px,3.4vw,44px) 0 clamp(28px,3.4vw,44px) 28px;border-bottom:1px solid var(--linea);
-  transition:opacity var(--transicion);
-}
-.fila:hover{opacity:.72}
-/* La barra se dibuja de arriba hacia abajo cuando la fila entra en pantalla. */
-.fila::before,.caso::before{
-  content:"";position:absolute;left:0;width:3px;background:var(--accion);
-  transform:scaleY(0);transform-origin:50% 0;
-  transition:transform .6s var(--curva) .2s;
-}
-.fila::before{top:calc(50% - 22px);height:44px}
-.fila.is-ver::before,.caso.is-ver::before{transform:scaleY(1)}
-.fila h3{font-size:clamp(1.5rem,2.6vw,2rem);font-weight:700;line-height:1.14;letter-spacing:-.022em;color:var(--tinta)}
-.fila p{font-size:1.0625rem;line-height:1.47;color:var(--tinta-2)}
-.fila__ir{display:inline-flex;align-items:center;gap:8px;font-size:1.0625rem;font-weight:600;color:var(--verde-link);white-space:nowrap}
-.fila__ir .ic{width:18px;height:18px;transition:transform var(--transicion)}
-.fila:hover .fila__ir .ic{transform:translateX(4px)}
+.t-display--centro{margin-inline:auto;text-align:center}
+.areas{margin-top:clamp(48px,6vw,80px);display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(40px,5vw,64px) clamp(24px,3vw,40px)}
+.area{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px}
+.area__ic{width:56px;height:56px;color:var(--accion)}
+.area__ic .ic{width:100%;height:100%}
+.area h3{font-size:1.1875rem;font-weight:300;letter-spacing:.07em;text-transform:uppercase;color:var(--tinta);line-height:1.25}
+.area p{font-size:.9375rem;line-height:1.55;color:var(--tinta-2);max-width:28ch}
+.area__ir{margin-top:4px;display:inline-flex;align-items:center;gap:6px;font-size:.9375rem;font-weight:600;color:var(--verde-link)}
+.area__ir .ic{width:16px;height:16px;transition:transform var(--transicion)}
+.area:hover .area__ir .ic{transform:translateX(4px)}
+.banda--corta{padding:clamp(40px,6vw,64px) 0}
 
 /* ==========================================================================
    04 · Carril — la fila de equipos se desplaza en horizontal con el scroll
@@ -518,9 +501,8 @@ body.intro-activa{overflow:hidden}
 }
 @media (max-width:980px){
   .hero__pin{min-height:auto;padding-top:calc(var(--barra-alto) + 24px)}
-  .muro--hero{grid-template-columns:repeat(2,1fr)}
-  .fila{grid-template-columns:minmax(0,1fr);gap:8px}
-  .fila__ir{margin-top:6px}
+  .areas{grid-template-columns:repeat(2,1fr)}
+
 }
 @media (max-width:860px){
   .barra__nav{
@@ -556,6 +538,7 @@ body.intro-activa{overflow:hidden}
   .t-hero{font-weight:400}
 }
 @media (max-width:560px){
+  .areas{grid-template-columns:1fr}
   .ciclo{grid-template-columns:1fr}
   .catalogo{grid-template-columns:1fr}
   .pie__cols{grid-template-columns:1fr}
@@ -581,8 +564,8 @@ body.intro-activa{overflow:hidden}
   body:not(.forzado) .intro__logo{animation-name:aparecer;transform:none}
   body:not(.forzado) .escena--fijada .fijo{transform:none!important;border-radius:0!important}
   body:not(.forzado) .rev{transition:opacity .6s ease}
-  body:not(.forzado) .fila::before,body:not(.forzado) .caso::before{transition:opacity .4s ease;transform:none;opacity:0}
-  body:not(.forzado) .fila.is-ver::before,body:not(.forzado) .caso.is-ver::before{opacity:1}
+  body:not(.forzado) .caso::before{transition:opacity .4s ease;transform:none;opacity:0}
+  body:not(.forzado) .caso.is-ver::before{opacity:1}
   body:not(.forzado) .btn:active,body:not(.forzado) .flota__b:active{transform:none;opacity:.8}
 }
 @media (prefers-reduced-transparency:reduce){
