@@ -428,6 +428,7 @@ pinta("#pista", EQUIPOS.map(e=>`
   </article>`).join(""));
 
 const carril = $("#equipamiento"), pista = $("#pista");
+const piezas = pista ? $$(".pieza", pista) : [];
 const carrilFijado = !!carril && !!pista && !quietud && matchMedia("(min-width:981px)").matches;
 if(carrilFijado){
   carril.classList.add("carril--fijado");
@@ -443,6 +444,13 @@ function moverCarril(){
   if(!carrilFijado || !carrilExtra) return;
   const p = Math.max(0, Math.min(1, -carril.getBoundingClientRect().top / carrilExtra));
   pista.style.transform = `translate3d(${-p * carrilExtra}px,0,0)`;
+  /* Las piezas que aún no llegan vienen algo más pequeñas y tenues: profundidad. */
+  piezas.forEach(el=>{
+    const r = el.getBoundingClientRect();
+    const k = Math.min(1, Math.max(0, (r.left + r.width * .5 - innerWidth) / innerWidth) * 2.2);
+    el.style.transform = `scale(${1 - k * .06})`;
+    el.style.opacity = String(1 - k * .55);
+  });
 }
 
 /* ---------- Texto que se ilumina palabra por palabra ----------
@@ -455,7 +463,11 @@ const fijada = $(".escena--fijada");
 const pals = fijada ? $$(".pal", fijada) : [];
 const pasosCiclo = $("#pasosCiclo");
 const fijadaActiva = !!fijada && pals.length > 0 && !quietud && matchMedia("(min-width:981px)").matches;
-if(fijadaActiva) fijada.classList.add("is-fijada");
+if(fijadaActiva){
+  fijada.classList.add("is-fijada");
+  /* Los pasos los mueve el scroll cuadro a cuadro: sin la transición del revelado. */
+  if(pasosCiclo) [...pasosCiclo.children].forEach(li=>{ li.style.transition = "none"; });
+}
 function iluminar(){
   if(!fijadaActiva) return;
   const rec = Math.max(1, fijada.offsetHeight - innerHeight);
@@ -466,9 +478,12 @@ function iluminar(){
     el.style.opacity = String(.18 + .82 * suave(rampa(p,a,b)));
   });
   if(pasosCiclo){
-    const q = suave(rampa(p,.70,.92));
-    pasosCiclo.style.opacity = String(q);
-    pasosCiclo.style.transform = `translate3d(0,${(1 - q) * 32}px,0)`;
+    /* Los cuatro pasos entran uno tras otro, no en bloque. */
+    [...pasosCiclo.children].forEach((li,i)=>{
+      const a = .68 + i * .05, q = suave(rampa(p, a, a + .12));
+      li.style.opacity = String(q);
+      if(!quietud) li.style.transform = `translate3d(0,${(1 - q) * 28}px,0)`;
+    });
   }
 }
 medirCarril();
@@ -481,7 +496,7 @@ addEventListener("resize", medirCarril, {passive:true});
    dibuja un solo cuadro y queda quieta. */
 function crearOnda(cv){
   const ctx = cv.getContext("2d");
-  let W = 0, H = 0, raf = null, t = 0;
+  let W = 0, H = 0, raf = null, t = 0, px = 0, py = 0;
   const COLS = 120, FILAS = 34;
   function medir(){
     const dpr = Math.min(devicePixelRatio || 1, 2);
@@ -491,21 +506,37 @@ function crearOnda(cv){
   }
   function cuadro(){
     ctx.clearRect(0, 0, W, H);
-    const horizonte = H * .40, prof = H * .78;
+    const horizonte = H * .40 + py * 18, prof = H * .78;
+    /* El barrido: una banda de luz que recorre la superficie de lejos a
+       cerca y vuelve, dando la sensacion de una ola real avanzando. */
+    const barrido = (Math.sin(t * .35) + 1) / 2;
     for(let j = 0; j < FILAS; j++){
-      const v = j / (FILAS - 1);                 /* 0 lejos … 1 cerca */
+      const v = j / (FILAS - 1);                 /* 0 lejos ... 1 cerca */
       const y0 = horizonte + v * v * prof;
       const esc = .3 + v * .7;
       const cerca = v > .55;
+      const color = cerca ? "54,184,92" : "92,214,196";
+      const cercaBarrido = 1 - Math.min(1, Math.abs(v - barrido) * 2.4);
+      let xPrev = null, yPrev = null;
       for(let i = 0; i < COLS; i++){
         const u = i / (COLS - 1);
         const x = W / 2 + (u - .5) * W * 1.7 * esc;
-        const z = Math.sin(u * 6.5 + t * .9 + v * 3) * Math.cos(v * 4.5 - t * .6) * (14 + v * 46);
+        const z = Math.sin(u * 6.5 + t * .9 + px * .8 + v * 3) * Math.cos(v * 4.5 - t * .6) * (14 + v * 46);
+        const y = y0 + z;
         const brillo = .5 + .5 * Math.sin(u * 9 + t * 1.3 + v * 4);
-        const a = (.10 + v * .55) * (.55 + .45 * brillo);
-        const r = .7 + v * 1.8;
-        ctx.fillStyle = cerca ? `rgba(54,184,92,${a})` : `rgba(92,214,196,${a})`;
-        ctx.beginPath(); ctx.arc(x, y0 + z, r, 0, 6.2832); ctx.fill();
+        const realce = 1 + cercaBarrido * 1.6;
+        const a = (.09 + v * .5) * (.5 + .5 * brillo) * realce;
+        /* Linea hacia el punto anterior de la misma fila: la onda se lee
+           como una superficie que fluye, no como puntos sueltos. */
+        if(xPrev !== null){
+          ctx.strokeStyle = `rgba(${color},${a * .85})`;
+          ctx.lineWidth = .6 + v * 1.1;
+          ctx.beginPath(); ctx.moveTo(xPrev, yPrev); ctx.lineTo(x, y); ctx.stroke();
+        }
+        xPrev = x; yPrev = y;
+        const r = (.7 + v * 1.8) * (1 + cercaBarrido * .5);
+        ctx.fillStyle = `rgba(${color},${Math.min(1, a * 1.15)})`;
+        ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
       }
     }
   }
@@ -517,6 +548,8 @@ function crearOnda(cv){
   };
   medir(); cuadro();
   addEventListener("resize", ()=>{ medir(); cuadro(); }, {passive:true});
+  /* El puntero inclina apenas la superficie: la escena responde sin moverse de sitio. */
+  addEventListener("pointermove", e=>{ px = e.clientX / innerWidth - .5; py = e.clientY / innerHeight - .5; }, {passive:true});
   document.addEventListener("visibilitychange", ()=>{ if(document.hidden) onda.detener(); else onda.arrancar(); });
   return onda;
 }

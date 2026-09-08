@@ -96,6 +96,9 @@ h1,h2,h3,.t-beat{font-family:var(--display)}
 
 .banda{background:var(--fondo);padding:clamp(72px,10vw,140px) 0}
 .banda--gris{background:var(--banda)}
+/* Primera banda tras el héroe oscuro: un remate verde muy suave, no gris
+   plano, para que el corte del negro al claro no sea un salto brusco. */
+#clientes.banda--gris{background:linear-gradient(180deg,#eef8f1 0%,var(--banda) 60%)}
 .escena{background:var(--negro);color:var(--frost)}
 
 /* ==========================================================================
@@ -198,7 +201,7 @@ body.menu-abierto{overflow:hidden}
 }
 .hero__onda{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
 /* Velo suave para que el titular lea sobre la onda. */
-.hero__pin::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 42%,rgba(4,10,7,.55),rgba(4,10,7,0) 70%),linear-gradient(to bottom,rgba(4,10,7,0) 58%,rgba(4,10,7,.72) 100%);pointer-events:none}
+.hero__pin::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 38%,rgba(4,10,7,.5),rgba(4,10,7,0) 68%),linear-gradient(to bottom,rgba(4,10,7,0) 78%,rgba(4,10,7,.4) 100%);pointer-events:none}
 .hero__pin > .marco{width:100%;position:relative;z-index:2}
 .hero__centro{display:flex;flex-direction:column;align-items:center;text-align:center}
 .hero__texto{position:relative;z-index:2;display:grid;justify-items:center;width:100%}
@@ -268,6 +271,7 @@ body.intro-activa{overflow:hidden}
 .area__ir{margin-top:4px;display:inline-flex;align-items:center;gap:6px;font-size:.9375rem;font-weight:600;color:var(--verde-link)}
 .area__ir .ic{width:16px;height:16px;transition:transform var(--transicion)}
 .area:hover .area__ir .ic{transform:translateX(4px)}
+.area.is-ver:hover{transform:translateY(-4px)}
 .banda--corta{padding:clamp(40px,6vw,64px) 0}
 
 /* ==========================================================================
@@ -285,6 +289,7 @@ body.intro-activa{overflow:hidden}
 }
 .carril__pista::-webkit-scrollbar{display:none}
 .pieza{
+  will-change:transform,opacity;transition:transform .45s var(--curva),opacity .45s ease;
   flex:0 0 min(78vw,360px);scroll-snap-align:start;
   background:var(--banda);border-radius:var(--r-card);
   padding:28px;display:flex;flex-direction:column;gap:6px;min-height:460px;
@@ -320,7 +325,7 @@ body.intro-activa{overflow:hidden}
 }
 .pal{display:inline-block}
 .is-fijada .pal{opacity:.18}
-.is-fijada .ciclo{opacity:0}
+.is-fijada .ciclo li{opacity:0}
 
 .ciclo{margin-top:clamp(48px,6vw,80px);display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,3vw,40px)}
 .ciclo li{position:relative;padding-top:32px;border-top:1px solid var(--humo)}
@@ -500,7 +505,7 @@ body.intro-activa{overflow:hidden}
   .pie__cols{grid-template-columns:1fr 1fr;gap:32px}
 }
 @media (max-width:980px){
-  .hero__pin{min-height:auto;padding-top:calc(var(--barra-alto) + 24px)}
+  .hero__pin{min-height:92svh;padding-top:calc(var(--barra-alto) + 24px);padding-bottom:56px}
   .areas{grid-template-columns:repeat(2,1fr)}
 
 }
@@ -564,6 +569,7 @@ body.intro-activa{overflow:hidden}
   body:not(.forzado) .intro__logo{animation-name:aparecer;transform:none}
   body:not(.forzado) .escena--fijada .fijo{transform:none!important;border-radius:0!important}
   body:not(.forzado) .rev{transition:opacity .6s ease}
+  body:not(.forzado) .area.is-ver:hover{transform:none}
   body:not(.forzado) .caso::before{transition:opacity .4s ease;transform:none;opacity:0}
   body:not(.forzado) .caso.is-ver::before{opacity:1}
   body:not(.forzado) .btn:active,body:not(.forzado) .flota__b:active{transform:none;opacity:.8}

@@ -125,6 +125,14 @@ retiró la auditoría, no pide nada: pasa sola.
 - *Escena que se expande.* La escena negra entra como un panel con esquinas
   y crece hasta el ancho completo al llegar arriba.
 - *Logos en cascada.* Clientes y partners aparecen logo a logo.
+- *Íconos que se dibujan.* Los cuatro íconos de las áreas se trazan al
+  entrar (dashoffset heredado hacia los trazos clonados por `<use>`).
+- *Títulos con barrido.* Los títulos de sección entran con un `clip-path`
+  de izquierda a derecha, no subiendo.
+- *Profundidad en el carril.* Las piezas que aún no llegan vienen más
+  pequeñas y tenues.
+- *Pasos uno a uno.* En la escena negra los cuatro pasos entran en orden.
+- *La onda sigue al puntero.* Apenas: inclina la superficie sin moverla.
 
 El estado oculto lo pone JavaScript: si falla el script, todo queda visible.
 Con menos movimiento (`prefers-reduced-motion`) quedan solo los fundidos y
@@ -209,6 +217,14 @@ O abrir `prototipo/index.html` con doble clic.
 
 `vercel.json` ya publica la carpeta `prototipo/` como sitio estático:
 **Import → Deploy**, sin cambiar nada. Cada push a `main` se publica solo.
+
+## Alcance definido por UpComp (7 de septiembre)
+
+Emilio (dueño de UpComp) definió que **UpComp es 100% B2B y no ofrecerá
+productos tipo e-commerce**, y que **la integración con la API de Intcomex no
+va en la propuesta de UpComp**: es un proyecto aparte para Invasión Gamer.
+El catálogo de este sitio es de referencia para cotizar; no se conecta a
+ningún mayorista.
 
 ## Lo que todavía no es real
 
