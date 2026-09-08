@@ -115,6 +115,17 @@ cascada, y el producto del héroe se aleja un poco al hacer scroll. El estado
 oculto lo pone JavaScript: si falla el script o el sistema pide menos
 movimiento, la página queda visible desde el principio.
 
+**Secuencia de apertura.** Con movimiento permitido y pantalla ancha, el
+héroe mide casi dos pantallas y su interior queda fijado: el producto se
+asienta mientras el texto cambia por tiempos con el scroll (la propuesta, y
+luego *Empresas. · Proyectos TI. · Cobertura nacional.*, las palabras del pie
+del héroe). Sin movimiento, o en pantallas angostas, es una pantalla normal.
+
+**Demostrar con las animaciones apagadas.** El sitio respeta
+`prefers-reduced-motion`; en Windows eso se activa al apagar "Efectos de
+animación" en Accesibilidad. Para una demo desde un equipo así, abrir
+`upcomp.vercel.app/?movimiento=1`: fuerza el movimiento solo en esa visita.
+
 **Hojas con resorte.** Los paneles del catálogo (lista de cotización y ficha)
 siguen el modelo de *Designing Fluid Interfaces* de Apple: un resorte con los
 dos parámetros de Apple (amortiguación y respuesta) integrado cuadro a cuadro,

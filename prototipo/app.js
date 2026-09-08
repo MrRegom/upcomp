@@ -281,7 +281,11 @@ Pueden contactarme en: ${d.contacto}`;
    invisible para siempre.
    ========================================================================== */
 
-const quietud = matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* ?movimiento=1 fuerza el movimiento aunque el sistema pida menos. Existe para
+   demostrar el sitio desde un equipo con las animaciones apagadas; por defecto
+   se respeta la preferencia. */
+const forzarMovimiento = new URLSearchParams(location.search).has("movimiento");
+const quietud = !forzarMovimiento && matchMedia("(prefers-reduced-motion: reduce)").matches;
 const revelables = quietud ? [] : $$("[data-rev]");
 
 revelables.forEach(el=>{
@@ -299,20 +303,50 @@ function revelar(){
   }
 }
 
-/* El producto del héroe se aleja un poco al hacer scroll: le da profundidad
-   a la escena sin que nada se mueva de su sitio. */
-const heroObj = $("#heroObj");
-function flotarHeroe(){
+/* ---------- Escena de apertura ----------
+   Con movimiento permitido y pantalla ancha, el héroe mide casi dos pantallas
+   y su interior queda fijado: el producto se asienta mientras el texto cambia
+   por tiempos, como en una página de producto de Apple. Sin movimiento, o en
+   pantallas angostas, el héroe es una pantalla normal con un leve paralaje. */
+const hero = $(".hero"), heroObj = $("#heroObj"), beats = $$(".beat");
+const secuencia = !!hero && !quietud && beats.length > 3 && matchMedia("(min-width:981px)").matches;
+if(secuencia) hero.classList.add("hero--secuencia");
+
+const rampa = (p,a,b)=>Math.max(0,Math.min(1,(p-a)/(b-a)));
+const suave = t=>t*t*(3-2*t);
+/* Para cada tiempo: [entra desde, entra hasta, sale desde, sale hasta], como
+   fracción del recorrido. El último no sale: se queda hasta soltar el héroe. */
+const VENTANAS = [[.20,.30,.42,.50],[.48,.58,.70,.78],[.76,.86,1.2,1.3]];
+
+function escenaHeroe(){
   if(!heroObj || quietud) return;
-  const y = Math.min(scrollY, innerHeight);
-  heroObj.style.transform = `translate3d(0,${y * .10}px,0) scale(${1 - y / innerHeight * .06})`;
+  if(!secuencia){
+    const y = Math.min(scrollY, innerHeight);
+    heroObj.style.transform = `translate3d(0,${y * .10}px,0) scale(${1 - y / innerHeight * .06})`;
+    return;
+  }
+  const p = Math.max(0, Math.min(1, scrollY / Math.max(1, hero.offsetHeight - innerHeight)));
+  heroObj.style.transform = `translate3d(0,${-p * 24}px,0) scale(${1 - p * .08})`;
+
+  const s0 = suave(rampa(p,.04,.24));           /* el primer tiempo se retira */
+  beats[0].style.opacity = String(1 - s0);
+  beats[0].style.transform = `translate3d(0,${-s0 * 32}px,0)`;
+  beats[0].style.pointerEvents = s0 > .5 ? "none" : "";
+
+  VENTANAS.forEach(([a,b,c,d],i)=>{
+    const el = beats[i+1]; if(!el) return;
+    const entra = suave(rampa(p,a,b)), sale = suave(rampa(p,c,d));
+    el.style.opacity = String(entra * (1 - sale));
+    /* entra subiendo y sale subiendo: la trayectoria anticipa el destino */
+    el.style.transform = `translate3d(0,${(1 - entra) * 28 - sale * 28}px,0)`;
+  });
 }
 
 let pendienteMov = false;
 function alScrollMov(){
   pendienteMov = false;
   revelar();
-  flotarHeroe();
+  escenaHeroe();
 }
 addEventListener("scroll",()=>{ if(!pendienteMov){ pendienteMov = true; requestAnimationFrame(alScrollMov); } },{passive:true});
 addEventListener("resize",alScrollMov,{passive:true});

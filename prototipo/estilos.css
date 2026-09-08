@@ -179,20 +179,32 @@ body.menu-abierto{overflow:hidden}
 /* ==========================================================================
    01 · Héroe — el producto flota sobre negro, el texto queda a la izquierda
    ========================================================================== */
-.hero{
-  position:relative;background:var(--negro);
+/* overflow:clip y no hidden: hidden convertiría al héroe en contenedor de
+   scroll y el sticky de la secuencia dejaría de funcionar. */
+.hero{position:relative;background:var(--negro);overflow:clip}
+.hero__pin{
   min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   padding:calc(var(--barra-alto) + 40px) 0 clamp(24px,4vw,40px);
-  overflow:hidden;
 }
+/* Secuencia de apertura — solo con movimiento permitido y pantalla ancha.
+   El héroe mide casi dos pantallas y su interior queda fijado: el producto
+   se asienta mientras el texto cambia por tiempos con el scroll. */
+.hero--secuencia{height:190svh}
+.hero--secuencia .hero__pin{position:sticky;top:0;height:100svh;min-height:0}
+.hero--secuencia .hero__pie{display:none}
+.beat{grid-area:1/1;will-change:transform,opacity}
+.beat--n{display:none}
+.hero--secuencia .beat--n{display:block;opacity:0;pointer-events:none}
+.t-beat{font-size:clamp(3rem,7vw,6rem);font-weight:700;line-height:1;letter-spacing:-.035em;color:var(--frost)}
 .hero__grid{
   flex:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
   align-items:center;gap:clamp(24px,4vw,56px);
 }
 /* margin-inline:auto de .marco consume el espacio libre del contenedor flex,
    asi que el hijo se encoge a su contenido en vez de estirarse. */
-.hero > .marco{width:100%}
-.hero__texto{position:relative;z-index:2}
+.hero__pin > .marco{width:100%}
+/* grid con una sola celda: los tiempos se apilan y beat--0 fija la altura. */
+.hero__texto{position:relative;z-index:2;display:grid}
 
 .hero__obj{margin:0;position:relative;display:grid;place-items:center}
 /* Charco de luz de estudio: es lo que asienta el producto sobre el negro.
@@ -530,7 +542,7 @@ body.menu-abierto{overflow:hidden}
 .rev.is-ver{opacity:1;transform:none}
 
 @media (max-width:980px){
-  .hero{min-height:auto;padding-top:calc(var(--barra-alto) + 24px)}
+  .hero__pin{min-height:auto;padding-top:calc(var(--barra-alto) + 24px)}
   .hero__grid{grid-template-columns:1fr;gap:32px}
   .hero__obj{order:-1}
   .hero__obj img{max-width:min(66vw,320px);max-height:40svh;width:auto}

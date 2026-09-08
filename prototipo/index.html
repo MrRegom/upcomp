@@ -55,27 +55,35 @@
 
 <main id="principal">
 
-  <!-- ============ 01 · HÉROE — producto sobre negro ============ -->
-  <section class="hero">
-    <div class="marco hero__grid">
-      <div class="hero__texto">
-        <p class="cejilla" data-rev>UpComp · Servicios TI para empresas</p>
-        <h1 class="t-hero" data-rev>Tecnología para mantener activa tu operación</h1>
-        <p class="t-sub" data-rev>Equipamiento, infraestructura, soporte y soluciones TI para empresas en todo Chile.</p>
-        <div class="acciones" data-rev>
-          <a class="btn btn--accion" href="#contacto">Solicitar cotización</a>
-          <a class="btn btn--fantasma" href="https://wa.me/56982794984" target="_blank" rel="noopener">Hablar con un asesor</a>
+  <!-- ============ 01 · HÉROE — producto fijado, el texto cambia por tiempos ============ -->
+  <section class="hero" id="inicio">
+    <div class="hero__pin">
+      <div class="marco hero__grid">
+        <div class="hero__texto">
+          <div class="beat beat--0">
+            <p class="cejilla" data-rev>UpComp · Servicios TI para empresas</p>
+            <h1 class="t-hero" data-rev>Tecnología para mantener activa tu operación</h1>
+            <p class="t-sub" data-rev>Equipamiento, infraestructura, soporte y soluciones TI para empresas en todo Chile.</p>
+            <div class="acciones" data-rev>
+              <a class="btn btn--accion" href="#contacto">Solicitar cotización</a>
+              <a class="btn btn--fantasma" href="https://wa.me/56982794984" target="_blank" rel="noopener">Hablar con un asesor</a>
+            </div>
+          </div>
+          <!-- Las tres palabras son las del pie del héroe; solo se muestran en la secuencia. -->
+          <p class="beat beat--n t-beat" aria-hidden="true">Empresas.</p>
+          <p class="beat beat--n t-beat" aria-hidden="true">Proyectos TI.</p>
+          <p class="beat beat--n t-beat" aria-hidden="true">Cobertura nacional.</p>
         </div>
+
+        <figure class="hero__obj">
+          <img id="heroObj" src="assets/productos-negro/ws-threadripper.webp"
+               alt="Workstation AMD Threadripper" width="580" height="629" fetchpriority="high">
+        </figure>
       </div>
 
-      <figure class="hero__obj">
-        <img id="heroObj" src="assets/productos-negro/ws-threadripper.webp"
-             alt="Workstation AMD Threadripper" width="580" height="629" fetchpriority="high">
-      </figure>
-    </div>
-
-    <div class="marco">
-      <p class="hero__pie">Empresas &nbsp;·&nbsp; Proyectos TI &nbsp;·&nbsp; Cobertura nacional</p>
+      <div class="marco">
+        <p class="hero__pie">Empresas &nbsp;·&nbsp; Proyectos TI &nbsp;·&nbsp; Cobertura nacional</p>
+      </div>
     </div>
   </section>
 
