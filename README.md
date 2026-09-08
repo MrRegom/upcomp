@@ -98,8 +98,7 @@ contienen algo: el formulario, las piezas del carril y el catálogo.
 
 **El héroe dice qué hace UpComp.** No es una foto de un portátil: es un
 conjunto de tres equipos de trabajo reales (Dell Pro Max, ThinkPad P1 y
-P16s) que se arma al cargar, con las cuatro áreas de negocio como etiquetas
-sobre el conjunto. Al hacer scroll cada equipo se desplaza a un ritmo
+P16s) que se arma al cargar. Al hacer scroll cada equipo se desplaza a un ritmo
 distinto según su capa: profundidad con tres fotos planas.
 
 **Intro.** Un segundo con el logo grande y una cortina que sube; recién
@@ -139,6 +138,21 @@ con goma más allá de abierto, hereda la velocidad al soltar y proyecta la
 inercia para decidir si cierra o vuelve. En pantallas angostas es una hoja
 inferior con asa. Los botones responden al presionar y no al soltar, y los
 tamaños de texto van en `rem`.
+
+## Lo que se tomó de Intellicore
+
+Se auditó intellicore.cl (la referencia que UpComp pidió seguir) con el
+navegador: Angular sin librerías de animación, tres keyframes CSS (fundido,
+barra que se dibuja, imagen que entra), transiciones de 0,3 a 0,6 s,
+títulos en Avenir Next Ultra Light en mayúsculas de 32 a 40 px, blanco con
+una banda muy clara, radios de 4 px y casi sin imágenes. Lo adaptado:
+
+- Títulos de sección en Albert Sans Light, mayúsculas y espaciados; el
+  titular del héroe en peso medio. Light solo por encima de 28 px.
+- Una barra vertical verde que se dibuja al entrar, junto a cada solución y
+  cada caso, en lugar de numerales: las cuatro áreas no tienen orden.
+- Fundidos más cortos (0,55 s) y de menos recorrido (12 px).
+- Fuera las etiquetas flotantes sobre los equipos del héroe.
 
 ## Auditoría contra las Human Interface Guidelines
 

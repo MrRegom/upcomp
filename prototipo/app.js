@@ -221,7 +221,6 @@ pinta("#muroPartners",PARTNERS.map(p=>
 
 pinta("#rejillaSoluciones",SOLUCIONES.map(s=>`
   <a class="fila" href="${s.href}" data-rev>
-    <span class="fila__n">${s.n}</span>
     <h3>${esc(s.t)}</h3>
     <p>${esc(s.d)}</p>
     <span class="fila__ir">${esc(s.cta)} ${ico("i-flecha")}</span>
