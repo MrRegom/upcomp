@@ -170,19 +170,23 @@
       <form class="form" id="form" novalidate data-rev>
         <div class="campo">
           <label for="fNombre">Nombre</label>
-          <input id="fNombre" name="nombre" type="text" autocomplete="name" required>
+          <input id="fNombre" name="nombre" type="text" autocomplete="name" required placeholder="Nombre y apellido" aria-describedby="msgNombre">
+          <span class="campo__msg" id="msgNombre" hidden>Falta el nombre.</span>
         </div>
         <div class="campo">
           <label for="fEmpresa">Empresa</label>
-          <input id="fEmpresa" name="empresa" type="text" autocomplete="organization" required>
+          <input id="fEmpresa" name="empresa" type="text" autocomplete="organization" required placeholder="Razón social o nombre de fantasía" aria-describedby="msgEmpresa">
+          <span class="campo__msg" id="msgEmpresa" hidden>Falta la empresa.</span>
         </div>
         <div class="campo">
           <label for="fContacto">Correo o teléfono</label>
-          <input id="fContacto" name="contacto" type="text" autocomplete="email" required>
+          <input id="fContacto" name="contacto" type="text" autocomplete="email" required placeholder="nombre@empresa.cl o +56 9 1234 5678" aria-describedby="msgContacto">
+          <span class="campo__msg" id="msgContacto" hidden>Falta un correo o teléfono para responderte.</span>
         </div>
         <div class="campo">
           <label for="fNecesita">¿Qué necesitas?</label>
-          <textarea id="fNecesita" name="necesita" rows="4" required></textarea>
+          <textarea id="fNecesita" name="necesita" rows="4" required placeholder="Equipos, usuarios, plazo o el proyecto que tienes en mente" aria-describedby="msgNecesita"></textarea>
+          <span class="campo__msg" id="msgNecesita" hidden>Cuéntanos qué necesitas, aunque sea en una línea.</span>
         </div>
         <p class="form__err" id="formErr" role="alert" hidden></p>
         <button class="btn btn--accion btn--full" type="submit">Enviar solicitud</button>

@@ -124,6 +124,34 @@ inercia para decidir si cierra o vuelve. En pantallas angostas es una hoja
 inferior con asa. Los botones responden al presionar y no al soltar, y los
 tamaños de texto van en `rem`.
 
+## Auditoría contra las Human Interface Guidelines
+
+Se revisó el sitio con la skill `apple-design` (revisor basado en las HIG
+de Apple, adaptadas a web). Lo corregido:
+
+- **Tamaño mínimo de texto.** Nada por debajo de 13 px: las cejillas,
+  rótulos, categorías, pie legal y SKU estaban en 12 px, bajo el mínimo de
+  10 pt en escritorio y 11 pt en móvil.
+- **Contraste.** El gris de rótulos daba 4,3:1 sobre la banda gris (mínimo
+  4,5:1 en texto pequeño); ahora `#636368`, 5,5:1.
+- **Color con un solo significado.** El verde señala interacción (botón y
+  enlaces); los numerales del ciclo, que no son interactivos, dejaron de ser
+  verdes. El punto del riel sigue verde porque es un marcador, no texto.
+- **Teclado.** Con el carril fijado, un enlace enfocado quedaba fuera de la
+  zona visible: los enlaces de la fila salen del orden de tabulación y el
+  enlace de la cabecera lleva al mismo destino. Cada enlace dice a qué equipo
+  cotiza para lectores de pantalla.
+- **Formulario.** Validación por campo mientras se escribe, con mensaje
+  propio y `aria-invalid`, foco en el primer campo que falta, y ejemplos en
+  los campos ("nombre@empresa.cl o +56 9 …").
+- **Mayúsculas.** Solo en la cejilla y el rótulo, como recurso deliberado;
+  el resto en frase.
+
+Lo que se anotó y no se cambió: la voz en primera persona del plural ("te
+ayudamos") es la del texto aprobado por UpComp; el menú hamburguesa en móvil
+es la convención web, no la de una app; y no hay modo oscuro porque las
+páginas de producto de Apple tampoco lo tienen.
+
 ## De dónde sale cada contenido
 
 | Sección | Origen |

@@ -143,7 +143,7 @@ function avisar(txt){
   t.textContent=txt;
   t.classList.add("is-ver");
   clearTimeout(tToast);
-  tToast=setTimeout(()=>t.classList.remove("is-ver"),3400);
+  tToast=setTimeout(()=>t.classList.remove("is-ver"),4500);
 }
 
 const waLink=txt=>`https://wa.me/${TELEFONO}?text=${encodeURIComponent(txt)}`;
@@ -249,28 +249,49 @@ pinta("#rejillaCasos",CASOS.map(c=>`
    Cuatro campos y listo. La solicitud sale por WhatsApp con el texto ya
    redactado; no hay CRM detrás todavía. */
 const form=$("#form");
-if(form) form.addEventListener("submit",e=>{
-  e.preventDefault();
-  const d=Object.fromEntries(new FormData(form));
-  const err=$("#formErr");
-  const falta=["nombre","empresa","contacto","necesita"].some(k=>!String(d[k]||"").trim());
+const CAMPOS=["nombre","empresa","contacto","necesita"];
 
-  if(falta){
-    if(err){ err.hidden=false; err.textContent="Completa los cuatro campos para enviar la solicitud."; }
-    return;
-  }
-  if(err) err.hidden=true;
+/* Marca o limpia un campo: clase en el contenedor, aria-invalid en el control
+   y su mensaje propio. El color solo, sin mensaje, no basta. */
+function marcar(inp, mal){
+  const campo=inp.closest(".campo"), msg=campo&&campo.querySelector(".campo__msg");
+  if(campo) campo.classList.toggle("campo--error", mal);
+  inp.setAttribute("aria-invalid", mal ? "true" : "false");
+  if(msg) msg.hidden=!mal;
+}
 
-  const texto=`Hola UpComp.
+if(form){
+  /* Se valida mientras se escribe: el error desaparece en cuanto se corrige. */
+  form.addEventListener("input",e=>{
+    if(e.target.matches("input,textarea") && e.target.value.trim()) marcar(e.target,false);
+  });
+  form.addEventListener("submit",e=>{
+    e.preventDefault();
+    const err=$("#formErr");
+    let primero=null;
+    CAMPOS.forEach(k=>{
+      const inp=form.elements[k]; if(!inp) return;
+      const vacio=!inp.value.trim();
+      marcar(inp,vacio);
+      if(vacio&&!primero) primero=inp;
+    });
+    if(primero){
+      if(err){ err.hidden=false; err.textContent="Faltan datos: revisa los campos marcados."; }
+      primero.focus();
+      return;
+    }
+    if(err) err.hidden=true;
+    const d=Object.fromEntries(new FormData(form));
+    const texto=`Hola UpComp.
 
 Soy ${d.nombre}, de ${d.empresa}.
 Necesito: ${d.necesita}
 
 Pueden contactarme en: ${d.contacto}`;
-
-  open(waLink(texto),"_blank","noopener");
-  avisar("Abrimos WhatsApp con tu solicitud lista para enviar.");
-});
+    open(waLink(texto),"_blank","noopener");
+    avisar("Abrimos WhatsApp con tu solicitud lista para enviar.");
+  });
+}
 
 /* ==========================================================================
    MOVIMIENTO
@@ -370,12 +391,15 @@ pinta("#pista", EQUIPOS.map(e=>`
     <span class="pieza__cat">${esc(e.tag)}</span>
     <h3>${esc(e.t)}</h3>
     <p>${esc(e.specs.join(" · "))}</p>
-    <a class="pieza__ir" href="tienda.html">Cotizar ${ico("i-flecha")}</a>
+    <a class="pieza__ir" href="tienda.html" aria-label="Cotizar ${esc(e.t)}">Cotizar ${ico("i-flecha")}</a>
   </article>`).join(""));
 
 const carril = $("#equipamiento"), pista = $("#pista");
 const carrilFijado = !!carril && !!pista && !quietud && matchMedia("(min-width:981px)").matches;
-if(carrilFijado) carril.classList.add("carril--fijado");
+if(carrilFijado){
+  carril.classList.add("carril--fijado");
+  $$("a", pista).forEach(a=>a.tabIndex=-1);
+}
 let carrilExtra = 0;
 function medirCarril(){
   if(!carrilFijado) return;
