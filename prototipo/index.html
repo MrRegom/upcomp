@@ -10,9 +10,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;500;600;700&display=swap">
-<link rel="preload" as="image" href="assets/productos-negro/dell-pro-max-18.webp">
-<link rel="preload" as="image" href="assets/productos-negro/thinkpad-p1.webp">
-<link rel="preload" as="image" href="assets/productos-negro/thinkpad-p16s.webp">
 <link rel="stylesheet" href="estilos.css">
 </head>
 <body data-pagina="home">
@@ -61,46 +58,31 @@
 
 <main id="principal">
 
-  <!-- ============ 01 · HÉROE — carga coreografiada, luego secuencia por scroll ============ -->
+  <!-- ============ 01 · HÉROE — centrado, tipográfico, con los clientes como prueba ============ -->
   <section class="hero" id="inicio">
     <div class="hero__pin">
-      <div class="marco hero__grid">
+      <div class="marco hero__centro">
         <div class="hero__texto">
           <div class="beat beat--0">
             <p class="cejilla" data-carga="1">UpComp · Servicios TI para empresas</p>
-            <h1 class="t-hero" data-carga="2">Tecnología para mantener activa tu operación</h1>
+            <h1 class="t-hero" data-palabras-carga>Tecnología para mantener activa tu operación</h1>
             <p class="t-sub" data-carga="3">Equipamiento, infraestructura, soporte y soluciones TI para empresas en todo Chile.</p>
             <div class="acciones" data-carga="4">
               <a class="btn btn--accion" href="#contacto">Solicitar cotización</a>
               <a class="btn btn--fantasma" href="https://wa.me/56982794984" target="_blank" rel="noopener">Hablar con un asesor</a>
             </div>
           </div>
-          <!-- Las tres palabras son las del pie del héroe; solo se muestran en la secuencia. -->
+          <!-- Las tres palabras del pie, solo en la secuencia por scroll -->
           <p class="beat beat--n t-beat" aria-hidden="true">Empresas.</p>
           <p class="beat beat--n t-beat" aria-hidden="true">Proyectos TI.</p>
           <p class="beat beat--n t-beat" aria-hidden="true">Cobertura nacional.</p>
         </div>
 
-        <figure class="hero__obj" role="img" aria-label="Equipamiento profesional de UpComp: notebooks de trabajo Dell y Lenovo">
-          <div class="conjunto" id="conjunto">
-            <img class="conjunto__eq conjunto__eq--3" src="assets/productos-negro/thinkpad-p16s.webp" alt="" width="888" height="647" data-carga="eq" data-capa=".35">
-            <img class="conjunto__eq conjunto__eq--2" src="assets/productos-negro/thinkpad-p1.webp" alt="" width="876" height="692" data-carga="eq" data-capa=".6">
-            <img id="heroObj" class="conjunto__eq conjunto__eq--1" src="assets/productos-negro/dell-pro-max-18.webp" alt="" width="843" height="663" fetchpriority="high" data-carga="eq" data-capa="1">
-          </div>
-        </figure>
+        <div class="hero__confian" data-carga="5">
+          <p class="rotulo">Empresas que confían en UpComp</p>
+          <ul class="muro muro--hero" id="muroClientes"></ul>
+        </div>
       </div>
-
-      <div class="marco">
-        <p class="hero__pie" data-carga="5">Empresas &nbsp;·&nbsp; Proyectos TI &nbsp;·&nbsp; Cobertura nacional</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 02 · CLIENTES — banda gris ============ -->
-  <section class="banda banda--gris" id="clientes">
-    <div class="marco">
-      <p class="rotulo" data-rev>Empresas que confían en UpComp</p>
-      <ul class="muro" id="muroClientes"></ul>
     </div>
   </section>
 

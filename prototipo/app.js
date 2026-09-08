@@ -326,6 +326,12 @@ document.addEventListener("animationend", e=>{
   if(e.target && e.target.hasAttribute && e.target.hasAttribute("data-carga")) e.target.classList.add("cargado");
 });
 
+/* El titular entra palabra a palabra: cada palabra es un span con su turno. */
+$$("[data-palabras-carga]").forEach(el=>{
+  el.innerHTML = el.textContent.trim().split(/\s+/).map((w,i)=>
+    `<span class="pc" data-carga="pc" style="--i:${i}">${esc(w)}</span>`).join(" ");
+});
+
 /* ---------- Intro ----------
    Un segundo con el logo y la cortina sube; recién entonces se arma el héroe.
    Se salta con clic, tecla, rueda o toque. Sin script no existe. */
@@ -369,7 +375,7 @@ function revelar(){
    y su interior queda fijado: el producto se asienta mientras el texto cambia
    por tiempos, como en una página de producto de Apple. Sin movimiento, o en
    pantallas angostas, el héroe es una pantalla normal con un leve paralaje. */
-const hero = $(".hero"), heroObj = $("#conjunto") || $("#heroObj"), beats = $$(".beat");
+const hero = $(".hero"), heroObj = $("#conjunto") || $("#heroObj"), beats = $$(".beat"), confian = $(".hero__confian");
 /* La secuencia corre siempre en pantalla ancha. Con menos movimiento se queda
    solo con los fundidos: ni desplazamientos ni escala, que es lo que Apple
    pide para esa preferencia — no que desaparezca la secuencia. */
@@ -383,20 +389,19 @@ const suave = t=>t*t*(3-2*t);
 const VENTANAS = [[.20,.30,.42,.50],[.48,.58,.70,.78],[.76,.86,1.2,1.3]];
 
 function escenaHeroe(){
-  if(!heroObj) return;
-  if(!secuencia){
-    if(quietud) return;
-    const y = Math.min(scrollY, innerHeight);
-    heroObj.style.transform = `translate3d(0,${y * .10}px,0) scale(${1 - y / innerHeight * .06})`;
-    return;
-  }
+  if(!hero || !secuencia) return;
   const p = Math.max(0, Math.min(1, scrollY / Math.max(1, hero.offsetHeight - innerHeight)));
-  if(!quietud) heroObj.style.transform = `translate3d(0,${-p * 24}px,0) scale(${1 - p * .08})`;
 
   const s0 = suave(rampa(p,.04,.24));           /* el primer tiempo se retira */
   beats[0].style.opacity = String(1 - s0);
   if(!quietud) beats[0].style.transform = `translate3d(0,${-s0 * 32}px,0)`;
   beats[0].style.pointerEvents = s0 > .5 ? "none" : "";
+  /* Los logos se retiran con el primer tiempo: las palabras van solas. */
+  if(confian){
+    confian.style.opacity = String(1 - s0);
+    confian.style.pointerEvents = s0 > .5 ? "none" : "";
+    if(!quietud) confian.style.transform = `translate3d(0,${s0 * 24}px,0)`;
+  }
 
   VENTANAS.forEach(([a,b,c,d],i)=>{
     const el = beats[i+1]; if(!el) return;
