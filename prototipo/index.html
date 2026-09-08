@@ -10,6 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&display=swap">
+<link rel="preload" as="image" href="assets/productos-negro/ws-threadripper.webp">
 <link rel="stylesheet" href="estilos.css">
 </head>
 <body data-pagina="home">
@@ -38,9 +39,9 @@
 
     <nav class="barra__nav" id="nav" aria-label="Principal">
       <a href="#soluciones">Soluciones</a>
+      <a href="#equipamiento">Equipamiento</a>
       <a href="#ciclo">Cómo trabajamos</a>
       <a href="#experiencia">Experiencia</a>
-      <a href="tienda.html">Equipamiento</a>
     </nav>
 
     <div class="barra__fin">
@@ -54,16 +55,26 @@
 
 <main id="principal">
 
-  <!-- ============ 01 · HERO — escena negra ============ -->
-  <section class="escena escena--hero">
-    <div class="marco hero">
-      <p class="cejilla">UpComp · Servicios TI para empresas</p>
-      <h1 class="t-hero">Tecnología para mantener activa tu operación</h1>
-      <p class="t-sub">Equipamiento, infraestructura, soporte y soluciones TI para empresas en todo Chile.</p>
-      <div class="acciones">
-        <a class="btn btn--accion" href="#contacto">Solicitar cotización</a>
-        <a class="btn btn--fantasma" href="https://wa.me/56982794984" target="_blank" rel="noopener">Hablar con un asesor</a>
+  <!-- ============ 01 · HÉROE — producto sobre negro ============ -->
+  <section class="hero">
+    <div class="marco hero__grid">
+      <div class="hero__texto">
+        <p class="cejilla" data-rev>UpComp · Servicios TI para empresas</p>
+        <h1 class="t-hero" data-rev>Tecnología para mantener activa tu operación</h1>
+        <p class="t-sub" data-rev>Equipamiento, infraestructura, soporte y soluciones TI para empresas en todo Chile.</p>
+        <div class="acciones" data-rev>
+          <a class="btn btn--accion" href="#contacto">Solicitar cotización</a>
+          <a class="btn btn--fantasma" href="https://wa.me/56982794984" target="_blank" rel="noopener">Hablar con un asesor</a>
+        </div>
       </div>
+
+      <figure class="hero__obj">
+        <img id="heroObj" src="assets/productos-negro/ws-threadripper.webp"
+             alt="Workstation AMD Threadripper" width="580" height="629" fetchpriority="high">
+      </figure>
+    </div>
+
+    <div class="marco">
       <p class="hero__pie">Empresas &nbsp;·&nbsp; Proyectos TI &nbsp;·&nbsp; Cobertura nacional</p>
     </div>
   </section>
@@ -71,52 +82,67 @@
   <!-- ============ 02 · CLIENTES — banda clara ============ -->
   <section class="banda banda--frost" id="clientes">
     <div class="marco">
-      <p class="rotulo">Empresas que confían en UpComp</p>
-      <ul class="muro" id="muroClientes"></ul>
+      <p class="rotulo" data-rev>Empresas que confían en UpComp</p>
+      <ul class="muro" id="muroClientes" data-rev></ul>
     </div>
   </section>
 
-  <!-- ============ 03 · SOLUCIONES — escena negra ============ -->
+  <!-- ============ 03 · SOLUCIONES — lista de filetes, sin tarjetas ============ -->
   <section class="escena" id="soluciones">
     <div class="marco">
-      <h2 class="t-display">Cuatro frentes.<br>Un solo proveedor.</h2>
-      <div class="fichas" id="rejillaSoluciones"></div>
+      <h2 class="t-display" data-rev>Cuatro frentes.<br>Un solo proveedor.</h2>
+      <div class="filas" id="rejillaSoluciones"></div>
     </div>
   </section>
 
-  <!-- ============ 04 · DIFERENCIADOR — escena carbón ============ -->
+  <!-- ============ 04 · EQUIPAMIENTO — escena de producto ============ -->
+  <section class="escena escena--obj" id="equipamiento">
+    <div class="marco obj">
+      <figure class="obj__img" data-rev>
+        <img src="assets/productos-negro/dell-pro-max-18.webp" alt="Dell Pro Max 18 Plus"
+             width="843" height="663" loading="lazy">
+      </figure>
+      <div class="obj__texto">
+        <h2 class="t-display" data-rev>Especificado según la carga real de trabajo.</h2>
+        <p class="t-cuerpo t-cuerpo--ancho" data-rev>Workstations, notebooks profesionales y equipos corporativos de Dell, Lenovo y HP. Definimos la configuración a partir del software, los usuarios y el plazo — no al revés.</p>
+        <p data-rev><a class="enlace" href="tienda.html">Ver equipamiento <svg class="ic" viewBox="0 0 24 24"><use href="#i-flecha"/></svg></a></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 05 · DIFERENCIADOR — secuencia sobre riel ============ -->
   <section class="escena escena--carbon" id="ciclo">
     <div class="marco">
-      <h2 class="t-display">Un solo partner para todo el ciclo tecnológico.</h2>
-      <p class="t-cuerpo t-cuerpo--ancho">Desde la necesidad inicial hasta la continuidad de la solución implementada.</p>
+      <h2 class="t-display" data-rev>Un solo partner para todo el ciclo tecnológico.</h2>
+      <p class="t-cuerpo t-cuerpo--ancho" data-rev>Desde la necesidad inicial hasta la continuidad de la solución implementada.</p>
       <ol class="ciclo" id="pasosCiclo"></ol>
     </div>
   </section>
 
-  <!-- ============ 05 · PARTNERS — banda blanca ============ -->
+  <!-- ============ 06 · PARTNERS — banda blanca ============ -->
   <section class="banda banda--papel" id="partners">
     <div class="marco">
-      <h2 class="t-display t-display--oscuro">Respaldo de fabricante.</h2>
-      <p class="t-cuerpo t-cuerpo--oscuro t-cuerpo--ancho">Trabajamos con fabricantes líderes para entregar soluciones empresariales con respaldo y soporte especializado.</p>
-      <ul class="muro muro--partners" id="muroPartners"></ul>
+      <h2 class="t-display t-display--oscuro" data-rev>Respaldo de fabricante.</h2>
+      <p class="t-cuerpo t-cuerpo--oscuro t-cuerpo--ancho" data-rev>Trabajamos con fabricantes líderes para entregar soluciones empresariales con respaldo y soporte especializado.</p>
+      <ul class="muro muro--partners" id="muroPartners" data-rev></ul>
     </div>
   </section>
 
-  <!-- ============ 06 · EXPERIENCIA — banda blanca ============ -->
+  <!-- ============ 07 · EXPERIENCIA — banda blanca ============ -->
   <section class="banda banda--papel banda--sin-tope" id="experiencia">
     <div class="marco">
-      <h2 class="t-display t-display--oscuro">Proyectos entregados.</h2>
+      <h2 class="t-display t-display--oscuro" data-rev>Proyectos entregados.</h2>
       <div class="casos" id="rejillaCasos"></div>
     </div>
   </section>
 
-  <!-- ============ 07 · CONTACTO — escena negra ============ -->
+  <!-- ============ 08 · CONTACTO — escena negra ============ -->
   <section class="escena" id="contacto">
     <div class="marco contacto">
       <div>
-        <h2 class="t-display">Cuéntanos qué necesita tu empresa.</h2>
-        <p class="t-cuerpo t-cuerpo--ancho">Equipamiento, infraestructura, soporte o un proyecto TI. Cuéntanos el requerimiento y nuestro equipo te ayudará a definir la mejor solución.</p>
-        <ul class="canales">
+        <h2 class="t-display" data-rev>Cuéntanos qué necesita tu empresa.</h2>
+        <p class="t-cuerpo t-cuerpo--ancho" data-rev>Equipamiento, infraestructura, soporte o un proyecto TI. Cuéntanos el requerimiento y nuestro equipo te ayudará a definir la mejor solución.</p>
+        <ul class="canales" data-rev>
           <li>
             <svg class="ic" viewBox="0 0 24 24"><use href="#i-wa"/></svg>
             <a href="https://wa.me/56982794984" target="_blank" rel="noopener">+56 9 8279 4984</a>
@@ -132,7 +158,7 @@
         </ul>
       </div>
 
-      <form class="form" id="form" novalidate>
+      <form class="form" id="form" novalidate data-rev>
         <div class="campo">
           <label for="fNombre">Nombre</label>
           <input id="fNombre" name="nombre" type="text" autocomplete="name" required>

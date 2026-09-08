@@ -217,22 +217,22 @@ pinta("#muroPartners",PARTNERS.map(p=>
   `<li title="${esc(p.n)}"><img src="${p.logo}" alt="${esc(p.n)}" loading="lazy"></li>`).join(""));
 
 pinta("#rejillaSoluciones",SOLUCIONES.map(s=>`
-  <a class="tarjeta" href="${s.href}">
-    <span class="tarjeta__n">${s.n}</span>
+  <a class="fila" href="${s.href}" data-rev>
+    <span class="fila__n">${s.n}</span>
     <h3>${esc(s.t)}</h3>
     <p>${esc(s.d)}</p>
-    <span class="tarjeta__link">${esc(s.cta)} ${ico("i-flecha")}</span>
+    <span class="fila__ir">${esc(s.cta)} ${ico("i-flecha")}</span>
   </a>`).join(""));
 
 pinta("#pasosCiclo",CICLO.map(([t,d],i)=>`
-  <li>
+  <li data-rev>
     <span class="ciclo__n">0${i+1}</span>
     <h3>${esc(t)}</h3>
     <p>${esc(d)}</p>
   </li>`).join(""));
 
 pinta("#rejillaCasos",CASOS.map(c=>`
-  <article class="caso">
+  <article class="caso" data-rev>
     <div class="caso__logo">${c.logo
       ? `<img src="${c.logo}" alt="${esc(c.n)}" loading="lazy">`
       : `<span>${esc(c.n)}</span>`}</div>
@@ -268,6 +268,52 @@ Pueden contactarme en: ${d.contacto}`;
   open(waLink(texto),"_blank","noopener");
   avisar("Abrimos WhatsApp con tu solicitud lista para enviar.");
 });
+
+/* ==========================================================================
+   MOVIMIENTO
+   El estado oculto lo pone JavaScript, nunca el CSS: si el script falla o el
+   sistema pide menos movimiento, la página queda visible desde el principio.
+   Se usa un chequeo por scroll y no IntersectionObserver porque el observer
+   no dispara en algunos contenedores embebidos, y ahí el contenido quedaría
+   invisible para siempre.
+   ========================================================================== */
+
+const quietud = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const revelables = quietud ? [] : $$("[data-rev]");
+
+revelables.forEach(el=>{
+  el.classList.add("rev");
+  const hermanos = [...el.parentElement.children].filter(x=>x.hasAttribute("data-rev"));
+  const i = hermanos.indexOf(el);
+  if(i > 0) el.style.transitionDelay = (i * 70) + "ms";
+});
+
+function revelar(){
+  for(const el of revelables){
+    if(el.classList.contains("is-ver")) continue;
+    const r = el.getBoundingClientRect();
+    if(r.top < innerHeight * .88 && r.bottom > 0) el.classList.add("is-ver");
+  }
+}
+
+/* El producto del héroe se aleja un poco al hacer scroll: le da profundidad
+   a la escena sin que nada se mueva de su sitio. */
+const heroObj = $("#heroObj");
+function flotarHeroe(){
+  if(!heroObj || quietud) return;
+  const y = Math.min(scrollY, innerHeight);
+  heroObj.style.transform = `translate3d(0,${y * .10}px,0) scale(${1 - y / innerHeight * .06})`;
+}
+
+let pendienteMov = false;
+function alScrollMov(){
+  pendienteMov = false;
+  revelar();
+  flotarHeroe();
+}
+addEventListener("scroll",()=>{ if(!pendienteMov){ pendienteMov = true; requestAnimationFrame(alScrollMov); } },{passive:true});
+addEventListener("resize",alScrollMov,{passive:true});
+alScrollMov();
 
 /* ==========================================================================
    CATÁLOGO — solo en tienda.html

@@ -16,6 +16,7 @@ upcomp/
 │   ├── estilos.css           diseño (compartido)
 │   ├── app.js                contenido + lógica (compartido)
 │   └── assets/               logos y fotos reales de upcomp.cl
+│       └── productos-negro/    las mismas fotos, sin el fondo blanco
 ├── web/                    versión anterior en Next.js (referencia)
 ├── documentacion/
 │   ├── UpComp_Portafolio_2026.pdf
@@ -35,13 +36,14 @@ El orden es una ruta de decisión:
 
 | | Bloque | Función |
 | --- | --- | --- |
-| 01 | Hero | Propuesta de valor y dos llamadas a la acción |
+| 01 | Héroe | Producto flotando sobre negro, propuesta de valor y dos acciones |
 | 02 | Clientes | Prueba social inmediata, antes de cualquier explicación |
-| 03 | Soluciones | Cuatro áreas, sin catálogo |
-| 04 | Diferenciador | Evaluamos → Diseñamos → Implementamos → Soportamos |
-| 05 | Partners | Respaldo de fabricante |
-| 06 | Experiencia | Tres proyectos con contexto |
-| 07 | Contacto | Formulario de cuatro campos y canales directos |
+| 03 | Soluciones | Cuatro frentes en filas con filete — no en tarjetas |
+| 04 | Equipamiento | Escena de producto: imagen a un lado, texto al otro |
+| 05 | Diferenciador | Evaluamos → Diseñamos → Implementamos → Soportamos, sobre un riel |
+| 06 | Partners | Respaldo de fabricante |
+| 07 | Experiencia | Tres proyectos con contexto |
+| 08 | Contacto | Formulario de cuatro campos y canales directos |
 
 Lo que se retiró de la portada: pantalla de bienvenida, ecosistema, "nuestra
 mirada", "cuatro datos", "qué información incluir", FAQ, la sección de
@@ -92,7 +94,26 @@ Radios restringidos a propósito: 10 px enlaces y campos, 28 px tarjetas,
 profundidad sale del contraste entre superficies. El único degradado del
 sistema es el negro a carbón del héroe.
 
-Ritmo de página: negro → claro → negro → carbón → blanco → blanco → negro.
+Ritmo de página: negro → claro → negro → negro → carbón → blanco → blanco → negro.
+
+**Producto sobre negro.** Las fotos de upcomp.cl vienen recortadas sobre fondo
+blanco, que sobre una escena negra se vería como un bloque. Se les quitó el
+fondo por relleno de inundación desde los bordes (así las pantallas
+encendidas del interior se conservan) y se guardaron como WebP con
+transparencia en `assets/productos-negro/`. Son las que flotan en el héroe y
+en la escena de equipamiento. El catálogo sigue usando las originales sobre
+lienzo claro.
+
+**Sin grillas de tarjetas.** Las soluciones son filas separadas por un filete
+de 1px, el ciclo son cuatro pasos sobre un riel y los casos son columnas con
+filete. La grilla de cajas redondeadas es el patrón que delata una página
+generada, y la referencia lo prohíbe. Los 28px de radio se reservan para
+superficies que contienen algo: el formulario y las tarjetas del catálogo.
+
+**Movimiento.** Los bloques suben y aparecen al entrar en pantalla, en
+cascada, y el producto del héroe se aleja un poco al hacer scroll. El estado
+oculto lo pone JavaScript: si falla el script o el sistema pide menos
+movimiento, la página queda visible desde el principio.
 
 ## De dónde sale cada contenido
 

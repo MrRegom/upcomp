@@ -48,6 +48,7 @@
   --r-pill:980px;
 
   --marco:1120px;
+  --barra-alto:88px;
   --transicion:.25s cubic-bezier(.28,.11,.32,1);
 }
 
@@ -93,9 +94,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
    Tipografía — la escala de Apple: el tracking se cierra al crecer el cuerpo
    ========================================================================== */
 .t-hero{
-  font-size:clamp(2.75rem,7.6vw,5rem);
-  font-weight:700;line-height:1.05;letter-spacing:-.028em;
-  color:var(--frost);text-wrap:balance;max-width:15ch;
+  font-size:clamp(2.5rem,5.4vw,4.5rem);
+  font-weight:700;line-height:1.04;letter-spacing:-.028em;
+  color:var(--frost);text-wrap:balance;max-width:13ch;
 }
 .t-display{
   font-size:clamp(2rem,5vw,3.5rem);
@@ -166,20 +167,58 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 body.menu-abierto{overflow:hidden}
 
 /* ==========================================================================
-   01 · Héroe — escena a pantalla completa, texto abajo a la izquierda
+   01 · Héroe — el producto flota sobre negro, el texto queda a la izquierda
    ========================================================================== */
-.escena--hero{
-  min-height:100svh;display:flex;align-items:flex-end;
-  padding:160px 0 clamp(48px,7vw,88px);
-  /* El único degradado que admite el sistema: negro a carbón. */
-  background:linear-gradient(180deg,var(--negro) 0%,var(--negro) 55%,var(--carbon) 100%);
+.hero{
+  position:relative;background:var(--negro);
+  min-height:100svh;display:flex;flex-direction:column;justify-content:center;
+  padding:calc(var(--barra-alto) + 40px) 0 clamp(24px,4vw,40px);
+  overflow:hidden;
 }
-.hero{width:100%}
+.hero__grid{
+  flex:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
+  align-items:center;gap:clamp(24px,4vw,56px);
+}
+/* margin-inline:auto de .marco consume el espacio libre del contenedor flex,
+   asi que el hijo se encoge a su contenido en vez de estirarse. */
+.hero > .marco{width:100%}
+.hero__texto{position:relative;z-index:2}
+
+.hero__obj{margin:0;position:relative;display:grid;place-items:center}
+/* Charco de luz de estudio: es lo que asienta el producto sobre el negro.
+   No es un fondo decorativo — hace el papel de la iluminación de la foto. */
+.hero__obj::before{
+  content:"";position:absolute;inset:-14% -6%;
+  background:radial-gradient(closest-side,rgba(120,150,135,.20),rgba(0,0,0,0) 72%);
+  z-index:0;
+}
+.hero__obj img{
+  position:relative;z-index:1;width:auto;max-width:min(46vw,480px);max-height:62svh;
+  will-change:transform;
+}
 .hero__pie{
-  margin-top:clamp(48px,7vw,88px);padding-top:24px;
-  border-top:1px solid var(--humo);
+  padding-top:24px;border-top:1px solid var(--humo);
   font-size:12px;letter-spacing:.02em;color:var(--platino);
 }
+
+/* ==========================================================================
+   Escena de producto — imagen a un lado, texto al otro
+   ========================================================================== */
+.escena--obj{overflow:hidden}
+.obj{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:center;gap:clamp(32px,6vw,80px)}
+.obj__img{margin:0;position:relative;display:grid;place-items:center}
+.obj__img::before{
+  content:"";position:absolute;inset:-16% -8%;
+  background:radial-gradient(closest-side,rgba(120,150,135,.16),rgba(0,0,0,0) 72%);
+}
+.obj__img img{position:relative;width:100%;max-width:560px;height:auto}
+
+.enlace{
+  display:inline-flex;align-items:center;gap:8px;margin-top:28px;
+  font-size:17px;font-weight:600;color:var(--verde-halo);
+}
+.enlace .ic{width:18px;height:18px;transition:transform var(--transicion)}
+.enlace:hover .ic{transform:translateX(4px)}
 
 /* ==========================================================================
    Muros de logotipos
@@ -200,50 +239,54 @@ body.menu-abierto{overflow:hidden}
 .muro--partners img{max-height:32px;max-width:130px}
 
 /* ==========================================================================
-   03 · Fichas de solución — tarjetas obsidiana, radio 28, sin sombra
+   03 · Soluciones — filas separadas por filete de 1px.
+   Deliberadamente NO es una grilla de tarjetas redondeadas: ese patrón es el
+   que delata una página generada, y la referencia lo prohibe de plano.
    ========================================================================== */
-.fichas{margin-top:clamp(48px,6vw,72px);display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
-.tarjeta{
-  background:var(--obsidiana);border-radius:var(--r-card);
-  padding:clamp(28px,3.5vw,48px);
-  display:flex;flex-direction:column;gap:12px;min-height:280px;
-  transition:background var(--transicion);
+.filas{margin-top:clamp(40px,5vw,64px);border-top:1px solid var(--humo)}
+.fila{
+  display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1.1fr) auto;
+  align-items:baseline;gap:clamp(16px,3vw,40px);
+  padding:clamp(28px,3.4vw,44px) 0;border-bottom:1px solid var(--humo);
+  transition:opacity var(--transicion);
 }
-.tarjeta:hover{background:#26262a}
-.tarjeta__n{font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--platino)}
-.tarjeta h3{font-size:clamp(1.5rem,2.4vw,2rem);font-weight:700;line-height:1.14;letter-spacing:-.022em;color:var(--frost)}
-.tarjeta p{font-size:17px;line-height:1.47;color:var(--platino);max-width:32ch}
-.tarjeta__link{
-  margin-top:auto;padding-top:32px;display:inline-flex;align-items:center;gap:8px;
-  font-size:17px;font-weight:600;color:var(--verde-halo);
-}
-.tarjeta__link .ic{width:18px;height:18px;transition:transform var(--transicion)}
-.tarjeta:hover .tarjeta__link .ic{transform:translateX(4px)}
+.fila:hover{opacity:.72}
+.fila__n{font-size:14px;font-weight:600;letter-spacing:.06em;color:var(--platino);font-variant-numeric:tabular-nums}
+.fila h3{font-size:clamp(1.5rem,2.6vw,2rem);font-weight:700;line-height:1.14;letter-spacing:-.022em;color:var(--frost)}
+.fila p{font-size:17px;line-height:1.47;color:var(--platino)}
+.fila__ir{display:inline-flex;align-items:center;gap:8px;font-size:17px;font-weight:600;color:var(--verde-halo);white-space:nowrap}
+.fila__ir .ic{width:18px;height:18px;transition:transform var(--transicion)}
+.fila:hover .fila__ir .ic{transform:translateX(4px)}
 
 /* ==========================================================================
-   04 · Ciclo — cuatro pasos con numeral grande
+   04 · Ciclo — cuatro pasos sobre un riel, sin cajas
    ========================================================================== */
-.ciclo{margin-top:clamp(48px,6vw,72px);display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.ciclo li{background:var(--negro);border-radius:var(--r-card);padding:clamp(24px,2.6vw,32px);display:flex;flex-direction:column;gap:10px}
-.ciclo__n{font-size:44px;font-weight:700;line-height:1;letter-spacing:-.03em;color:var(--accion);font-variant-numeric:tabular-nums}
-.ciclo h3{margin-top:12px;font-size:21px;font-weight:600;letter-spacing:-.018em;color:var(--frost)}
-.ciclo p{font-size:14px;line-height:1.43;letter-spacing:-.015em;color:var(--platino)}
+.ciclo{
+  margin-top:clamp(48px,6vw,80px);display:grid;grid-template-columns:repeat(4,1fr);
+  gap:clamp(20px,3vw,40px);
+}
+.ciclo li{position:relative;padding-top:32px;border-top:1px solid var(--humo)}
+/* Punto sobre el riel: marca el paso sin necesidad de una tarjeta. */
+.ciclo li::before{
+  content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;
+  border-radius:var(--r-pill);background:var(--accion);
+}
+.ciclo__n{font-size:12px;font-weight:600;letter-spacing:.1em;color:var(--accion);font-variant-numeric:tabular-nums}
+.ciclo h3{margin-top:14px;font-size:clamp(1.25rem,2vw,1.6rem);font-weight:700;letter-spacing:-.02em;color:var(--frost)}
+.ciclo p{margin-top:10px;font-size:14px;line-height:1.43;letter-spacing:-.015em;color:var(--platino)}
 
 /* ==========================================================================
-   06 · Casos — bandas claras
+   06 · Casos — columnas separadas por filete, sin tarjetas
    ========================================================================== */
-.casos{margin-top:clamp(40px,5vw,64px);display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.caso{
-  background:var(--frost);border-radius:var(--r-card);
-  padding:clamp(28px,3vw,40px);display:flex;flex-direction:column;gap:28px;
-}
-.caso__logo{height:36px;display:flex;align-items:center}
-/* brightness ademas de grayscale: el logo de Marimaca es gris claro y sobre
-   la tarjeta frost quedaba casi invisible. */
-.caso__logo img{max-height:36px;max-width:160px;width:auto;object-fit:contain;filter:grayscale(1) brightness(.55)}
+.casos{margin-top:clamp(40px,5vw,64px);display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,56px)}
+.caso{padding-top:28px;border-top:1px solid var(--linea-clara);display:flex;flex-direction:column;gap:24px}
+.caso__logo{height:34px;display:flex;align-items:center}
+/* brightness además de grayscale: el logo de Marimaca es gris claro y sobre
+   la banda blanca quedaba casi invisible. */
+.caso__logo img{max-height:34px;max-width:160px;width:auto;object-fit:contain;filter:grayscale(1) brightness(.5)}
 .caso__logo span{font-size:21px;font-weight:700;letter-spacing:-.022em;color:var(--gris-texto)}
-.caso h3{font-size:21px;font-weight:600;letter-spacing:-.018em;color:var(--obsidiana)}
-.caso p{margin-top:6px;font-size:14px;line-height:1.43;letter-spacing:-.015em;color:var(--gris-texto)}
+.caso h3{font-size:clamp(1.25rem,2vw,1.5rem);font-weight:700;letter-spacing:-.02em;color:var(--obsidiana)}
+.caso p{margin-top:8px;font-size:14px;line-height:1.43;letter-spacing:-.015em;color:var(--gris-texto)}
 
 /* ==========================================================================
    07 · Contacto
@@ -428,7 +471,6 @@ body.menu-abierto{overflow:hidden}
   /* Con el nav fuera del flujo, los controles se pegaban al logo. */
   .barra__fin{margin-left:auto}
 
-  .fichas{grid-template-columns:1fr}
   .contacto{grid-template-columns:1fr}
   .ficha{grid-template-columns:1fr}
   /* En una columna la foto cuadrada llenaba la pantalla y empujaba las
@@ -441,10 +483,29 @@ body.menu-abierto{overflow:hidden}
   .catalogo{grid-template-columns:1fr}
   .pie__cols{grid-template-columns:1fr}
   .acciones .btn{width:100%}
-  .tarjeta{min-height:0}
 }
 
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+
+/* ==========================================================================
+   Revelado al entrar en pantalla
+   El estado oculto lo agrega JavaScript: si el script falla o el sistema pide
+   menos movimiento, todo queda visible desde el principio.
+   ========================================================================== */
+.rev{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.28,.11,.32,1),transform .7s cubic-bezier(.28,.11,.32,1)}
+.rev.is-ver{opacity:1;transform:none}
+
+@media (max-width:980px){
+  .hero{min-height:auto;padding-top:calc(var(--barra-alto) + 24px)}
+  .hero__grid{grid-template-columns:1fr;gap:32px}
+  .hero__obj{order:-1}
+  .hero__obj img{max-width:min(66vw,320px);max-height:40svh;width:auto}
+  .obj{grid-template-columns:1fr;gap:32px}
+  .obj__img img{max-width:min(78vw,420px)}
+  .fila{grid-template-columns:44px minmax(0,1fr);gap:12px 16px}
+  .fila p{grid-column:2}
+  .fila__ir{grid-column:2;margin-top:6px}
 }
