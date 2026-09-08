@@ -286,6 +286,18 @@ Pueden contactarme en: ${d.contacto}`;
    se respeta la preferencia. */
 const forzarMovimiento = new URLSearchParams(location.search).has("movimiento");
 const quietud = !forzarMovimiento && matchMedia("(prefers-reduced-motion: reduce)").matches;
+if(forzarMovimiento) document.body.classList.add("forzado");
+
+/* Las fotos sin fondo (WebP con transparencia) valen para cualquier superficie. */
+const recorte = e => e.img.replace("productos/","productos-negro/").replace(".jpg",".webp");
+
+/* Coreografía de carga: las piezas del héroe entran por turno. Al terminar
+   cada animación se retira, para que su último cuadro no pise los transforms
+   que el scroll aplica después. */
+document.body.classList.add("is-cargada");
+document.addEventListener("animationend", e=>{
+  if(e.target && e.target.hasAttribute && e.target.hasAttribute("data-carga")) e.target.classList.add("cargado");
+});
 /* Con menos movimiento el CSS convierte el revelado en un fundido; no se apaga. */
 const revelables = $$("[data-rev]");
 
@@ -347,11 +359,71 @@ function escenaHeroe(){
   });
 }
 
+/* ---------- Carril de equipamiento ----------
+   En pantalla ancha y con movimiento, la sección mide una pantalla más el
+   ancho sobrante de la fila; su interior queda fijado y la fila se desplaza
+   en horizontal a medida que se baja. Si no, es una tira con desplazamiento
+   nativo y ajuste por pieza. */
+pinta("#pista", EQUIPOS.map(e=>`
+  <article class="pieza">
+    <div class="pieza__foto"><img src="${recorte(e)}" alt="${esc(e.t)}" loading="lazy"></div>
+    <span class="pieza__cat">${esc(e.tag)}</span>
+    <h3>${esc(e.t)}</h3>
+    <p>${esc(e.specs.join(" · "))}</p>
+    <a class="pieza__ir" href="tienda.html">Cotizar ${ico("i-flecha")}</a>
+  </article>`).join(""));
+
+const carril = $("#equipamiento"), pista = $("#pista");
+const carrilFijado = !!carril && !!pista && !quietud && matchMedia("(min-width:981px)").matches;
+if(carrilFijado) carril.classList.add("carril--fijado");
+let carrilExtra = 0;
+function medirCarril(){
+  if(!carrilFijado) return;
+  carrilExtra = Math.max(0, pista.scrollWidth - pista.clientWidth);
+  carril.style.height = (innerHeight + carrilExtra) + "px";
+}
+function moverCarril(){
+  if(!carrilFijado || !carrilExtra) return;
+  const p = Math.max(0, Math.min(1, -carril.getBoundingClientRect().top / carrilExtra));
+  pista.style.transform = `translate3d(${-p * carrilExtra}px,0,0)`;
+}
+
+/* ---------- Texto que se ilumina palabra por palabra ----------
+   La escena negra queda fijada dos pantallas: cada palabra pasa de 18% a
+   100% de opacidad en orden, y al final aparecen los cuatro pasos. */
+$$("[data-palabras]").forEach(el=>{
+  el.innerHTML = el.textContent.trim().split(/\s+/).map(w=>`<span class="pal">${esc(w)}</span>`).join(" ");
+});
+const fijada = $(".escena--fijada");
+const pals = fijada ? $$(".pal", fijada) : [];
+const pasosCiclo = $("#pasosCiclo");
+const fijadaActiva = !!fijada && pals.length > 0 && !quietud && matchMedia("(min-width:981px)").matches;
+if(fijadaActiva) fijada.classList.add("is-fijada");
+function iluminar(){
+  if(!fijadaActiva) return;
+  const rec = Math.max(1, fijada.offsetHeight - innerHeight);
+  const p = Math.max(0, Math.min(1, -fijada.getBoundingClientRect().top / rec));
+  const n = pals.length;
+  pals.forEach((el,i)=>{
+    const a = (i / n) * .66, b = a + .07;
+    el.style.opacity = String(.18 + .82 * suave(rampa(p,a,b)));
+  });
+  if(pasosCiclo){
+    const q = suave(rampa(p,.70,.92));
+    pasosCiclo.style.opacity = String(q);
+    pasosCiclo.style.transform = `translate3d(0,${(1 - q) * 32}px,0)`;
+  }
+}
+medirCarril();
+addEventListener("resize", medirCarril, {passive:true});
+
 let pendienteMov = false;
 function alScrollMov(){
   pendienteMov = false;
   revelar();
   escenaHeroe();
+  moverCarril();
+  iluminar();
 }
 addEventListener("scroll",()=>{ if(!pendienteMov){ pendienteMov = true; requestAnimationFrame(alScrollMov); } },{passive:true});
 addEventListener("resize",alScrollMov,{passive:true});
@@ -372,7 +444,7 @@ const totalItems=()=>cotizacion.reduce((a,x)=>a+x.cant,0);
 function pintarCatalogo(){
   pinta("#catalogo",EQUIPOS.map((e,i)=>`
     <article class="eq">
-      <div class="eq__foto"><img src="${e.img}" alt="${esc(e.t)}" loading="lazy"></div>
+      <div class="eq__foto"><img src="${recorte(e)}" alt="${esc(e.t)}" loading="lazy"></div>
       <div class="eq__cuerpo">
         <span class="eq__cat">${esc(e.tag)}</span>
         <h3>${esc(e.t)}</h3>
@@ -392,7 +464,7 @@ function pintarCarro(){
   pinta("#carroCuerpo",cotizacion.length?cotizacion.map(x=>{
     const e=EQUIPOS[x.i];
     return `<div class="item">
-      <img src="${e.img}" alt="" loading="lazy">
+      <img src="${recorte(e)}" alt="" loading="lazy">
       <h3>${esc(e.t)}</h3>
       <div class="item__cant">
         <button data-menos="${x.i}" aria-label="Quitar una unidad">−</button>
@@ -566,7 +638,7 @@ function pintarFicha(i){
 
   pinta("#fichaCuerpo",`
     <div class="ficha">
-      <div class="ficha__foto"><img src="${e.img}" alt="${esc(e.t)}"></div>
+      <div class="ficha__foto"><img src="${recorte(e)}" alt="${esc(e.t)}"></div>
       <div>
         ${f?`<p class="ficha__sku">SKU ${esc(f.sku)}</p>`:""}
         <h2>${esc(e.t)}</h2>

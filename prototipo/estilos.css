@@ -1,50 +1,55 @@
 /* ==========================================================================
-   UpComp — vitrina oscura
+   UpComp — vitrina clara
 
-   Sistema tomado de la página de producto de Apple y adaptado a UpComp:
-   escenas negras a pantalla completa, tipografía enorme con tracking
-   negativo, bandas claras alternadas, radios restringidos (10 / 28 / 36 /
-   980) y CERO sombras — la profundidad sale del contraste entre superficies.
+   Blanco y gris claro como una página de producto de Apple, el producto en
+   fotografía sobre blanco con su propia sombra, una sola escena negra para
+   el contraste, y geometría de Windows moderno: 4 px en controles, 8 px en
+   superficies. Un solo color de acción: el verde de UpComp.
 
-   La única diferencia deliberada con la referencia: donde Apple pone su azul
-   #0071e3 como el único botón lleno de la página, aquí va el verde de
-   UpComp. Un solo color de acción en todo el sitio.
-
-   Monotema oscuro por decisión: cada color se declara explícito y no se
-   hereda del navegador.
+   Movimiento: coreografía de carga en el héroe, secuencia fijada por scroll,
+   fila de equipos que se desplaza en horizontal, y texto que se ilumina
+   palabra por palabra en la escena negra. Todo parte visible: el estado
+   oculto lo pone JavaScript, y con menos movimiento quedan solo fundidos.
    ========================================================================== */
 
 :root{
-  color-scheme: dark;
+  color-scheme: light;
 
-  /* Superficies — nivel 0 a 5 */
-  --negro:#000000;        /* escenas, héroe, pie */
-  --carbon:#111111;       /* un paso sobre el negro */
-  --obsidiana:#1d1d1f;    /* tarjetas sobre escena oscura */
-  --grafito:#333336;      /* paneles elevados, campos */
-  --humo:#424245;         /* filetes sobre oscuro */
-  --frost:#f5f5f7;        /* texto sobre oscuro · banda clara suave */
-  --papel:#ffffff;        /* banda clara plena */
+  /* Superficies claras */
+  --fondo:#ffffff;
+  --banda:#f5f5f7;
+  --linea:#d2d2d7;
+  --linea-suave:#e8e8ed;
 
-  /* Texto */
-  --platino:#86868b;      /* texto secundario sobre oscuro, pies de foto */
-  --gris-texto:#57575c;   /* cuerpo sobre claro — 7,2:1 */
-  --linea-clara:#d2d2d7;
+  /* Tinta sobre claro */
+  --tinta:#1d1d1f;
+  --tinta-2:#57575c;      /* cuerpo — 7,2:1 */
+  --tinta-3:#6e6e73;      /* rótulos y pies — 4,6:1 */
 
-  /* Acción — el verde de UpComp en el rol del azul de Apple */
+  /* La escena oscura */
+  --negro:#000000;
+  --carbon:#111111;
+  --obsidiana:#1d1d1f;
+  --humo:#424245;
+  --frost:#f5f5f7;
+  --platino:#86868b;
+
+  /* Acción — el verde de UpComp */
   --accion:#36B85C;
   --accion-alta:#4ED473;
-  --accion-tinta:#04120A; /* texto sobre el verde — 7,4:1 */
-  --verde-halo:#5BD97F;   /* enlaces sobre oscuro */
-  --verde-link:#15703B;   /* enlaces sobre claro — 6,1:1 */
+  /* El botón lleno usa el verde profundo con texto blanco: el verde vivo
+     con texto negro se lee como juguete. El vivo queda para puntos y contador. */
+  --accion-fondo:#15703B;
+  --accion-fondo-alta:#1B8A49;
+  --accion-tinta:#04120A; /* 7,4:1 sobre el verde */
+  --verde-link:#15703B;   /* 6,1:1 sobre blanco */
+  --verde-halo:#5BD97F;   /* enlaces sobre negro */
 
-  /* Tipografía: la marca en los titulares, la fuente del sistema en la
-     interfaz (Segoe UI Variable en Windows, SF en Mac). */
+  /* Tipografía: la marca en titulares, la fuente del sistema en la interfaz */
   --display:"Albert Sans","Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
   --ui:"Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;
 
-  /* Radios — geometría de Windows moderno (Fluent): 4 px en controles,
-     8 px en superficies. Lo redondo queda solo para puntos y contadores. */
+  /* Geometría Fluent */
   --r-link:4px;
   --r-card:8px;
   --r-btn:4px;
@@ -54,15 +59,16 @@
   --marco:1120px;
   --barra-alto:64px;
   --transicion:.25s cubic-bezier(.28,.11,.32,1);
+  --curva:cubic-bezier(.2,.8,.2,1);
 }
 
 /* ---------- Base ---------- */
 *,*::before,*::after{box-sizing:border-box}
-html{overflow-x:hidden;scroll-behavior:smooth;scroll-padding-top:100px;-webkit-text-size-adjust:100%}
+html{overflow-x:hidden;scroll-behavior:smooth;scroll-padding-top:calc(var(--barra-alto) + 16px);-webkit-text-size-adjust:100%}
 body{
   margin:0;
-  background:var(--negro);
-  color:var(--frost);
+  background:var(--fondo);
+  color:var(--tinta);
   font-family:var(--ui);
   font-size:1.0625rem;
   line-height:1.47;
@@ -75,287 +81,296 @@ h1,h2,h3,p,ul,ol{margin:0}
 ul,ol{list-style:none;padding:0}
 a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-:focus-visible{outline:2px solid var(--accion);outline-offset:3px;border-radius:var(--r-link)}
+:focus-visible{outline:2px solid var(--verde-link);outline-offset:3px;border-radius:var(--r-link)}
 ::selection{background:var(--accion);color:var(--accion-tinta)}
+h1,h2,h3,.t-beat{font-family:var(--display)}
 
-.saltar{position:absolute;left:-999px;top:0;z-index:200;background:var(--frost);color:var(--negro);padding:12px 20px;border-radius:var(--r-btn);font-weight:600}
+.saltar{position:absolute;left:-999px;top:0;z-index:200;background:var(--tinta);color:var(--fondo);padding:12px 20px;border-radius:var(--r-btn);font-weight:600}
 .saltar:focus{left:12px;top:12px}
 .ic{width:20px;height:20px;flex:none;display:block}
 
 /* ==========================================================================
-   Ritmo de página — escenas oscuras y bandas claras alternadas
+   Ritmo: bandas blancas y grises; una escena negra
    ========================================================================== */
 .marco{max-width:var(--marco);margin-inline:auto;padding-inline:clamp(20px,5vw,40px)}
 
-.escena{background:var(--negro);padding:clamp(80px,11vw,160px) 0}
-.escena--carbon{background:var(--carbon)}
-.banda{padding:clamp(72px,10vw,140px) 0}
-.banda--frost{background:var(--frost)}
-.banda--papel{background:var(--papel)}
-.banda--sin-tope{padding-top:0}
+.banda{background:var(--fondo);padding:clamp(72px,10vw,140px) 0}
+.banda--gris{background:var(--banda)}
+.escena{background:var(--negro);color:var(--frost)}
 
 /* ==========================================================================
-   Tipografía — la escala de Apple: el tracking se cierra al crecer el cuerpo
+   Tipografía — el tracking se cierra al crecer el cuerpo
    ========================================================================== */
 .t-hero{
   font-size:clamp(2.5rem,5.4vw,4.5rem);
-  font-weight:700;line-height:1.04;letter-spacing:-.028em;
-  color:var(--frost);text-wrap:balance;max-width:13ch;
+  font-weight:700;line-height:1.04;letter-spacing:-.03em;
+  color:var(--tinta);text-wrap:balance;max-width:13ch;
 }
 .t-display{
   font-size:clamp(2rem,5vw,3.5rem);
-  font-weight:700;line-height:1.07;letter-spacing:-.025em;
-  color:var(--frost);text-wrap:balance;max-width:18ch;
+  font-weight:700;line-height:1.07;letter-spacing:-.028em;
+  color:var(--tinta);text-wrap:balance;max-width:18ch;
 }
-.t-display--oscuro{color:var(--obsidiana)}
+.t-display--xl{font-size:clamp(2.25rem,5.8vw,4.5rem);max-width:15ch}
+.escena .t-display{color:var(--frost)}
 
 .t-sub{
   margin-top:24px;font-size:clamp(1.0625rem,1.9vw,1.5rem);
   font-weight:400;line-height:1.38;letter-spacing:-.015em;
-  color:var(--platino);max-width:34ch;
+  color:var(--tinta-2);max-width:34ch;
 }
-.t-cuerpo{margin-top:20px;font-size:1.0625rem;line-height:1.47;color:var(--platino)}
-.t-cuerpo--oscuro{color:var(--gris-texto)}
+.t-cuerpo{margin-top:20px;font-size:1.0625rem;line-height:1.47;color:var(--tinta-2)}
 .t-cuerpo--ancho{max-width:46ch}
+.t-cuerpo--lg{font-size:clamp(1.125rem,2vw,1.5rem);line-height:1.35;max-width:36ch}
+.escena .t-cuerpo{color:var(--platino)}
 
-.cejilla{
-  font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--platino);margin-bottom:28px;
-}
-.rotulo{
-  font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--gris-texto);margin-bottom:48px;
-}
+.cejilla{font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-3);margin-bottom:28px}
+.rotulo{font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta-3);margin-bottom:48px}
 
 /* ==========================================================================
-   Botones — un solo botón lleno cromático en toda la página
+   Botones — Fluent: 4 px, un solo botón lleno cromático
    ========================================================================== */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
   min-height:44px;padding:10px 20px;border-radius:var(--r-btn);
   font-family:var(--ui);font-size:.9375rem;font-weight:600;
   border:1px solid transparent;
-  transition:background var(--transicion),border-color var(--transicion),color var(--transicion);
+  transition:background var(--transicion),border-color var(--transicion),color var(--transicion),transform .18s var(--curva);
 }
-.btn--sm{min-height:36px;padding:8px 18px;font-size:.875rem;letter-spacing:-.015em}
+.btn--sm{min-height:36px;padding:8px 16px;font-size:.875rem}
 .btn--full{width:100%}
-.btn--accion{background:var(--accion);color:var(--accion-tinta);border-color:var(--accion);border-bottom-color:rgba(0,0,0,.28)}
-.btn--accion:hover{background:var(--accion-alta);border-color:var(--accion-alta);border-bottom-color:rgba(0,0,0,.28)}
-.btn--fantasma{background:rgba(255,255,255,.06);color:var(--frost);border-color:rgba(255,255,255,.09);border-bottom-color:rgba(255,255,255,.05)}
-.btn--fantasma:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.14)}
+.btn--accion{background:var(--accion-fondo);color:#ffffff;border-color:var(--accion-fondo);border-bottom-color:rgba(0,0,0,.3)}
+.btn--accion:hover{background:var(--accion-fondo-alta);border-color:var(--accion-fondo-alta);border-bottom-color:rgba(0,0,0,.3)}
+.btn--fantasma{background:rgba(0,0,0,.05);color:var(--tinta);border-color:rgba(0,0,0,.08);border-bottom-color:rgba(0,0,0,.12)}
+.btn--fantasma:hover{background:rgba(0,0,0,.08);border-color:rgba(0,0,0,.12)}
+.escena .btn--fantasma{background:rgba(255,255,255,.08);color:var(--frost);border-color:rgba(255,255,255,.12)}
+.escena .btn--fantasma:hover{background:rgba(255,255,255,.12)}
 
-.acciones{display:flex;flex-wrap:wrap;gap:16px;margin-top:44px}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}
+
+.enlace{display:inline-flex;align-items:center;gap:8px;font-size:1.0625rem;font-weight:600;color:var(--verde-link)}
+.enlace .ic{width:18px;height:18px;transition:transform var(--transicion)}
+.enlace:hover .ic{transform:translateX(4px)}
+.escena .enlace{color:var(--verde-halo)}
 
 /* ==========================================================================
-   Barra de navegación — pastilla flotante de 980px
+   Barra — plana, alineada con el marco, acrílico solo sobre contenido
    ========================================================================== */
 .barra{position:fixed;inset:0 0 auto;z-index:90;pointer-events:none}
 .barra__pill{
   pointer-events:auto;display:flex;align-items:center;gap:24px;
   height:var(--barra-alto);
-  /* El contenido de la barra alinea con el marco de la página. */
   padding-inline:max(clamp(20px,5vw,40px),calc((100% - var(--marco)) / 2 + clamp(20px,5vw,40px)));
-  background:rgba(12,12,14,0);
+  background:rgba(255,255,255,0);
   border-bottom:1px solid transparent;
   backdrop-filter:blur(0px) saturate(100%);
   transition:background .35s ease,border-color .35s ease,backdrop-filter .35s ease;
 }
-/* El material (acrílico) aparece cuando hay contenido debajo. */
 .barra.is-material .barra__pill{
-  background:rgba(12,12,14,.72);
+  background:rgba(255,255,255,.72);
   backdrop-filter:blur(30px) saturate(150%);
-  border-bottom-color:rgba(255,255,255,.08);
+  border-bottom-color:rgba(0,0,0,.08);
 }
 .barra__marca{flex:none;display:flex;align-items:center}
-/* El logo viene con la marca oscura: sobre negro hay que invertirlo. */
-.barra__marca img{height:24px;width:auto;filter:brightness(0) invert(1)}
+.barra__marca img{height:24px;width:auto}
 
 .barra__nav{display:flex;align-items:center;gap:28px;margin-inline:auto}
-.barra__nav a{font-size:.875rem;font-weight:400;color:var(--frost);opacity:.82;padding:6px 0;border-bottom:2px solid transparent;transition:opacity var(--transicion),border-color var(--transicion)}
+.barra__nav a{font-size:.875rem;font-weight:400;color:var(--tinta);opacity:.78;padding:6px 0;border-bottom:2px solid transparent;transition:opacity var(--transicion),border-color var(--transicion)}
 .barra__nav a:hover{opacity:1}
 .barra__nav a.is-act{opacity:1;border-bottom-color:var(--accion)}
 
 .barra__fin{flex:none;display:flex;align-items:center;gap:8px}
-.barra__burger{display:none;width:40px;height:40px;place-items:center;border-radius:var(--r-pill);color:var(--frost)}
+.barra__burger{display:none;width:40px;height:40px;place-items:center;border-radius:var(--r-btn);color:var(--tinta)}
 
 body.menu-abierto{overflow:hidden}
 
 /* ==========================================================================
-   01 · Héroe — el producto flota sobre negro, el texto queda a la izquierda
+   01 · Héroe — coreografía de carga, luego secuencia fijada por scroll
    ========================================================================== */
-/* overflow:clip y no hidden: hidden convertiría al héroe en contenedor de
-   scroll y el sticky de la secuencia dejaría de funcionar. */
-.hero{position:relative;background:var(--negro);overflow:clip}
+.hero{position:relative;background:var(--fondo);overflow:clip}
 .hero__pin{
   min-height:100svh;display:flex;flex-direction:column;justify-content:center;
   padding:calc(var(--barra-alto) + 40px) 0 clamp(24px,4vw,40px);
 }
-/* Secuencia de apertura — solo con movimiento permitido y pantalla ancha.
-   El héroe mide casi dos pantallas y su interior queda fijado: el producto
-   se asienta mientras el texto cambia por tiempos con el scroll. */
+/* margin-inline:auto de .marco lo encogería a su contenido dentro del flex. */
+.hero__pin > .marco{width:100%}
+/* El producto apaisado recibe la columna mayor, como en una página de portátil. */
+.hero__grid{flex:1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);align-items:center;gap:clamp(24px,4vw,56px)}
+/* grid de una celda: los tiempos se apilan y beat--0 fija la altura */
+.hero__texto{position:relative;z-index:2;display:grid}
+.beat{grid-area:1/1;will-change:transform,opacity}
+.beat--n{display:none}
+.t-beat{font-size:clamp(3rem,7vw,6rem);font-weight:700;line-height:1;letter-spacing:-.035em;color:var(--tinta)}
+
+.hero__obj{margin:0;position:relative;display:grid;place-items:center}
+/* Charco de luz que asienta el producto sobre el blanco. */
+.hero__obj::before{
+  content:"";position:absolute;inset:-14% -6%;
+  background:radial-gradient(closest-side,rgba(0,0,0,.05),rgba(0,0,0,0) 72%);
+}
+.hero__obj img{
+  position:relative;width:auto;max-width:min(100%,640px);max-height:62svh;
+  filter:drop-shadow(0 28px 36px rgba(0,0,0,.18));
+  will-change:transform;
+}
+.hero__pie{padding-top:24px;border-top:1px solid var(--linea);font-size:.75rem;letter-spacing:.02em;color:var(--tinta-3)}
+
+/* Secuencia: el héroe mide casi dos pantallas, su interior queda fijado. */
 .hero--secuencia{height:190svh}
 .hero--secuencia .hero__pin{position:sticky;top:0;height:100svh;min-height:0}
 .hero--secuencia .hero__pie{display:none}
-.beat{grid-area:1/1;will-change:transform,opacity}
-.beat--n{display:none}
 .hero--secuencia .beat--n{display:block;opacity:0;pointer-events:none}
-.t-beat{font-size:clamp(3rem,7vw,6rem);font-weight:700;line-height:1;letter-spacing:-.035em;color:var(--frost)}
-.hero__grid{
-  flex:1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);
-  align-items:center;gap:clamp(24px,4vw,56px);
-}
-/* margin-inline:auto de .marco consume el espacio libre del contenedor flex,
-   asi que el hijo se encoge a su contenido en vez de estirarse. */
-.hero__pin > .marco{width:100%}
-/* grid con una sola celda: los tiempos se apilan y beat--0 fija la altura. */
-.hero__texto{position:relative;z-index:2;display:grid}
 
-.hero__obj{margin:0;position:relative;display:grid;place-items:center}
-/* Charco de luz de estudio: es lo que asienta el producto sobre el negro.
-   No es un fondo decorativo — hace el papel de la iluminación de la foto. */
-.hero__obj::before{
-  content:"";position:absolute;inset:-14% -6%;
-  background:radial-gradient(closest-side,rgba(120,150,135,.20),rgba(0,0,0,0) 72%);
-  z-index:0;
-}
-.hero__obj img{
-  position:relative;z-index:1;width:auto;max-width:min(46vw,480px);max-height:62svh;
-  will-change:transform;
-}
-.hero__pie{
-  padding-top:24px;border-top:1px solid var(--humo);
-  font-size:.75rem;letter-spacing:.02em;color:var(--platino);
-}
-
-/* ==========================================================================
-   Escena de producto — imagen a un lado, texto al otro
-   ========================================================================== */
-.escena--obj{overflow:hidden}
-.obj{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);align-items:center;gap:clamp(32px,6vw,80px)}
-.obj__img{margin:0;position:relative;display:grid;place-items:center}
-.obj__img::before{
-  content:"";position:absolute;inset:-16% -8%;
-  background:radial-gradient(closest-side,rgba(120,150,135,.16),rgba(0,0,0,0) 72%);
-}
-.obj__img img{position:relative;width:100%;max-width:560px;height:auto}
-
-.enlace{
-  display:inline-flex;align-items:center;gap:8px;margin-top:28px;
-  font-size:1.0625rem;font-weight:600;color:var(--verde-halo);
-}
-.enlace .ic{width:18px;height:18px;transition:transform var(--transicion)}
-.enlace:hover .ic{transform:translateX(4px)}
+/* Coreografía de carga: cada pieza entra por su turno; el producto se asienta.
+   El estado inicial oculto solo existe cuando el script ya corre. */
+@keyframes subir{from{opacity:0;transform:translate3d(0,18px,0)}to{opacity:1;transform:none}}
+@keyframes asentar{from{opacity:0;transform:scale(.94) translate3d(0,14px,0)}to{opacity:1;transform:none}}
+@keyframes aparecer{from{opacity:0}to{opacity:1}}
+.is-cargada [data-carga]{opacity:0;animation:subir .9s var(--curva) both}
+.is-cargada [data-carga="1"]{animation-delay:.05s}
+.is-cargada [data-carga="2"]{animation-delay:.15s}
+.is-cargada [data-carga="3"]{animation-delay:.28s}
+.is-cargada [data-carga="4"]{animation-delay:.40s}
+.is-cargada [data-carga="5"]{animation-delay:.60s}
+.is-cargada [data-carga="obj"]{animation:asentar 1.2s var(--curva) .1s both}
+/* Al terminar se retira la animación: si no, su último cuadro pisaría los
+   transforms que el scroll pone después. */
+.is-cargada [data-carga].cargado{animation:none;opacity:1}
 
 /* ==========================================================================
    Muros de logotipos
    ========================================================================== */
-.muro{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:clamp(32px,5vw,64px);align-items:center;
-}
+.muro{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:clamp(32px,5vw,64px);align-items:center}
 .muro li{display:grid;place-items:center;min-height:44px}
-/* Escala de grises al reposo y color al pasar el cursor: normaliza un set con
-   logos de fondo sólido, blancos y de mucho detalle sin convertirlos en
-   manchas, que es lo que pasaba con la silueta plana. */
-.muro img{max-height:38px;max-width:150px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.75;transition:filter var(--transicion),opacity var(--transicion)}
+.muro img{max-height:38px;max-width:150px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.7;transition:filter var(--transicion),opacity var(--transicion)}
 .muro li:hover img{filter:none;opacity:1}
-.muro__txt{font-size:1.0625rem;font-weight:700;letter-spacing:-.02em;color:var(--gris-texto);opacity:.75;text-align:center;transition:opacity var(--transicion)}
+.muro__txt{font-size:1.0625rem;font-weight:700;letter-spacing:-.02em;color:var(--tinta-2);opacity:.7;text-align:center;transition:opacity var(--transicion)}
 .muro li:hover .muro__txt{opacity:1}
 .muro--partners{margin-top:clamp(48px,6vw,72px)}
 .muro--partners img{max-height:32px;max-width:130px}
 
 /* ==========================================================================
-   03 · Soluciones — filas separadas por filete de 1px.
-   Deliberadamente NO es una grilla de tarjetas redondeadas: ese patrón es el
-   que delata una página generada, y la referencia lo prohibe de plano.
+   03 · Soluciones — filas con filete, no tarjetas
    ========================================================================== */
-.filas{margin-top:clamp(40px,5vw,64px);border-top:1px solid var(--humo)}
+.filas{margin-top:clamp(40px,5vw,64px);border-top:1px solid var(--linea)}
 .fila{
   display:grid;grid-template-columns:64px minmax(0,1fr) minmax(0,1.1fr) auto;
   align-items:baseline;gap:clamp(16px,3vw,40px);
-  padding:clamp(28px,3.4vw,44px) 0;border-bottom:1px solid var(--humo);
+  padding:clamp(28px,3.4vw,44px) 0;border-bottom:1px solid var(--linea);
   transition:opacity var(--transicion);
 }
 .fila:hover{opacity:.72}
-.fila__n{font-size:.875rem;font-weight:600;letter-spacing:.06em;color:var(--platino);font-variant-numeric:tabular-nums}
-.fila h3{font-size:clamp(1.5rem,2.6vw,2rem);font-weight:700;line-height:1.14;letter-spacing:-.022em;color:var(--frost)}
-.fila p{font-size:1.0625rem;line-height:1.47;color:var(--platino)}
-.fila__ir{display:inline-flex;align-items:center;gap:8px;font-size:1.0625rem;font-weight:600;color:var(--verde-halo);white-space:nowrap}
+.fila__n{font-size:.875rem;font-weight:600;letter-spacing:.06em;color:var(--tinta-3);font-variant-numeric:tabular-nums}
+.fila h3{font-size:clamp(1.5rem,2.6vw,2rem);font-weight:700;line-height:1.14;letter-spacing:-.022em;color:var(--tinta)}
+.fila p{font-size:1.0625rem;line-height:1.47;color:var(--tinta-2)}
+.fila__ir{display:inline-flex;align-items:center;gap:8px;font-size:1.0625rem;font-weight:600;color:var(--verde-link);white-space:nowrap}
 .fila__ir .ic{width:18px;height:18px;transition:transform var(--transicion)}
 .fila:hover .fila__ir .ic{transform:translateX(4px)}
 
 /* ==========================================================================
-   04 · Ciclo — cuatro pasos sobre un riel, sin cajas
+   04 · Carril — la fila de equipos se desplaza en horizontal con el scroll
+   Sin fijar (angosto o menos movimiento) es una tira con desplazamiento
+   nativo y ajuste por pieza.
    ========================================================================== */
-.ciclo{
-  margin-top:clamp(48px,6vw,80px);display:grid;grid-template-columns:repeat(4,1fr);
-  gap:clamp(20px,3vw,40px);
+.carril{background:var(--fondo);padding:clamp(72px,10vw,140px) 0}
+.carril__cab{display:flex;align-items:flex-end;justify-content:space-between;gap:24px 40px;flex-wrap:wrap;margin-bottom:clamp(32px,4vw,48px)}
+.carril__pista{
+  display:flex;gap:16px;
+  padding-inline:max(clamp(20px,5vw,40px),calc((100% - var(--marco)) / 2 + clamp(20px,5vw,40px)));
+  overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  padding-bottom:12px;
 }
+.carril__pista::-webkit-scrollbar{display:none}
+.pieza{
+  flex:0 0 min(78vw,360px);scroll-snap-align:start;
+  background:var(--banda);border-radius:var(--r-card);
+  padding:28px;display:flex;flex-direction:column;gap:6px;min-height:460px;
+}
+.pieza__foto{height:250px;display:grid;place-items:center;margin-bottom:14px}
+.pieza__foto img{max-height:100%;max-width:100%;width:auto;object-fit:contain;filter:drop-shadow(0 18px 24px rgba(0,0,0,.16))}
+.pieza__cat{font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-3)}
+.pieza h3{font-size:1.3125rem;font-weight:700;letter-spacing:-.02em;line-height:1.2;color:var(--tinta)}
+.pieza p{font-size:.875rem;line-height:1.43;color:var(--tinta-2)}
+.pieza__ir{margin-top:auto;padding-top:16px;display:inline-flex;align-items:center;gap:6px;font-size:.9375rem;font-weight:600;color:var(--verde-link)}
+.pieza__ir .ic{width:16px;height:16px}
+
+.carril--fijado{padding:0}
+.carril--fijado .carril__fijo{
+  position:sticky;top:0;height:100svh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:calc(var(--barra-alto) + 24px) 0 32px;overflow:hidden;
+}
+.carril--fijado .carril__pista{overflow:visible;scroll-snap-type:none;will-change:transform}
+
+/* ==========================================================================
+   05 · Ciclo — escena negra; el texto se ilumina palabra por palabra
+   ========================================================================== */
+.escena--fijada .fijo{padding:clamp(80px,11vw,160px) 0}
+.escena--fijada.is-fijada{height:200svh}
+.escena--fijada.is-fijada .fijo{
+  position:sticky;top:0;height:100svh;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:calc(var(--barra-alto) + 24px) 0 40px;
+}
+.pal{display:inline-block}
+.is-fijada .pal{opacity:.18}
+.is-fijada .ciclo{opacity:0}
+
+.ciclo{margin-top:clamp(48px,6vw,80px);display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(20px,3vw,40px)}
 .ciclo li{position:relative;padding-top:32px;border-top:1px solid var(--humo)}
-/* Punto sobre el riel: marca el paso sin necesidad de una tarjeta. */
-.ciclo li::before{
-  content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;
-  border-radius:var(--r-redondo);background:var(--accion);
-}
+.ciclo li::before{content:"";position:absolute;top:-4px;left:0;width:7px;height:7px;border-radius:var(--r-redondo);background:var(--accion)}
 .ciclo__n{font-size:.75rem;font-weight:600;letter-spacing:.1em;color:var(--accion);font-variant-numeric:tabular-nums}
 .ciclo h3{margin-top:14px;font-size:clamp(1.25rem,2vw,1.6rem);font-weight:700;letter-spacing:-.02em;color:var(--frost)}
 .ciclo p{margin-top:10px;font-size:.875rem;line-height:1.43;letter-spacing:-.015em;color:var(--platino)}
 
 /* ==========================================================================
-   06 · Casos — columnas separadas por filete, sin tarjetas
+   07 · Casos — columnas con filete
    ========================================================================== */
 .casos{margin-top:clamp(40px,5vw,64px);display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,4vw,56px)}
-.caso{padding-top:28px;border-top:1px solid var(--linea-clara);display:flex;flex-direction:column;gap:24px}
+.caso{padding-top:28px;border-top:1px solid var(--linea);display:flex;flex-direction:column;gap:24px}
 .caso__logo{height:34px;display:flex;align-items:center}
-/* brightness además de grayscale: el logo de Marimaca es gris claro y sobre
-   la banda blanca quedaba casi invisible. */
 .caso__logo img{max-height:34px;max-width:160px;width:auto;object-fit:contain;filter:grayscale(1) brightness(.5)}
-.caso__logo span{font-size:1.3125rem;font-weight:700;letter-spacing:-.022em;color:var(--gris-texto)}
-.caso h3{font-size:clamp(1.25rem,2vw,1.5rem);font-weight:700;letter-spacing:-.02em;color:var(--obsidiana)}
-.caso p{margin-top:8px;font-size:.875rem;line-height:1.43;letter-spacing:-.015em;color:var(--gris-texto)}
+.caso__logo span{font-size:1.3125rem;font-weight:700;letter-spacing:-.022em;color:var(--tinta-2)}
+.caso h3{font-size:clamp(1.25rem,2vw,1.5rem);font-weight:700;letter-spacing:-.02em;color:var(--tinta)}
+.caso p{margin-top:8px;font-size:.875rem;line-height:1.43;letter-spacing:-.015em;color:var(--tinta-2)}
 
 /* ==========================================================================
-   07 · Contacto
+   08 · Contacto
    ========================================================================== */
 .contacto{display:grid;grid-template-columns:1fr 1fr;gap:clamp(40px,6vw,88px);align-items:start}
 .canales{margin-top:48px;display:flex;flex-direction:column;gap:20px}
-.canales li{display:flex;align-items:flex-start;gap:14px;font-size:1.0625rem;color:var(--platino)}
-.canales .ic{color:var(--accion);margin-top:3px}
-.canales a{color:var(--frost);transition:color var(--transicion)}
-.canales a:hover{color:var(--verde-halo)}
+.canales li{display:flex;align-items:flex-start;gap:14px;font-size:1.0625rem;color:var(--tinta-2)}
+.canales .ic{color:var(--verde-link);margin-top:3px}
+.canales a{color:var(--tinta);transition:color var(--transicion)}
+.canales a:hover{color:var(--verde-link)}
 
-.form{background:var(--obsidiana);border-radius:var(--r-card);padding:clamp(28px,3.5vw,44px);display:flex;flex-direction:column;gap:20px}
+.form{background:var(--fondo);border:1px solid var(--linea);border-radius:var(--r-card);padding:clamp(28px,3.5vw,44px);display:flex;flex-direction:column;gap:20px}
 .campo{display:flex;flex-direction:column;gap:8px}
-.campo label{font-size:.875rem;font-weight:600;letter-spacing:-.015em;color:var(--platino)}
+.campo label{font-size:.875rem;font-weight:600;color:var(--tinta-2)}
 .campo input,.campo textarea{
-  font:inherit;font-size:1.0625rem;letter-spacing:-.012em;
-  color:var(--frost);background:var(--grafito);
-  border:1px solid transparent;border-radius:var(--r-link);
+  font:inherit;font-size:1.0625rem;color:var(--tinta);background:var(--banda);
+  border:1px solid transparent;border-bottom-color:rgba(0,0,0,.12);border-radius:var(--r-link);
   padding:12px 16px;min-height:48px;
   transition:border-color var(--transicion),background var(--transicion);
 }
 .campo textarea{resize:vertical;min-height:112px;line-height:1.47}
-.campo input:focus,.campo textarea:focus{outline:none;border-color:var(--accion);background:#3c3c40}
-.form__err{font-size:.875rem;font-weight:500;color:#FF8A7A}
+.campo input:focus,.campo textarea:focus{outline:none;background:var(--fondo);border-color:var(--linea);border-bottom:2px solid var(--verde-link)}
+.form__err{font-size:.875rem;font-weight:500;color:#B3261E}
 
 /* ==========================================================================
    Pie
    ========================================================================== */
-.pie{background:var(--negro);border-top:1px solid var(--obsidiana);padding:clamp(56px,7vw,96px) 0 32px}
+.pie{background:var(--banda);border-top:1px solid var(--linea);padding:clamp(56px,7vw,96px) 0 32px}
 .pie__cols{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.2fr;gap:40px}
-.pie__marca img{height:24px;width:auto;filter:brightness(0) invert(1)}
-.pie__marca p{margin-top:20px;font-size:.875rem;line-height:1.43;color:var(--platino);max-width:34ch}
-.pie__red{display:inline-grid;place-items:center;width:44px;height:44px;margin-top:24px;border:1px solid var(--humo);border-radius:var(--r-pill);color:var(--platino);transition:color var(--transicion),border-color var(--transicion)}
-.pie__red:hover{color:var(--frost);border-color:var(--frost)}
+.pie__marca img{height:24px;width:auto}
+.pie__marca p{margin-top:20px;font-size:.875rem;line-height:1.43;color:var(--tinta-2);max-width:34ch}
+.pie__red{display:inline-grid;place-items:center;width:44px;height:44px;margin-top:24px;border:1px solid var(--linea);border-radius:var(--r-btn);color:var(--tinta-2);background:var(--fondo);transition:color var(--transicion),border-color var(--transicion),transform .18s var(--curva)}
+.pie__red:hover{color:var(--tinta);border-color:var(--tinta)}
 .pie__col{display:flex;flex-direction:column;gap:12px}
-.pie__col h3{font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--frost);margin-bottom:4px}
-.pie__col a,.pie__col span{font-size:.875rem;line-height:1.43;color:var(--platino);transition:color var(--transicion)}
-.pie__col a:hover{color:var(--frost)}
-.pie__legal{
-  margin-top:clamp(48px,6vw,80px);padding-top:24px;border-top:1px solid var(--obsidiana);
-  display:flex;flex-wrap:wrap;gap:8px 32px;justify-content:space-between;
-  font-size:.75rem;color:var(--platino);
-}
+.pie__col h3{font-family:var(--ui);font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--tinta);margin-bottom:4px}
+.pie__col a,.pie__col span{font-size:.875rem;line-height:1.43;color:var(--tinta-2);transition:color var(--transicion)}
+.pie__col a:hover{color:var(--tinta)}
+.pie__legal{margin-top:clamp(48px,6vw,80px);padding-top:24px;border-top:1px solid var(--linea);display:flex;flex-wrap:wrap;gap:8px 32px;justify-content:space-between;font-size:.75rem;color:var(--tinta-3)}
 
 /* ==========================================================================
    Accesos flotantes y aviso
@@ -363,12 +378,11 @@ body.menu-abierto{overflow:hidden}
 .flota{position:fixed;right:clamp(16px,3vw,32px);bottom:clamp(16px,3vw,32px);z-index:80;display:flex;flex-direction:column;gap:12px}
 .flota__b{
   width:48px;height:48px;display:grid;place-items:center;border-radius:var(--r-card);
-  background:rgba(29,29,31,.82);backdrop-filter:blur(16px);
-  border:1px solid rgba(255,255,255,.12);color:var(--frost);
-  transition:background var(--transicion),border-color var(--transicion);
+  background:rgba(255,255,255,.84);backdrop-filter:blur(16px);
+  border:1px solid var(--linea);color:var(--tinta);
+  transition:background var(--transicion),border-color var(--transicion),transform .18s var(--curva);
 }
-.flota__b:hover{border-color:rgba(255,255,255,.35)}
-/* El display:grid de arriba gana sobre el [hidden] de la hoja del navegador. */
+.flota__b:hover{border-color:var(--tinta)}
 .flota__b[hidden]{display:none}
 .flota__b--wa{background:var(--accion);border-color:var(--accion);color:var(--accion-tinta)}
 .flota__b--wa:hover{background:var(--accion-alta);border-color:var(--accion-alta)}
@@ -376,108 +390,97 @@ body.menu-abierto{overflow:hidden}
 
 .toast{
   position:fixed;left:50%;bottom:28px;transform:translate(-50%,180%) scale(.96);z-index:120;
-  background:rgba(245,245,247,.96);backdrop-filter:blur(20px);color:var(--negro);
+  background:rgba(29,29,31,.96);backdrop-filter:blur(20px);color:var(--frost);
   padding:14px 20px;border-radius:var(--r-card);
-  font-size:.875rem;font-weight:600;letter-spacing:-.015em;max-width:min(92vw,32rem);
-  transition:transform .45s cubic-bezier(.2,.8,.2,1);
+  font-size:.875rem;font-weight:600;max-width:min(92vw,32rem);
+  transition:transform .45s var(--curva);
 }
 .toast.is-ver{transform:translate(-50%,0) scale(1)}
+
+/* Respuesta al presionar: en el pointer-down, 80 ms de ida y 180 de vuelta */
+.btn:active,.flota__b:active,.eq__mas:active,.item__cant button:active,.panel__x:active,.barra__lista:active,.barra__burger:active,.pie__red:active{
+  transform:scale(.96);transition-duration:.08s;
+}
+
+/* ==========================================================================
+   Revelado al entrar en pantalla — el estado oculto lo agrega JavaScript
+   ========================================================================== */
+.rev{opacity:0;transform:translateY(24px);transition:opacity .7s var(--curva),transform .7s var(--curva)}
+.rev.is-ver{opacity:1;transform:none}
 
 /* ==========================================================================
    EQUIPAMIENTO (tienda.html)
    ========================================================================== */
-.cat-hero{padding:clamp(140px,16vw,200px) 0 clamp(40px,5vw,64px);background:linear-gradient(180deg,var(--negro),var(--carbon))}
-.volver{display:inline-flex;align-items:center;gap:8px;font-size:.875rem;font-weight:600;color:var(--verde-halo);margin-bottom:32px}
+.cat-hero{padding:calc(var(--barra-alto) + clamp(56px,9vw,112px)) 0 clamp(40px,5vw,64px);background:var(--fondo)}
+.volver{display:inline-flex;align-items:center;gap:8px;font-size:.875rem;font-weight:600;color:var(--verde-link);margin-bottom:32px}
 .volver .ic{width:16px;height:16px;transform:rotate(180deg)}
 
-.catalogo{margin-top:clamp(40px,5vw,64px);display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.eq{background:var(--obsidiana);border-radius:var(--r-card);overflow:hidden;display:flex;flex-direction:column;transition:background var(--transicion)}
-.eq:hover{background:#26262a}
-/* Las fotos del catálogo vienen recortadas sobre blanco: se les deja su
-   propio lienzo claro dentro de la tarjeta oscura en vez de forzarlas
-   sobre negro, donde el fondo blanco se vería como un bloque. */
-.eq__foto{aspect-ratio:4/3;background:var(--frost);display:grid;place-items:center;padding:24px}
-.eq__foto img{max-height:100%;width:auto;object-fit:contain;mix-blend-mode:multiply}
-.eq__cuerpo{padding:28px;display:flex;flex-direction:column;gap:8px;flex:1}
-.eq__cat{font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--platino)}
-.eq h3{font-size:1.3125rem;font-weight:600;letter-spacing:-.02em;line-height:1.19;color:var(--frost)}
-.eq p{font-size:.875rem;line-height:1.43;letter-spacing:-.015em;color:var(--platino)}
+.catalogo{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.eq{background:var(--fondo);border:1px solid var(--linea-suave);border-radius:var(--r-card);overflow:hidden;display:flex;flex-direction:column;transition:border-color var(--transicion)}
+.eq:hover{border-color:var(--linea)}
+.eq__foto{aspect-ratio:4/3;display:grid;place-items:center;padding:28px}
+.eq__foto img{max-height:100%;width:auto;object-fit:contain;filter:drop-shadow(0 14px 20px rgba(0,0,0,.14))}
+.eq__cuerpo{padding:24px 28px 28px;display:flex;flex-direction:column;gap:8px;flex:1}
+.eq__cat{font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-3)}
+.eq h3{font-size:1.3125rem;font-weight:700;letter-spacing:-.02em;line-height:1.19;color:var(--tinta)}
+.eq p{font-size:.875rem;line-height:1.43;color:var(--tinta-2)}
 .eq__pie{margin-top:auto;padding-top:24px;display:flex;gap:8px}
 .eq__pie .btn{flex:1}
-.eq__mas{
-  width:48px;height:48px;flex:none;display:grid;place-items:center;
-  border:1px solid var(--humo);border-radius:var(--r-btn);color:var(--frost);
-  transition:border-color var(--transicion);
-}
-.eq__mas:hover{border-color:var(--frost)}
+.eq__mas{width:44px;height:44px;flex:none;display:grid;place-items:center;border:1px solid var(--linea);border-radius:var(--r-btn);color:var(--tinta);transition:border-color var(--transicion),transform .18s var(--curva)}
+.eq__mas:hover{border-color:var(--tinta)}
 
-.nota-cat{
-  margin-top:40px;padding:24px 28px;background:var(--obsidiana);border-radius:var(--r-card);
-  font-size:.875rem;line-height:1.43;color:var(--platino);max-width:72ch;
-}
+.nota-cat{margin-top:40px;padding:24px 28px;background:var(--fondo);border:1px solid var(--linea-suave);border-radius:var(--r-card);font-size:.875rem;line-height:1.43;color:var(--tinta-2);max-width:72ch}
 
-/* Contador de la lista en la barra */
-.barra__lista{position:relative;width:40px;height:40px;display:grid;place-items:center;border-radius:var(--r-pill);color:var(--frost);transition:background var(--transicion)}
-.barra__lista:hover{background:rgba(255,255,255,.1)}
-.badge{
-  position:absolute;top:0;right:0;min-width:18px;height:18px;padding:0 5px;
-  display:grid;place-items:center;background:var(--accion);color:var(--accion-tinta);
-  font-size:.6875rem;font-weight:700;border-radius:var(--r-redondo);
-}
+.barra__lista{position:relative;width:40px;height:40px;display:grid;place-items:center;border-radius:var(--r-btn);color:var(--tinta);transition:background var(--transicion),transform .18s var(--curva)}
+.barra__lista:hover{background:rgba(0,0,0,.06)}
+.badge{position:absolute;top:0;right:0;min-width:18px;height:18px;padding:0 5px;display:grid;place-items:center;background:var(--accion);color:var(--accion-tinta);font-size:.6875rem;font-weight:700;border-radius:var(--r-redondo)}
 .badge[hidden]{display:none}
 
-/* Paneles laterales */
-.velo{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:100;opacity:0;pointer-events:none}
+/* Hojas — la posición la integra el resorte de app.js cuadro a cuadro */
+.velo{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(4px);z-index:100;opacity:0;pointer-events:none}
 .velo.is-ver{pointer-events:auto}
-/* Sin transition: la posición la integra el resorte de app.js cuadro a cuadro,
-   así la hoja se puede agarrar a mitad de camino y hereda la velocidad del dedo. */
 .panel{
   position:fixed;top:0;right:0;bottom:0;width:min(94vw,32rem);z-index:110;
-  background:var(--carbon);border-left:1px solid var(--obsidiana);
+  background:var(--fondo);border-left:1px solid var(--linea);
   display:flex;flex-direction:column;
   transform:translate3d(101%,0,0);visibility:hidden;will-change:transform;
 }
 .panel.is-abierta{visibility:visible}
 .panel--ancho{width:min(96vw,56rem)}
-.panel__cab{
-  display:flex;align-items:center;justify-content:space-between;gap:16px;
-  padding:24px 28px;border-bottom:1px solid var(--obsidiana);
-  cursor:grab;touch-action:none;user-select:none;
-}
+.panel__cab{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px 28px;border-bottom:1px solid var(--linea);cursor:grab;touch-action:none;user-select:none}
 .panel__cab:active{cursor:grabbing}
-.panel__cab h2{font-size:1.3125rem;font-weight:600;letter-spacing:-.02em;color:var(--frost)}
-.panel__x{width:40px;height:40px;display:grid;place-items:center;border-radius:var(--r-pill);color:var(--frost);transition:background var(--transicion)}
-.panel__x:hover{background:rgba(255,255,255,.1)}
+.panel__cab h2{font-size:1.3125rem;font-weight:600;letter-spacing:-.02em;color:var(--tinta)}
+.panel__x{width:40px;height:40px;display:grid;place-items:center;border-radius:var(--r-btn);color:var(--tinta);transition:background var(--transicion),transform .18s var(--curva)}
+.panel__x:hover{background:rgba(0,0,0,.06)}
 .panel__cuerpo{flex:1;overflow-y:auto;padding:28px;display:flex;flex-direction:column;gap:20px}
-.panel__pie{padding:24px 28px;border-top:1px solid var(--obsidiana);display:flex;flex-direction:column;gap:12px}
+.panel__pie{padding:24px 28px;border-top:1px solid var(--linea);display:flex;flex-direction:column;gap:12px}
 
-.item{display:grid;grid-template-columns:64px 1fr auto;gap:16px;align-items:center;padding-bottom:20px;border-bottom:1px solid var(--obsidiana)}
+.item{display:grid;grid-template-columns:64px 1fr auto;gap:16px;align-items:center;padding-bottom:20px;border-bottom:1px solid var(--linea-suave)}
 .item:last-child{border-bottom:0}
-.item img{width:64px;height:64px;object-fit:contain;background:var(--frost);border-radius:var(--r-link);padding:6px}
-.item h3{font-size:.875rem;font-weight:600;line-height:1.35;letter-spacing:-.015em;color:var(--frost)}
+.item img{width:64px;height:64px;object-fit:contain;background:var(--banda);border-radius:var(--r-link);padding:6px}
+.item h3{font-size:.875rem;font-weight:600;line-height:1.35;color:var(--tinta)}
 .item__cant{display:flex;align-items:center;gap:6px}
-.item__cant button{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--humo);border-radius:var(--r-pill);font-weight:600;color:var(--frost);transition:border-color var(--transicion)}
-.item__cant button:hover{border-color:var(--frost)}
+.item__cant button{width:36px;height:36px;display:grid;place-items:center;border:1px solid var(--linea);border-radius:var(--r-btn);font-weight:600;color:var(--tinta);transition:border-color var(--transicion),transform .18s var(--curva)}
+.item__cant button:hover{border-color:var(--tinta)}
 .item__cant span{min-width:24px;text-align:center;font-size:.875rem;font-weight:600;font-variant-numeric:tabular-nums}
-.vacio{text-align:center;color:var(--platino);font-size:1.0625rem;padding:56px 0}
+.vacio{text-align:center;color:var(--tinta-3);font-size:1.0625rem;padding:56px 0}
 
-/* Ficha de producto */
 .ficha{display:grid;grid-template-columns:1fr 1fr;gap:32px}
-.ficha__foto{background:var(--frost);border-radius:var(--r-card);display:grid;place-items:center;padding:32px;aspect-ratio:1}
-.ficha__foto img{max-height:100%;width:auto;object-fit:contain;mix-blend-mode:multiply}
-.ficha__sku{font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--platino)}
-.ficha h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:700;letter-spacing:-.025em;line-height:1.14;color:var(--frost);margin-top:10px}
-.ficha__desc{margin-top:20px;font-size:.875rem;line-height:1.47;color:var(--platino)}
+.ficha__foto{background:var(--banda);border-radius:var(--r-card);display:grid;place-items:center;padding:32px;aspect-ratio:1}
+.ficha__foto img{max-height:100%;width:auto;object-fit:contain;filter:drop-shadow(0 18px 24px rgba(0,0,0,.14))}
+.ficha__sku{font-size:.75rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--tinta-3)}
+.ficha h2{font-size:clamp(1.5rem,3vw,2rem);font-weight:700;letter-spacing:-.025em;line-height:1.14;color:var(--tinta);margin-top:10px}
+.ficha__desc{margin-top:20px;font-size:.875rem;line-height:1.47;color:var(--tinta-2)}
 .ficha__lista{margin-top:24px;display:flex;flex-direction:column;gap:10px}
-.ficha__lista li{display:flex;gap:10px;font-size:.875rem;line-height:1.43;color:var(--platino)}
-.ficha__lista .ic{width:18px;height:18px;color:var(--accion);flex:none;margin-top:2px}
-.ficha__specs{margin-top:32px;border-top:1px solid var(--obsidiana)}
-.ficha__specs div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--obsidiana);font-size:.875rem}
-.ficha__specs dt{color:var(--platino)}
-.ficha__specs dd{margin:0;color:var(--frost)}
+.ficha__lista li{display:flex;gap:10px;font-size:.875rem;line-height:1.43;color:var(--tinta-2)}
+.ficha__lista .ic{width:18px;height:18px;color:var(--verde-link);flex:none;margin-top:2px}
+.ficha__specs{margin-top:32px;border-top:1px solid var(--linea)}
+.ficha__specs div{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:16px;padding:12px 0;border-bottom:1px solid var(--linea-suave);font-size:.875rem}
+.ficha__specs dt{color:var(--tinta-3)}
+.ficha__specs dd{margin:0;color:var(--tinta)}
 
 /* ==========================================================================
-   Adaptación a pantallas menores
+   Pantallas menores
    ========================================================================== */
 @media (max-width:1000px){
   .ciclo{grid-template-columns:repeat(2,1fr)}
@@ -485,37 +488,45 @@ body.menu-abierto{overflow:hidden}
   .casos{grid-template-columns:1fr}
   .pie__cols{grid-template-columns:1fr 1fr;gap:32px}
 }
-
+@media (max-width:980px){
+  .hero__pin{min-height:auto;padding-top:calc(var(--barra-alto) + 24px)}
+  .hero__grid{grid-template-columns:1fr;gap:32px}
+  .hero__obj{order:-1}
+  .hero__obj img{max-width:min(66vw,320px);max-height:40svh;width:auto}
+  .fila{grid-template-columns:44px minmax(0,1fr);gap:12px 16px}
+  .fila p{grid-column:2}
+  .fila__ir{grid-column:2;margin-top:6px}
+}
 @media (max-width:860px){
   .barra__nav{
     position:fixed;inset:calc(var(--barra-alto) + 8px) clamp(16px,4vw,32px) auto;flex-direction:column;align-items:stretch;
     gap:0;margin:0;padding:8px 20px 16px;
-    background:rgba(22,22,24,.9);
-    border:1px solid rgba(255,255,255,.09);border-top-color:rgba(255,255,255,.16);
-    border-radius:var(--r-card);
-    /* Nace desde el botón que lo abre (arriba a la derecha), y el vidrio se
-       forma junto con la escala: llega un material, no un fundido. */
-    transform-origin:top right;
-    transform:scale(.94) translateY(-6px);opacity:0;
-    backdrop-filter:blur(0px) saturate(100%);
-    pointer-events:none;
-    transition:transform .32s cubic-bezier(.2,.8,.2,1),opacity .22s ease,backdrop-filter .32s ease;
+    background:rgba(255,255,255,.9);
+    border:1px solid rgba(0,0,0,.08);border-radius:var(--r-card);
+    transform-origin:top right;transform:scale(.94) translateY(-6px);opacity:0;
+    backdrop-filter:blur(0px) saturate(100%);pointer-events:none;
+    transition:transform .32s var(--curva),opacity .22s ease,backdrop-filter .32s ease;
   }
   .barra__nav.is-ver{transform:none;opacity:1;pointer-events:auto;backdrop-filter:blur(20px) saturate(180%)}
-  .barra__nav a{padding:14px 0;font-size:1.0625rem;border-bottom:1px solid rgba(255,255,255,.09)}
+  .barra__nav a{padding:14px 0;font-size:1.0625rem;border-bottom:1px solid rgba(0,0,0,.08)}
   .barra__nav a:last-child{border-bottom:0}
   .barra__burger{display:grid}
   .barra__fin .btn{display:none}
-  /* Con el nav fuera del flujo, los controles se pegaban al logo. */
   .barra__fin{margin-left:auto}
 
   .contacto{grid-template-columns:1fr}
   .ficha{grid-template-columns:1fr}
-  /* En una columna la foto cuadrada llenaba la pantalla y empujaba las
-     especificaciones fuera de vista. */
   .ficha__foto{aspect-ratio:16/10;max-height:300px}
-}
 
+  .panel,.panel--ancho{
+    top:auto;left:0;right:0;bottom:0;width:100%;height:min(92svh,860px);
+    border-left:0;border-top:1px solid var(--linea);
+    border-radius:var(--r-card) var(--r-card) 0 0;
+    transform:translate3d(0,101%,0);
+  }
+  .panel__cab{position:relative;padding-top:34px}
+  .panel__cab::before{content:"";position:absolute;top:12px;left:50%;width:40px;height:5px;margin-left:-20px;border-radius:var(--r-redondo);background:rgba(0,0,0,.2)}
+}
 @media (max-width:560px){
   .ciclo{grid-template-columns:1fr}
   .catalogo{grid-template-columns:1fr}
@@ -523,88 +534,32 @@ body.menu-abierto{overflow:hidden}
   .acciones .btn{width:100%}
 }
 
+/* ==========================================================================
+   Preferencias del sistema. body.forzado (?movimiento=1) las deja de lado
+   para demostrar el sitio desde un equipo con las animaciones apagadas.
+   ========================================================================== */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .rev{transform:none;transition:opacity .25s ease}
-  .barra__nav{transform:none;transition:opacity .2s ease}
-  .panel{transform:none!important;visibility:visible;opacity:0;pointer-events:none;transition:opacity .2s ease}
-  .panel.is-abierta{opacity:1;pointer-events:auto}
-  .velo{transition:opacity .2s ease}
-  .toast{transform:translate(-50%,0);opacity:0;transition:opacity .2s ease}
-  .toast.is-ver{opacity:1}
-  .hero__obj img{transform:none!important}
-  .btn:active,.flota__b:active,.eq__mas:active,.item__cant button:active,.panel__x:active,.barra__lista:active,.barra__burger:active,.pie__red:active{transform:none;opacity:.8}
+  body:not(.forzado) .rev{transform:none;transition:opacity .25s ease}
+  body:not(.forzado) .barra__nav{transform:none;transition:opacity .2s ease}
+  body:not(.forzado) .panel{transform:none!important;visibility:visible;opacity:0;pointer-events:none;transition:opacity .2s ease}
+  body:not(.forzado) .panel.is-abierta{opacity:1;pointer-events:auto}
+  body:not(.forzado) .velo{transition:opacity .2s ease}
+  body:not(.forzado) .toast{transform:translate(-50%,0);opacity:0;transition:opacity .2s ease}
+  body:not(.forzado) .toast.is-ver{opacity:1}
+  body:not(.forzado) .hero__obj img{transform:none!important}
+  body:not(.forzado).is-cargada [data-carga]{animation-name:aparecer;animation-duration:.5s}
+  body:not(.forzado) .btn:active,body:not(.forzado) .flota__b:active{transform:none;opacity:.8}
 }
-
-/* ==========================================================================
-   Revelado al entrar en pantalla
-   El estado oculto lo agrega JavaScript: si el script falla o el sistema pide
-   menos movimiento, todo queda visible desde el principio.
-   ========================================================================== */
-.rev{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.28,.11,.32,1),transform .7s cubic-bezier(.28,.11,.32,1)}
-.rev.is-ver{opacity:1;transform:none}
-
-@media (max-width:980px){
-  .hero__pin{min-height:auto;padding-top:calc(var(--barra-alto) + 24px)}
-  .hero__grid{grid-template-columns:1fr;gap:32px}
-  .hero__obj{order:-1}
-  .hero__obj img{max-width:min(66vw,320px);max-height:40svh;width:auto}
-  .obj{grid-template-columns:1fr;gap:32px}
-  .obj__img img{max-width:min(78vw,420px)}
-  .fila{grid-template-columns:44px minmax(0,1fr);gap:12px 16px}
-  .fila p{grid-column:2}
-  .fila__ir{grid-column:2;margin-top:6px}
-}
-
-/* ==========================================================================
-   Respuesta al presionar
-   La confirmación vive en el instante de apretar, no al soltar. 80 ms de ida
-   y 180 ms de vuelta; anular la transición de vuelta sería un salto.
-   ========================================================================== */
-.btn,.flota__b,.eq__mas,.item__cant button,.panel__x,.barra__lista,.barra__burger,.pie__red{
-  transition:transform .18s cubic-bezier(.2,.8,.2,1),background var(--transicion),border-color var(--transicion),color var(--transicion),opacity var(--transicion);
-}
-.btn:active,.flota__b:active,.eq__mas:active,.item__cant button:active,.panel__x:active,.barra__lista:active,.barra__burger:active,.pie__red:active{
-  transform:scale(.96);transition-duration:.08s;
-}
-
-/* ==========================================================================
-   Hoja inferior en pantallas angostas
-   ========================================================================== */
-@media (max-width:860px){
-  .panel,.panel--ancho{
-    top:auto;left:0;right:0;bottom:0;width:100%;height:min(92svh,860px);
-    border-left:0;border-top:1px solid rgba(255,255,255,.12);
-    border-radius:var(--r-card) var(--r-card) 0 0;
-    transform:translate3d(0,101%,0);
-  }
-  .panel__cab{position:relative;padding-top:34px}
-  /* Asa: dice "esto se arrastra" sin necesidad de explicarlo. */
-  .panel__cab::before{
-    content:"";position:absolute;top:12px;left:50%;width:40px;height:5px;margin-left:-20px;
-    border-radius:var(--r-redondo);background:rgba(255,255,255,.28);
-  }
-}
-
-/* ==========================================================================
-   Preferencias del sistema
-   Menos movimiento no es cero respuesta: se cambia desplazamiento por fundido.
-   ========================================================================== */
 @media (prefers-reduced-transparency:reduce){
   .barra.is-material .barra__pill,.barra__nav,.flota__b,.toast,.velo{backdrop-filter:none}
-  .barra.is-material .barra__pill{background:#161618}
-  .velo{background:rgba(0,0,0,.74)}
+  .barra.is-material .barra__pill{background:#ffffff}
+  .velo{background:rgba(0,0,0,.55)}
 }
-/* El fondo sólido del menú solo cuando es un desplegable (pantallas angostas):
-   en escritorio los enlaces van en línea y un fondo sería una caja gris. */
 @media (prefers-reduced-transparency:reduce) and (max-width:860px){
-  .barra__nav{background:#161618}
+  .barra__nav{background:#ffffff}
 }
 @media (prefers-contrast:more){
-  .barra.is-material .barra__pill,.barra__nav{border-color:rgba(255,255,255,.55)}
-  .btn--fantasma{border-color:var(--frost)}
-  .platino,.t-cuerpo,.t-sub{color:#B9C6BF}
+  .barra.is-material .barra__pill,.barra__nav{border-color:rgba(0,0,0,.5)}
+  .btn--fantasma{border-color:var(--tinta)}
 }
-
-/* Los titulares llevan la marca; la interfaz, la fuente del sistema. */
-h1,h2,h3,.t-beat{font-family:var(--display)}

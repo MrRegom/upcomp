@@ -68,80 +68,61 @@ con el mensaje ya redactado, y se guarda en el navegador.
 
 ## Diseño
 
-Vitrina oscura. El sistema está tomado de la página de producto de Apple
-(escenas negras a pantalla completa, bandas claras alternadas, tipografía
-enorme con tracking negativo, radios restringidos y cero sombras) y adaptado
-a UpComp.
+Vitrina clara, como una página de producto de Apple: blanco y gris claro, el
+producto en fotografía sobre blanco con su propia sombra, tipografía enorme
+con tracking negativo y una sola escena negra para el contraste. Geometría
+de Windows moderno: 4 px en controles, 8 px en superficies, barra plana con
+acrílico al hacer scroll. Un solo color de acción: el verde de UpComp.
 
 | | |
 | --- | --- |
-| Escena / héroe / pie | `#000000` |
-| Un paso sobre el negro | `#111111` |
-| Tarjetas sobre escena | `#1d1d1f` |
-| Campos y paneles | `#333336` |
-| Texto sobre oscuro | `#f5f5f7` · secundario `#86868b` |
-| Bandas claras | `#f5f5f7` y `#ffffff`, cuerpo en `#57575c` (7,2:1) |
-| **Acción** | Verde UpComp `#36B85C` con texto `#04120A` (7,4:1) |
-| Enlaces sobre oscuro | `#5BD97F` |
-| Tipografía | Albert Sans, la que ya usa upcomp.cl |
+| Superficies | `#ffffff` y `#f5f5f7` |
+| Tinta | `#1d1d1f` · cuerpo `#57575c` (7,2:1) · rótulos `#6e6e73` (4,6:1) |
+| Escena negra | `#000000`, texto `#f5f5f7`, secundario `#86868b` |
+| **Botón de acción** | Verde profundo `#15703B` con texto blanco (6,1:1) |
+| Verde vivo `#36B85C` | Solo puntos, contador y el botón de WhatsApp |
+| Tipografía | Albert Sans en titulares (la marca); fuente del sistema en la interfaz |
 
-**La única diferencia deliberada con la referencia:** donde Apple pone su azul
-`#0071e3` como el único botón lleno de la página, aquí va el verde de UpComp.
-Un solo color de acción en todo el sitio; el resto es negro, blanco y gris.
+El verde vivo con texto negro como botón principal se leía como juguete; el
+profundo con blanco es el mismo verde de UpComp, en su registro serio.
 
-Geometría de Windows moderno (Fluent): 4 px en controles, 8 px en
-superficies, barra plana a todo el ancho con acrílico al hacer scroll. Lo
-redondo queda solo para puntos y contadores. Titulares en Albert Sans (la
-marca); interfaz en la fuente del sistema (Segoe UI en Windows). Sin sombras
-— la profundidad sale del contraste entre superficies. El único degradado
-del sistema es el negro a carbón del héroe.
+**Producto en foto.** Las fotos de upcomp.cl se recortaron sin fondo (WebP con
+transparencia en `assets/productos-negro/`) y sirven sobre cualquier
+superficie; llevan una sombra suave de `drop-shadow`, que es la sombra de la
+fotografía, no elevación de interfaz. El héroe muestra un portátil de trabajo
+profesional y no una torre con luces: la torre leía como equipo gamer.
 
-Ritmo de página: negro → claro → negro → negro → carbón → blanco → blanco → negro.
+**Sin grillas de tarjetas.** Soluciones en filas con filete, ciclo sobre un
+riel, casos en columnas con filete. Las únicas superficies son las que
+contienen algo: el formulario, las piezas del carril y el catálogo.
 
-**Producto sobre negro.** Las fotos de upcomp.cl vienen recortadas sobre fondo
-blanco, que sobre una escena negra se vería como un bloque. Se les quitó el
-fondo por relleno de inundación desde los bordes (así las pantallas
-encendidas del interior se conservan) y se guardaron como WebP con
-transparencia en `assets/productos-negro/`. Son las que flotan en el héroe y
-en la escena de equipamiento. El catálogo sigue usando las originales sobre
-lienzo claro.
+**Movimiento.** Cuatro momentos, todos ligados al scroll o a la carga:
 
-**Sin grillas de tarjetas.** Las soluciones son filas separadas por un filete
-de 1px, el ciclo son cuatro pasos sobre un riel y los casos son columnas con
-filete. La grilla de cajas redondeadas es el patrón que delata una página
-generada, y la referencia lo prohíbe. Los 28px de radio se reservan para
-superficies que contienen algo: el formulario y las tarjetas del catálogo.
+- *Coreografía de carga.* Las piezas del héroe entran por turno y el
+  producto se asienta.
+- *Secuencia de apertura.* El héroe mide casi dos pantallas y su interior
+  queda fijado: el titular se retira y aparecen, una por una, *Empresas. ·
+  Proyectos TI. · Cobertura nacional.* (las palabras del pie del héroe).
+- *Carril de equipamiento.* La fila de los ocho equipos se desplaza en
+  horizontal mientras se baja; en pantallas angostas es una tira con
+  desplazamiento nativo.
+- *Texto que se ilumina.* En la escena negra, cada palabra pasa de 18% a
+  100% en orden y al final aparecen los cuatro pasos del ciclo.
 
-**Movimiento.** Los bloques suben y aparecen al entrar en pantalla, en
-cascada, y el producto del héroe se aleja un poco al hacer scroll. El estado
-oculto lo pone JavaScript: si falla el script o el sistema pide menos
-movimiento, la página queda visible desde el principio.
+El estado oculto lo pone JavaScript: si falla el script, todo queda visible.
+Con menos movimiento (`prefers-reduced-motion`) quedan solo los fundidos y
+las secciones no se fijan. Para demostrar el sitio desde un equipo con las
+animaciones apagadas, `upcomp.vercel.app/?movimiento=1` fuerza el
+movimiento en esa visita (`body.forzado` deja de lado esas preferencias).
 
-**Secuencia de apertura.** Con movimiento permitido y pantalla ancha, el
-héroe mide casi dos pantallas y su interior queda fijado: el producto se
-asienta mientras el texto cambia por tiempos con el scroll (la propuesta, y
-luego *Empresas. · Proyectos TI. · Cobertura nacional.*, las palabras del pie
-del héroe). Con menos movimiento corre igual, solo con fundidos; en pantallas
-angostas es una pantalla normal.
-
-**Demostrar con las animaciones apagadas.** El sitio respeta
-`prefers-reduced-motion`; en Windows eso se activa al apagar "Efectos de
-animación" en Accesibilidad. Para una demo desde un equipo así, abrir
-`upcomp.vercel.app/?movimiento=1`: fuerza el movimiento solo en esa visita.
-
-**Hojas con resorte.** Los paneles del catálogo (lista de cotización y ficha)
-siguen el modelo de *Designing Fluid Interfaces* de Apple: un resorte con los
-dos parámetros de Apple (amortiguación y respuesta) integrado cuadro a cuadro,
-sin librerías. La animación parte siempre del valor que está en pantalla, se
-puede agarrar a mitad de camino desde la cabecera, sigue al dedo 1:1
-respetando el punto de agarre, resiste con goma más allá de abierto, hereda
-la velocidad al soltar y proyecta la inercia para decidir si cierra o vuelve.
-Rebota solo cuando viene de un gesto. En pantallas angostas es una hoja
-inferior con asa. La barra se materializa (vidrio) solo cuando hay contenido
-debajo, los botones responden al presionar y no al soltar, y los tamaños de
-texto van en `rem` para respetar el ajuste de texto del sistema.
-`prefers-reduced-motion` cambia desplazamientos por fundidos en vez de
-apagar la respuesta.
+**Hojas con resorte.** Los paneles del catálogo siguen *Designing Fluid
+Interfaces* de Apple: un resorte con amortiguación y respuesta integrado
+cuadro a cuadro, sin librerías. La animación parte del valor en pantalla, se
+puede agarrar a mitad de camino desde la cabecera, sigue al dedo 1:1, resiste
+con goma más allá de abierto, hereda la velocidad al soltar y proyecta la
+inercia para decidir si cierra o vuelve. En pantallas angostas es una hoja
+inferior con asa. Los botones responden al presionar y no al soltar, y los
+tamaños de texto van en `rem`.
 
 ## De dónde sale cada contenido
 

@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>UpComp — Tecnología para mantener activa tu operación</title>
 <meta name="description" content="Equipamiento, infraestructura, soporte y desarrollo TI para empresas en todo Chile. Un solo partner para todo el ciclo tecnológico.">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="assets/marcas/upcomp-logo.webp">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700;800&display=swap">
-<link rel="preload" as="image" href="assets/productos-negro/ws-threadripper.webp">
+<link rel="preload" as="image" href="assets/productos-negro/dell-pro-max-18.webp">
 <link rel="stylesheet" href="estilos.css">
 </head>
 <body data-pagina="home">
@@ -30,7 +30,7 @@
   <symbol id="i-in" viewBox="0 0 24 24" fill="currentColor"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-.95 1.83-1.95 3.77-1.95C20.5 8.75 21 11.2 21 14.1V21h-4v-6.1c0-1.45-.03-3.3-2-3.3s-2.3 1.57-2.3 3.2V21H9Z"/></symbol>
 </defs></svg>
 
-<!-- ============ Barra pastilla ============ -->
+<!-- ============ Barra ============ -->
 <header class="barra" id="header">
   <div class="barra__pill">
     <a class="barra__marca" href="index.html" aria-label="UpComp, ir al inicio">
@@ -55,16 +55,16 @@
 
 <main id="principal">
 
-  <!-- ============ 01 · HÉROE — producto fijado, el texto cambia por tiempos ============ -->
+  <!-- ============ 01 · HÉROE — carga coreografiada, luego secuencia por scroll ============ -->
   <section class="hero" id="inicio">
     <div class="hero__pin">
       <div class="marco hero__grid">
         <div class="hero__texto">
           <div class="beat beat--0">
-            <p class="cejilla" data-rev>UpComp · Servicios TI para empresas</p>
-            <h1 class="t-hero" data-rev>Tecnología para mantener activa tu operación</h1>
-            <p class="t-sub" data-rev>Equipamiento, infraestructura, soporte y soluciones TI para empresas en todo Chile.</p>
-            <div class="acciones" data-rev>
+            <p class="cejilla" data-carga="1">UpComp · Servicios TI para empresas</p>
+            <h1 class="t-hero" data-carga="2">Tecnología para mantener activa tu operación</h1>
+            <p class="t-sub" data-carga="3">Equipamiento, infraestructura, soporte y soluciones TI para empresas en todo Chile.</p>
+            <div class="acciones" data-carga="4">
               <a class="btn btn--accion" href="#contacto">Solicitar cotización</a>
               <a class="btn btn--fantasma" href="https://wa.me/56982794984" target="_blank" rel="noopener">Hablar con un asesor</a>
             </div>
@@ -75,77 +75,78 @@
           <p class="beat beat--n t-beat" aria-hidden="true">Cobertura nacional.</p>
         </div>
 
-        <figure class="hero__obj">
-          <img id="heroObj" src="assets/productos-negro/ws-threadripper.webp"
-               alt="Workstation AMD Threadripper" width="580" height="629" fetchpriority="high">
+        <figure class="hero__obj" data-carga="obj">
+          <img id="heroObj" src="assets/productos-negro/dell-pro-max-18.webp"
+               alt="Dell Pro Max 18 Plus" width="843" height="663" fetchpriority="high">
         </figure>
       </div>
 
       <div class="marco">
-        <p class="hero__pie">Empresas &nbsp;·&nbsp; Proyectos TI &nbsp;·&nbsp; Cobertura nacional</p>
+        <p class="hero__pie" data-carga="5">Empresas &nbsp;·&nbsp; Proyectos TI &nbsp;·&nbsp; Cobertura nacional</p>
       </div>
     </div>
   </section>
 
-  <!-- ============ 02 · CLIENTES — banda clara ============ -->
-  <section class="banda banda--frost" id="clientes">
+  <!-- ============ 02 · CLIENTES — banda gris ============ -->
+  <section class="banda banda--gris" id="clientes">
     <div class="marco">
       <p class="rotulo" data-rev>Empresas que confían en UpComp</p>
       <ul class="muro" id="muroClientes" data-rev></ul>
     </div>
   </section>
 
-  <!-- ============ 03 · SOLUCIONES — lista de filetes, sin tarjetas ============ -->
-  <section class="escena" id="soluciones">
+  <!-- ============ 03 · SOLUCIONES — filas con filete ============ -->
+  <section class="banda" id="soluciones">
     <div class="marco">
       <h2 class="t-display" data-rev>Cuatro frentes.<br>Un solo proveedor.</h2>
       <div class="filas" id="rejillaSoluciones"></div>
     </div>
   </section>
 
-  <!-- ============ 04 · EQUIPAMIENTO — escena de producto ============ -->
-  <section class="escena escena--obj" id="equipamiento">
-    <div class="marco obj">
-      <figure class="obj__img" data-rev>
-        <img src="assets/productos-negro/dell-pro-max-18.webp" alt="Dell Pro Max 18 Plus"
-             width="843" height="663" loading="lazy">
-      </figure>
-      <div class="obj__texto">
-        <h2 class="t-display" data-rev>Especificado según la carga real de trabajo.</h2>
-        <p class="t-cuerpo t-cuerpo--ancho" data-rev>Workstations, notebooks profesionales y equipos corporativos de Dell, Lenovo y HP. Definimos la configuración a partir del software, los usuarios y el plazo — no al revés.</p>
-        <p data-rev><a class="enlace" href="tienda.html">Ver equipamiento <svg class="ic" viewBox="0 0 24 24"><use href="#i-flecha"/></svg></a></p>
+  <!-- ============ 04 · EQUIPAMIENTO — la fila de equipos se desplaza con el scroll ============ -->
+  <section class="carril" id="equipamiento">
+    <div class="carril__fijo">
+      <div class="marco carril__cab">
+        <div>
+          <h2 class="t-display" data-rev>Equipamiento profesional.</h2>
+          <p class="t-cuerpo t-cuerpo--ancho" data-rev>Workstations, notebooks y equipos corporativos de Dell, Lenovo y HP. Se especifican según la carga real de trabajo — no al revés.</p>
+        </div>
+        <a class="enlace" href="tienda.html" data-rev>Ver todo el equipamiento <svg class="ic" viewBox="0 0 24 24"><use href="#i-flecha"/></svg></a>
+      </div>
+      <div class="carril__pista" id="pista"></div>
+    </div>
+  </section>
+
+  <!-- ============ 05 · CICLO — escena negra; el texto se ilumina palabra por palabra ============ -->
+  <section class="escena escena--fijada" id="ciclo">
+    <div class="fijo">
+      <div class="marco">
+        <h2 class="t-display t-display--xl" data-palabras>Un solo partner para todo el ciclo tecnológico.</h2>
+        <p class="t-cuerpo t-cuerpo--ancho t-cuerpo--lg" data-palabras>Desde la necesidad inicial hasta la continuidad de la solución implementada.</p>
+        <ol class="ciclo" id="pasosCiclo"></ol>
       </div>
     </div>
   </section>
 
-  <!-- ============ 05 · DIFERENCIADOR — secuencia sobre riel ============ -->
-  <section class="escena escena--carbon" id="ciclo">
+  <!-- ============ 06 · PARTNERS ============ -->
+  <section class="banda" id="partners">
     <div class="marco">
-      <h2 class="t-display" data-rev>Un solo partner para todo el ciclo tecnológico.</h2>
-      <p class="t-cuerpo t-cuerpo--ancho" data-rev>Desde la necesidad inicial hasta la continuidad de la solución implementada.</p>
-      <ol class="ciclo" id="pasosCiclo"></ol>
-    </div>
-  </section>
-
-  <!-- ============ 06 · PARTNERS — banda blanca ============ -->
-  <section class="banda banda--papel" id="partners">
-    <div class="marco">
-      <h2 class="t-display t-display--oscuro" data-rev>Respaldo de fabricante.</h2>
-      <p class="t-cuerpo t-cuerpo--oscuro t-cuerpo--ancho" data-rev>Trabajamos con fabricantes líderes para entregar soluciones empresariales con respaldo y soporte especializado.</p>
+      <h2 class="t-display" data-rev>Respaldo de fabricante.</h2>
+      <p class="t-cuerpo t-cuerpo--ancho" data-rev>Trabajamos con fabricantes líderes para entregar soluciones empresariales con respaldo y soporte especializado.</p>
       <ul class="muro muro--partners" id="muroPartners" data-rev></ul>
     </div>
   </section>
 
-  <!-- ============ 07 · EXPERIENCIA — banda blanca ============ -->
-  <section class="banda banda--papel banda--sin-tope" id="experiencia">
+  <!-- ============ 07 · EXPERIENCIA — banda gris ============ -->
+  <section class="banda banda--gris" id="experiencia">
     <div class="marco">
-      <h2 class="t-display t-display--oscuro" data-rev>Proyectos entregados.</h2>
+      <h2 class="t-display" data-rev>Proyectos entregados.</h2>
       <div class="casos" id="rejillaCasos"></div>
     </div>
   </section>
 
-  <!-- ============ 08 · CONTACTO — escena negra ============ -->
-  <section class="escena" id="contacto">
+  <!-- ============ 08 · CONTACTO ============ -->
+  <section class="banda" id="contacto">
     <div class="marco contacto">
       <div>
         <h2 class="t-display" data-rev>Cuéntanos qué necesita tu empresa.</h2>
