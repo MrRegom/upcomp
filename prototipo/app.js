@@ -186,6 +186,9 @@ let pendiente=false;
 function alScroll(){
   pendiente=false;
   if(fab) fab.hidden=scrollY<600;
+  /* El vidrio aparece solo cuando la barra flota sobre contenido; arriba del
+     todo, sobre el negro del héroe, no hay nada que separar. */
+  if(barra) barra.classList.toggle("is-material",scrollY>8);
 
   if(!enlacesNav.length) return;
   const limite=scrollY+120;
@@ -377,19 +380,143 @@ function cambiar(i,delta){
   guardar(); pintarCarro();
 }
 
-/* ---------- Paneles laterales ---------- */
+/* ==========================================================================
+   HOJAS — paneles con resorte, arrastrables e interrumpibles
+
+   Modelo de Apple (Designing Fluid Interfaces): la animación parte siempre
+   del valor que está en pantalla, hereda la velocidad del dedo al soltar,
+   proyecta la inercia para decidir dónde termina y se puede agarrar a mitad
+   de camino sin esperar a que acabe. Sin librerías: un integrador de resorte
+   con los dos parámetros de Apple, amortiguación y respuesta.
+
+   El valor del resorte es la fracción del panel fuera de pantalla:
+   0 = abierto, 1 = cerrado. La velocidad se mide en fracciones por segundo.
+   ========================================================================== */
+
 const velo=$("#velo");
-function abrirPanel(sel){
-  const p=$(sel); if(!p) return;
-  p.classList.add("is-ver");
-  if(velo) velo.classList.add("is-ver");
-  document.body.classList.add("menu-abierto");
+
+/* amort 1 = sin rebote (críticamente amortiguado); resp = segundos hasta la
+   meta, aproximados — un resorte no tiene duración fija. */
+function crearResorte(valor){
+  return {valor,vel:0,meta:valor,k:0,c:0,raf:null,alTick:null,alFin:null};
 }
-function cerrarPaneles(){
-  $$(".panel").forEach(p=>p.classList.remove("is-ver"));
-  if(velo) velo.classList.remove("is-ver");
-  document.body.classList.remove("menu-abierto");
+function moverResorte(r,meta,{amort=1,resp=.35,vel}={}){
+  const w0=2*Math.PI/resp;
+  r.k=w0*w0; r.c=2*amort*w0; r.meta=meta;
+  if(vel!==undefined) r.vel=vel;
+  if(r.raf) return;                       /* ya integrando: solo cambió la meta */
+  let t0=performance.now();
+  const paso=t=>{
+    const dt=Math.min((t-t0)/1000,.064); t0=t;
+    const n=Math.ceil(dt/.008), h=dt/n;   /* sub-pasos: estable aunque caiga a 30 fps */
+    for(let i=0;i<n;i++){
+      r.vel+=(-r.k*(r.valor-r.meta)-r.c*r.vel)*h;
+      r.valor+=r.vel*h;
+    }
+    const listo=Math.abs(r.valor-r.meta)<.002&&Math.abs(r.vel)<.01;
+    if(listo){ r.valor=r.meta; r.vel=0; }
+    if(r.alTick) r.alTick(r.valor);
+    if(listo){ r.raf=null; if(r.alFin) r.alFin(); return; }
+    r.raf=requestAnimationFrame(paso);
+  };
+  r.raf=requestAnimationFrame(paso);
 }
+function pararResorte(r){ if(r.raf){ cancelAnimationFrame(r.raf); r.raf=null; } }
+
+/* Proyección de inercia (la función exacta de Apple): dónde se detendría el
+   gesto si nada lo frenara. Entra px/s, sale px. */
+const proyectar=(v,d=.998)=>(v/1000)*d/(1-d);
+/* Goma en el borde: cuanto más se pasa, menos sigue al dedo. */
+const goma=(exceso,dim,c=.55)=>(exceso*dim*c)/(dim+c*Math.abs(exceso));
+
+const hojas=new Map();
+
+function hoja(panel){
+  if(hojas.has(panel)) return hojas.get(panel);
+
+  /* En pantallas angostas la hoja sube desde abajo; en escritorio entra por la derecha. */
+  const ejeY=()=>matchMedia("(max-width:860px)").matches;
+  /* Nunca 0: con el panel sin trazar todavía, dividir por el tamaño daría NaN. */
+  const tam=()=>Math.max(1,ejeY()?panel.offsetHeight:panel.offsetWidth);
+  const r=crearResorte(1);
+
+  const pintar=v=>{
+    const px=v*tam();
+    panel.style.transform=ejeY()?`translate3d(0,${px}px,0)`:`translate3d(${px}px,0,0)`;
+    if(velo) velo.style.opacity=String(Math.max(0,Math.min(1,1-v)));
+  };
+  r.alTick=pintar;
+
+  const h={
+    panel,r,abierta:false,
+    abrir(){
+      h.abierta=true;
+      panel.classList.add("is-abierta");
+      if(velo) velo.classList.add("is-ver");
+      document.body.classList.add("menu-abierto");
+      r.alFin=null;
+      if(quietud){ r.valor=0; pintar(0); return; }
+      /* Se abre por un botón, sin inercia previa: sin rebote. */
+      moverResorte(r,0,{amort:1,resp:.38});
+    },
+    cerrar(vel){
+      h.abierta=false;
+      if(velo) velo.classList.remove("is-ver");
+      document.body.classList.remove("menu-abierto");
+      const fin=()=>panel.classList.remove("is-abierta");
+      if(quietud){ r.valor=1; pintar(1); fin(); return; }
+      r.alFin=fin;
+      /* Si viene de un gesto trae velocidad, y ahí sí cabe un poco de rebote. */
+      moverResorte(r,1,{amort:vel!==undefined?.8:1,resp:.32,vel});
+    }
+  };
+
+  /* ---- Arrastre desde la cabecera ---- */
+  const asa=panel.querySelector(".panel__cab");
+  let ptr=null, base=0, hist=[];
+  const pos=e=>ejeY()?e.clientY:e.clientX;
+
+  asa.addEventListener("pointerdown",e=>{
+    if(e.target.closest("button")) return;
+    ptr=e.pointerId;
+    pararResorte(r);                      /* se agarra donde está, no donde iba */
+    base=r.valor*tam()-pos(e);            /* respeta el punto exacto del agarre */
+    hist=[[performance.now(),pos(e)]];
+    /* La captura sigue el arrastre aunque el puntero salga de la cabecera.
+       Puede fallar si el puntero ya se soltó; el agarre igual queda armado. */
+    try{ asa.setPointerCapture(ptr); }catch{}
+  });
+  asa.addEventListener("pointermove",e=>{
+    if(e.pointerId!==ptr) return;
+    const p=pos(e), d=tam();
+    hist.push([performance.now(),p]); if(hist.length>6) hist.shift();
+    let px=base+p;
+    if(px<0) px=goma(px,d);               /* más allá de abierto: resistencia, no tope */
+    r.valor=px/d; pintar(r.valor);
+  });
+  const soltar=e=>{
+    if(e.pointerId!==ptr) return; ptr=null;
+    let vPx=0;
+    if(hist.length>1){
+      const [t1,p1]=hist[0], [t2,p2]=hist[hist.length-1];
+      const dt=(t2-t1)/1000; if(dt>0) vPx=(p2-p1)/dt;
+    }
+    const d=tam(), vFrac=vPx/d;
+    /* Con velocidad clara decide el signo del gesto; si no, la posición proyectada. */
+    const cierra=Math.abs(vPx)>350 ? vPx>0 : (r.valor+proyectar(vPx)/d)>.5;
+    if(cierra) h.cerrar(vFrac);
+    else { r.alFin=null; moverResorte(r,0,{amort:.8,resp:.32,vel:vFrac}); }
+  };
+  asa.addEventListener("pointerup",soltar);
+  asa.addEventListener("pointercancel",soltar);
+  addEventListener("resize",()=>{ if(h.abierta||r.raf) pintar(r.valor); });
+
+  hojas.set(panel,h);
+  return h;
+}
+
+function abrirPanel(sel){ const p=$(sel); if(p) hoja(p).abrir(); }
+function cerrarPaneles(){ hojas.forEach(h=>{ if(h.abierta) h.cerrar(); }); }
 if(velo) velo.addEventListener("click",cerrarPaneles);
 addEventListener("keydown",e=>{ if(e.key==="Escape") cerrarPaneles(); });
 

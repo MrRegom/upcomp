@@ -115,6 +115,20 @@ cascada, y el producto del héroe se aleja un poco al hacer scroll. El estado
 oculto lo pone JavaScript: si falla el script o el sistema pide menos
 movimiento, la página queda visible desde el principio.
 
+**Hojas con resorte.** Los paneles del catálogo (lista de cotización y ficha)
+siguen el modelo de *Designing Fluid Interfaces* de Apple: un resorte con los
+dos parámetros de Apple (amortiguación y respuesta) integrado cuadro a cuadro,
+sin librerías. La animación parte siempre del valor que está en pantalla, se
+puede agarrar a mitad de camino desde la cabecera, sigue al dedo 1:1
+respetando el punto de agarre, resiste con goma más allá de abierto, hereda
+la velocidad al soltar y proyecta la inercia para decidir si cierra o vuelve.
+Rebota solo cuando viene de un gesto. En pantallas angostas es una hoja
+inferior con asa. La barra se materializa (vidrio) solo cuando hay contenido
+debajo, los botones responden al presionar y no al soltar, y los tamaños de
+texto van en `rem` para respetar el ajuste de texto del sistema.
+`prefers-reduced-motion` cambia desplazamientos por fundidos en vez de
+apagar la respuesta.
+
 ## De dónde sale cada contenido
 
 | Sección | Origen |
