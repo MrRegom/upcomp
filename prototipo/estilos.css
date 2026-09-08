@@ -64,7 +64,7 @@
 
 /* ---------- Base ---------- */
 *,*::before,*::after{box-sizing:border-box}
-html{overflow-x:hidden;scroll-behavior:smooth;scroll-padding-top:calc(var(--barra-alto) + 16px);-webkit-text-size-adjust:100%}
+html{overflow-x:hidden;scroll-padding-top:calc(var(--barra-alto) + 16px);-webkit-text-size-adjust:100%}
 body{
   margin:0;
   background:var(--fondo);
@@ -387,21 +387,41 @@ body.intro-activa{overflow:hidden}
 .pie__col a,.pie__col span{font-size:.875rem;line-height:1.43;color:var(--tinta-2);transition:color var(--transicion)}
 .pie__col a:hover{color:var(--tinta)}
 .pie__legal{margin-top:clamp(48px,6vw,80px);padding-top:24px;border-top:1px solid var(--linea);display:flex;flex-wrap:wrap;gap:8px 32px;justify-content:space-between;font-size:.8125rem;color:var(--tinta-3)}
+.pie__legal a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.pie__legal a:hover{color:var(--tinta)}
 
 /* ==========================================================================
    Accesos flotantes y aviso
    ========================================================================== */
 .flota{position:fixed;right:clamp(16px,3vw,32px);bottom:clamp(16px,3vw,32px);z-index:80;display:flex;flex-direction:column;gap:12px}
 .flota__b{
-  width:48px;height:48px;display:grid;place-items:center;border-radius:var(--r-card);
+  width:48px;height:48px;display:grid;place-items:center;border-radius:var(--r-redondo);
   background:rgba(255,255,255,.84);backdrop-filter:blur(16px);
   border:1px solid var(--linea);color:var(--tinta);
   transition:background var(--transicion),border-color var(--transicion),transform .18s var(--curva);
 }
 .flota__b:hover{border-color:var(--tinta)}
 .flota__b[hidden]{display:none}
+/* El bot lleva un punto: distingue el boton nuevo del resto sin necesidad
+   de texto, y sugiere "hay algo esperando" la primera vez. */
+.flota__b--bot{position:relative}
+.flota__b--bot::after{content:"";position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--accion);border:2px solid var(--fondo)}
 .flota__b--wa{background:var(--accion);border-color:var(--accion);color:var(--accion-tinta)}
 .flota__b--wa:hover{background:var(--accion-alta);border-color:var(--accion-alta)}
+
+/* ---------- Asistente: burbujas dentro del mismo panel con resorte ---------- */
+.bot__chat{background:var(--banda);display:flex;flex-direction:column;gap:10px}
+.burbuja{max-width:86%;padding:12px 16px;border-radius:var(--r-card);font-size:.9375rem;line-height:1.5}
+.burbuja--bot{align-self:flex-start;background:var(--fondo);border:1px solid var(--linea-suave);color:var(--tinta);border-bottom-left-radius:2px}
+.burbuja--yo{align-self:flex-end;background:var(--accion-fondo);color:#fff;border-bottom-right-radius:2px}
+.bot__pie{flex-direction:column;gap:8px}
+.bot__opciones{display:flex;flex-direction:column;gap:8px}
+.bot__op{
+  text-align:left;padding:11px 16px;border:1px solid var(--linea);border-radius:var(--r-btn);
+  font-size:.9375rem;font-weight:500;color:var(--tinta);background:var(--fondo);
+  transition:border-color var(--transicion),background var(--transicion);
+}
+.bot__op:hover{border-color:var(--accion-fondo);background:var(--banda)}
 .flota__b .ic{width:24px;height:24px}
 
 .toast{
@@ -513,14 +533,19 @@ body.intro-activa{overflow:hidden}
   .barra__nav{
     position:fixed;inset:calc(var(--barra-alto) + 8px) clamp(16px,4vw,32px) auto;flex-direction:column;align-items:stretch;
     gap:0;margin:0;padding:8px 20px 16px;
-    background:rgba(255,255,255,.9);
-    border:1px solid rgba(0,0,0,.08);border-radius:var(--r-card);
+    /* Vidrio oscuro siempre, sin importar si está sobre el héroe negro o
+       sobre el resto de la página clara: como popover no necesita mezclarse
+       con el fondo, solo verse premium y legible por sí mismo. */
+    background:rgba(10,16,13,.86);
+    border:1px solid rgba(255,255,255,.1);border-radius:var(--r-card);
+    box-shadow:0 24px 48px -20px rgba(0,0,0,.45);
     transform-origin:top right;transform:scale(.94) translateY(-6px);opacity:0;
     backdrop-filter:blur(0px) saturate(100%);pointer-events:none;
     transition:transform .32s var(--curva),opacity .22s ease,backdrop-filter .32s ease;
   }
   .barra__nav.is-ver{transform:none;opacity:1;pointer-events:auto;backdrop-filter:blur(20px) saturate(180%)}
-  .barra__nav a{padding:14px 0;font-size:1.0625rem;border-bottom:1px solid rgba(0,0,0,.08)}
+  .barra__nav a{padding:14px 0;font-size:1.0625rem;color:#fff;opacity:.86;border-bottom:1px solid rgba(255,255,255,.12)}
+  .barra__nav a:hover,.barra__nav a.is-act{opacity:1}
   .barra__nav a:last-child{border-bottom:0}
   .barra__burger{display:grid}
   .barra__fin .btn{display:none}
@@ -551,36 +576,36 @@ body.intro-activa{overflow:hidden}
 }
 
 /* ==========================================================================
-   Preferencias del sistema. body.forzado (?movimiento=1) las deja de lado
-   para demostrar el sitio desde un equipo con las animaciones apagadas.
+   Preferencias del visitante
    ========================================================================== */
-@media (prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  body:not(.forzado) .rev{transform:none;transition:opacity .25s ease}
-  body:not(.forzado) .barra__nav{transform:none;transition:opacity .2s ease}
-  body:not(.forzado) .panel{transform:none!important;visibility:visible;opacity:0;pointer-events:none;transition:opacity .2s ease}
-  body:not(.forzado) .panel.is-abierta{opacity:1;pointer-events:auto}
-  body:not(.forzado) .velo{transition:opacity .2s ease}
-  body:not(.forzado) .toast{transform:translate(-50%,0);opacity:0;transition:opacity .2s ease}
-  body:not(.forzado) .toast.is-ver{opacity:1}
-  body:not(.forzado).is-cargada [data-carga]{animation-name:aparecer;animation-duration:.5s}
-  body:not(.forzado) .intro{transition:opacity .4s ease}
-  body:not(.forzado) .intro.is-fuera{transform:none;opacity:0}
-  body:not(.forzado) .intro__logo{animation-name:aparecer;transform:none}
-  body:not(.forzado) .escena--fijada .fijo{transform:none!important;border-radius:0!important}
-  body:not(.forzado) .rev{transition:opacity .6s ease}
-  body:not(.forzado) .area.is-ver:hover{transform:none}
-  body:not(.forzado) .caso::before{transition:opacity .4s ease;transform:none;opacity:0}
-  body:not(.forzado) .caso.is-ver::before{opacity:1}
-  body:not(.forzado) .btn:active,body:not(.forzado) .flota__b:active{transform:none;opacity:.8}
-}
+/* Antes esto vivía en un @media(prefers-reduced-motion:reduce): se apagaba
+   solo cuando el sistema lo pedía. En la práctica eso apagaba la página para
+   cualquiera con esa opción desactivada en Windows, sin que lo hubiera
+   pedido. Ahora es opt-in puro: solo aplica con la clase que pone
+   ?movimiento=0 (ver app.js). */
+html{scroll-behavior:smooth}
+body.quieto{scroll-behavior:auto}
+body.quieto .rev{transform:none;transition:opacity .25s ease}
+body.quieto .barra__nav{transform:none;transition:opacity .2s ease}
+body.quieto .panel{transform:none!important;visibility:visible;opacity:0;pointer-events:none;transition:opacity .2s ease}
+body.quieto .panel.is-abierta{opacity:1;pointer-events:auto}
+body.quieto .velo{transition:opacity .2s ease}
+body.quieto .toast{transform:translate(-50%,0);opacity:0;transition:opacity .2s ease}
+body.quieto .toast.is-ver{opacity:1}
+body.quieto.is-cargada [data-carga]{animation-name:aparecer;animation-duration:.5s}
+body.quieto .intro{transition:opacity .4s ease}
+body.quieto .intro.is-fuera{transform:none;opacity:0}
+body.quieto .intro__logo{animation-name:aparecer;transform:none}
+body.quieto .escena--fijada .fijo{transform:none!important;border-radius:0!important}
+body.quieto .area.is-ver:hover{transform:none}
+body.quieto .caso::before{transition:opacity .4s ease;transform:none;opacity:0}
+body.quieto .caso.is-ver::before{opacity:1}
+body.quieto .btn:active,body.quieto .flota__b:active{transform:none;opacity:.8}
 @media (prefers-reduced-transparency:reduce){
   .barra.is-material .barra__pill,.barra__nav,.flota__b,.toast,.velo{backdrop-filter:none}
   .barra.is-material .barra__pill{background:#ffffff}
+  .barra__nav{background:#0a100d}
   .velo{background:rgba(0,0,0,.55)}
-}
-@media (prefers-reduced-transparency:reduce) and (max-width:860px){
-  .barra__nav{background:#ffffff}
 }
 @media (prefers-contrast:more){
   .barra.is-material .barra__pill,.barra__nav{border-color:rgba(0,0,0,.5)}

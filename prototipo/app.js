@@ -305,17 +305,23 @@ Pueden contactarme en: ${d.contacto}`;
 /* ?movimiento=1 fuerza el movimiento aunque el sistema pida menos. Existe para
    demostrar el sitio desde un equipo con las animaciones apagadas; por defecto
    se respeta la preferencia. */
+/* El movimiento va activado por defecto: apagarlo automáticamente cuando el
+   sistema pide "menos movimiento" sonaba correcto en el papel, pero en la
+   práctica dejaba la página estática para cualquiera con esa opción
+   desactivada en Windows — que es mucha gente, no solo quien lo necesita
+   por salud. Ahora hay que pedirlo a propósito: ?movimiento=0 lo apaga y lo
+   recuerda en este navegador; el enlace "Reducir movimiento" del pie hace
+   lo mismo con un clic. */
 const parametros = new URLSearchParams(location.search);
 if(parametros.has("movimiento")){
   try{
-    if(parametros.get("movimiento")==="0") localStorage.removeItem("upcomp_movimiento");
-    else localStorage.setItem("upcomp_movimiento","1");
+    if(parametros.get("movimiento")==="0") localStorage.setItem("upcomp_movimiento","0");
+    else localStorage.removeItem("upcomp_movimiento");
   }catch{}
 }
-let forzarMovimiento = false;
-try{ forzarMovimiento = localStorage.getItem("upcomp_movimiento")==="1"; }catch{}
-const quietud = !forzarMovimiento && matchMedia("(prefers-reduced-motion: reduce)").matches;
-if(forzarMovimiento) document.body.classList.add("forzado");
+let quietud = false;
+try{ quietud = localStorage.getItem("upcomp_movimiento")==="0"; }catch{}
+document.body.classList.toggle("quieto", quietud);
 
 /* Las fotos sin fondo (WebP con transparencia) valen para cualquier superficie. */
 const recorte = e => e.img.replace("productos/","productos-negro/").replace(".jpg",".webp");
@@ -797,6 +803,7 @@ function abrirPanel(sel){ const p=$(sel); if(p) hoja(p).abrir(); }
 function cerrarPaneles(){ hojas.forEach(h=>{ if(h.abierta) h.cerrar(); }); }
 if(velo) velo.addEventListener("click",cerrarPaneles);
 addEventListener("keydown",e=>{ if(e.key==="Escape") cerrarPaneles(); });
+$$("[data-cerrar]").forEach(b=>b.addEventListener("click",cerrarPaneles));
 
 /* ---------- Ficha de producto ---------- */
 function pintarFicha(i){
@@ -848,10 +855,98 @@ if(PAGINA==="tienda"){
   });
 
   $("#abrirCarro")?.addEventListener("click",()=>abrirPanel("#carro"));
-  $$("[data-cerrar]").forEach(b=>b.addEventListener("click",cerrarPaneles));
 
   $("#enviarWa")?.addEventListener("click",()=>open(waLink(mensajeCotizacion()),"_blank","noopener"));
   $("#enviarMail")?.addEventListener("click",()=>{
     location.href=`mailto:${CORREO}?subject=${encodeURIComponent("Solicitud de cotización")}&body=${encodeURIComponent(mensajeCotizacion())}`;
   });
 }
+
+/* ==========================================================================
+   ASISTENTE — un guion de decisiones, no un modelo detrás
+   Reutiliza el contenido real de SOLUCIONES para orientar y termina siempre
+   en el formulario de contacto. Es la misma idea que UpComp vende como
+   servicio (bots de atención sobre WhatsApp Business), mostrada como pieza
+   del propio sitio: "el bot que te atiende es el que te vendemos".
+   ========================================================================== */
+const botChat = $("#botChat"), botOpciones = $("#botOpciones");
+let botIniciado = false;
+
+function botDecir(texto, quien = "bot"){
+  const b = document.createElement("div");
+  b.className = "burbuja burbuja--" + (quien === "bot" ? "bot" : "yo");
+  b.textContent = texto;
+  botChat.appendChild(b);
+  botChat.scrollTop = botChat.scrollHeight;
+}
+
+function botOfrecer(opciones){
+  botOpciones.innerHTML = "";
+  const cont = document.createElement("div");
+  cont.className = "bot__opciones";
+  opciones.forEach(([label, accion]) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "bot__op";
+    btn.textContent = label;
+    btn.addEventListener("click", () => {
+      botDecir(label, "yo");
+      botOpciones.innerHTML = "";
+      accion();
+    });
+    cont.appendChild(btn);
+  });
+  botOpciones.appendChild(cont);
+}
+
+function botInicio(){
+  botOfrecer(
+    SOLUCIONES.map(a => [a.t, () => botArea(a)])
+      .concat([["No estoy seguro, prefiero contarles directo", botDirecto]])
+  );
+}
+
+function botArea(area){
+  setTimeout(() => {
+    botDecir(area.d);
+    botDecir("¿Seguimos con esto?");
+    botOfrecer([
+      ["Sí, quiero cotizar", () => botFormulario(area)],
+      ["Ver el detalle", () => { location.href = area.href; }],
+      ["Ver otra área", botInicio],
+    ]);
+  }, 350);
+}
+
+function botDirecto(){
+  setTimeout(() => {
+    botDecir("Sin problema. Completemos un formulario breve y te contactamos.");
+    botOfrecer([["Ir al formulario", () => botFormulario(null)]]);
+  }, 350);
+}
+
+function botFormulario(area){
+  setTimeout(() => {
+    botDecir("Perfecto, te llevo al formulario.");
+    setTimeout(() => {
+      cerrarPaneles();
+      const necesita = $("#fNecesita");
+      if(necesita && area && !necesita.value.trim()) necesita.value = `Me interesa: ${area.t}. `;
+      const contacto = $("#contacto");
+      if(contacto) contacto.scrollIntoView({ behavior: quietud ? "auto" : "smooth", block: "start" });
+      setTimeout(() => $("#fNombre")?.focus(), quietud ? 50 : 500);
+    }, 500);
+  }, 300);
+}
+
+$("#abrirBot")?.addEventListener("click", () => {
+  abrirPanel("#bot");
+  if(!botIniciado){
+    botIniciado = true;
+    setTimeout(() => {
+      botDecir("Hola. Soy el asistente de UpComp — el mismo tipo de bot que implementamos para nuestros clientes sobre WhatsApp Business.");
+      botDecir("¿Qué necesita tu empresa?");
+      botInicio();
+    }, 250);
+  }
+});
