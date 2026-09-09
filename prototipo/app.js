@@ -495,58 +495,83 @@ function iluminar(){
 medirCarril();
 addEventListener("resize", medirCarril, {passive:true});
 
-/* ---------- Campo de partículas en onda ----------
-   Una superficie de puntos en perspectiva que ondula despacio, dibujada en
-   canvas: es lo que da fondo al héroe sin recurrir a una imagen de stock.
-   Corre solo mientras el héroe está a la vista; con menos movimiento se
-   dibuja un solo cuadro y queda quieta. */
+/* ---------- Cables de fibra con pulso de luz ----------
+   Unos cables fijos en perspectiva, dibujados en canvas, con un pulso de
+   luz que viaja por cada uno y deja una estela que se apaga detras: es la
+   idea de "datos circulando" sin recurrir a una foto de stock. El cable no
+   se mueve, solo el pulso; corre mientras el heroe esta a la vista y con
+   menos movimiento se dibuja un solo cuadro y queda quieto. */
 function crearOnda(cv){
   const ctx = cv.getContext("2d");
   let W = 0, H = 0, raf = null, t = 0, px = 0, py = 0;
-  const COLS = 120, FILAS = 34;
+  const N = 7, MUESTRAS = 96, COLA = 18;
+  let cables = [];
+  function construirCables(){
+    cables = [];
+    const horizonte = H * .42, prof = H * .74;
+    for(let k = 0; k < N; k++){
+      const v = k / (N - 1);                      /* 0 lejos ... 1 cerca */
+      const y0 = horizonte + v * v * prof;
+      const amp = 10 + v * 44;
+      const frec = 1.05 + (k % 3) * .32;
+      const fase = k * 1.9;
+      const cerca = v > .5;
+      const puntos = [];
+      for(let i = 0; i <= MUESTRAS; i++){
+        const u = i / MUESTRAS;
+        const sobre = Math.sin(u * Math.PI * .92 + .1);   /* se atenua en los bordes */
+        const y = y0 + Math.sin(u * frec * 6.2832 + fase) * amp * sobre;
+        puntos.push({ x: u * W, y });
+      }
+      cables.push({
+        puntos, color: cerca ? "54,184,92" : "92,214,196",
+        ancho: .6 + v * 1.2, opacidad: .08 + v * .14,
+        vel: .07 + (k % 4) * .028, fase0: (k * .263) % 1,
+      });
+    }
+  }
   function medir(){
     const dpr = Math.min(devicePixelRatio || 1, 2);
     W = cv.clientWidth; H = cv.clientHeight;
     cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    construirCables();
   }
   function cuadro(){
     ctx.clearRect(0, 0, W, H);
-    const horizonte = H * .40 + py * 18, prof = H * .78;
-    /* El barrido: una banda de luz que recorre la superficie de lejos a
-       cerca y vuelve, dando la sensacion de una ola real avanzando. */
-    const barrido = (Math.sin(t * .35) + 1) / 2;
-    for(let j = 0; j < FILAS; j++){
-      const v = j / (FILAS - 1);                 /* 0 lejos ... 1 cerca */
-      const y0 = horizonte + v * v * prof;
-      const esc = .3 + v * .7;
-      const cerca = v > .55;
-      const color = cerca ? "54,184,92" : "92,214,196";
-      const cercaBarrido = 1 - Math.min(1, Math.abs(v - barrido) * 2.4);
-      let xPrev = null, yPrev = null;
-      for(let i = 0; i < COLS; i++){
-        const u = i / (COLS - 1);
-        const x = W / 2 + (u - .5) * W * 1.7 * esc;
-        const z = Math.sin(u * 6.5 + t * .9 + px * .8 + v * 3) * Math.cos(v * 4.5 - t * .6) * (14 + v * 46);
-        const y = y0 + z;
-        const brillo = .5 + .5 * Math.sin(u * 9 + t * 1.3 + v * 4);
-        const realce = 1 + cercaBarrido * 1.6;
-        const a = (.09 + v * .5) * (.5 + .5 * brillo) * realce;
-        /* Linea hacia el punto anterior de la misma fila: la onda se lee
-           como una superficie que fluye, no como puntos sueltos. */
-        if(xPrev !== null){
-          ctx.strokeStyle = `rgba(${color},${a * .85})`;
-          ctx.lineWidth = .6 + v * 1.1;
-          ctx.beginPath(); ctx.moveTo(xPrev, yPrev); ctx.lineTo(x, y); ctx.stroke();
-        }
-        xPrev = x; yPrev = y;
-        const r = (.7 + v * 1.8) * (1 + cercaBarrido * .5);
-        ctx.fillStyle = `rgba(${color},${Math.min(1, a * 1.15)})`;
-        ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
+    ctx.save();
+    /* El puntero inclina apenas el conjunto: la escena responde sin moverse de sitio. */
+    ctx.translate(px * 10, py * 16);
+    cables.forEach(c=>{
+      ctx.strokeStyle = `rgba(${c.color},${c.opacidad})`;
+      ctx.lineWidth = c.ancho;
+      ctx.beginPath();
+      c.puntos.forEach((p, i)=>{ if(i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
+      ctx.stroke();
+
+      const cabeza = ((c.fase0 + t * c.vel) % 1) * MUESTRAS;
+      const iCabeza = Math.floor(cabeza);
+      for(let i = Math.max(0, iCabeza - COLA); i < iCabeza && i < MUESTRAS; i++){
+        const op = 1 - (iCabeza - i) / COLA;
+        ctx.strokeStyle = `rgba(${c.color},${op * .95})`;
+        ctx.lineWidth = c.ancho + 1.3;
+        ctx.beginPath();
+        ctx.moveTo(c.puntos[i].x, c.puntos[i].y);
+        ctx.lineTo(c.puntos[i + 1].x, c.puntos[i + 1].y);
+        ctx.stroke();
       }
-    }
+      const p = c.puntos[Math.min(MUESTRAS, iCabeza)];
+      const brillo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 15);
+      brillo.addColorStop(0, `rgba(${c.color},.55)`);
+      brillo.addColorStop(1, `rgba(${c.color},0)`);
+      ctx.fillStyle = brillo;
+      ctx.beginPath(); ctx.arc(p.x, p.y, 15, 0, 6.2832); ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,.92)";
+      ctx.beginPath(); ctx.arc(p.x, p.y, 2.3, 0, 6.2832); ctx.fill();
+    });
+    ctx.restore();
   }
-  function paso(){ t += .011; cuadro(); raf = requestAnimationFrame(paso); }
+  function paso(){ t += .013; cuadro(); raf = requestAnimationFrame(paso); }
   const onda = {
     arrancar(){ if(!raf && !quietud && !document.hidden) raf = requestAnimationFrame(paso); },
     detener(){ if(raf){ cancelAnimationFrame(raf); raf = null; } },
@@ -554,7 +579,6 @@ function crearOnda(cv){
   };
   medir(); cuadro();
   addEventListener("resize", ()=>{ medir(); cuadro(); }, {passive:true});
-  /* El puntero inclina apenas la superficie: la escena responde sin moverse de sitio. */
   addEventListener("pointermove", e=>{ px = e.clientX / innerWidth - .5; py = e.clientY / innerHeight - .5; }, {passive:true});
   document.addEventListener("visibilitychange", ()=>{ if(document.hidden) onda.detener(); else onda.arrancar(); });
   return onda;
