@@ -201,7 +201,7 @@ body.menu-abierto{overflow:hidden}
 }
 .hero__onda{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none}
 /* Velo suave para que el titular lea sobre la onda. */
-.hero__pin::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 50% at 50% 38%,rgba(4,10,7,.5),rgba(4,10,7,0) 68%),linear-gradient(to bottom,rgba(4,10,7,0) 78%,rgba(4,10,7,.4) 100%);pointer-events:none}
+.hero__pin::after{content:"";position:absolute;inset:0;background:radial-gradient(65% 62% at 50% 50%,rgba(4,10,7,.58),rgba(4,10,7,0) 72%),linear-gradient(to bottom,rgba(4,10,7,0) 78%,rgba(4,10,7,.4) 100%);pointer-events:none}
 .hero__pin > .marco{width:100%;position:relative;z-index:2}
 .hero__centro{display:flex;flex-direction:column;align-items:center;text-align:center}
 .hero__texto{position:relative;z-index:2;display:grid;justify-items:center;width:100%}
@@ -209,8 +209,8 @@ body.menu-abierto{overflow:hidden}
 .beat--n{display:none}
 .t-beat{font-size:clamp(2.5rem,5.6vw,4.75rem);font-weight:300;line-height:1.05;letter-spacing:.05em;text-transform:uppercase;color:#fff}
 .hero .cejilla{color:#7fd39a;margin-bottom:24px}
-.hero .t-hero{color:#fff;margin-inline:auto}
-.hero .t-sub{color:#b3c4ba;margin-inline:auto;text-align:center}
+.hero .t-hero{color:#fff;margin-inline:auto;text-shadow:0 2px 24px rgba(4,10,7,.55)}
+.hero .t-sub{color:#b3c4ba;margin-inline:auto;text-align:center;text-shadow:0 2px 20px rgba(4,10,7,.7)}
 .hero .acciones{justify-content:center}
 .hero .btn--fantasma{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.16);border-bottom-color:rgba(255,255,255,.08)}
 .hero .btn--fantasma:hover{background:rgba(255,255,255,.14)}
@@ -362,9 +362,11 @@ body.intro-activa{overflow:hidden}
 .campo input,.campo textarea{
   font:inherit;font-size:1.0625rem;color:var(--tinta);background:var(--banda);
   border:1px solid transparent;border-bottom-color:rgba(0,0,0,.12);border-radius:var(--r-link);
-  padding:12px 16px;min-height:48px;
-  transition:border-color var(--transicion),background var(--transicion);
+  padding:12px 16px;min-height:48px;width:100%;box-sizing:border-box;
+  transition:border-color var(--transicion),background var(--transicion),box-shadow var(--transicion);
 }
+.campo input{text-overflow:ellipsis}
+.campo input:focus,.campo textarea:focus{box-shadow:0 0 0 3px rgba(21,112,59,.12)}
 .campo textarea{resize:vertical;min-height:112px;line-height:1.47}
 .campo input:focus,.campo textarea:focus{outline:none;background:var(--fondo);border-color:var(--linea);border-bottom:2px solid var(--verde-link)}
 .form__err{font-size:.875rem;font-weight:500;color:#B3261E}
@@ -372,6 +374,9 @@ body.intro-activa{overflow:hidden}
 .campo--error input,.campo--error textarea{border-color:#B3261E;border-bottom:2px solid #B3261E;background:var(--fondo)}
 .campo__msg{font-size:.8125rem;color:#B3261E}
 .campo__msg[hidden]{display:none}
+@media (max-width:480px){
+  .campo input,.campo textarea{font-size:1rem}
+}
 
 /* ==========================================================================
    Pie
