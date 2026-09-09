@@ -530,6 +530,16 @@ function crearOnda(cv){
       });
     }
   }
+  /* Posicion continua sobre el cable (idx puede traer decimales): antes la
+     cabeza saltaba de una muestra a la siguiente y se veia a trompicones;
+     interpolando entre las dos muestras vecinas se mueve a cualquier
+     velocidad sin dar saltos, sin depender de cuantas muestras tenga el cable. */
+  function puntoEn(c, idx){
+    idx = Math.max(0, Math.min(MUESTRAS, idx));
+    const i0 = Math.floor(idx), i1 = Math.min(MUESTRAS, i0 + 1);
+    const f = idx - i0, a = c.puntos[i0], b = c.puntos[i1];
+    return { x: a.x + (b.x - a.x) * f, y: a.y + (b.y - a.y) * f };
+  }
   function medir(){
     const dpr = Math.min(devicePixelRatio || 1, 2);
     W = cv.clientWidth; H = cv.clientHeight;
@@ -540,6 +550,7 @@ function crearOnda(cv){
   function cuadro(){
     ctx.clearRect(0, 0, W, H);
     ctx.save();
+    ctx.lineCap = "round"; ctx.lineJoin = "round";
     /* El puntero inclina apenas el conjunto: la escena responde sin moverse de sitio. */
     ctx.translate(px * 10, py * 16);
     cables.forEach(c=>{
@@ -549,18 +560,20 @@ function crearOnda(cv){
       c.puntos.forEach((p, i)=>{ if(i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y); });
       ctx.stroke();
 
+      /* La estela se recorre en pasos parejos e independientes de las
+         muestras del cable, terminando siempre justo en la cabeza. */
       const cabeza = ((c.fase0 + t * c.vel) % 1) * MUESTRAS;
-      const iCabeza = Math.floor(cabeza);
-      for(let i = Math.max(0, iCabeza - COLA); i < iCabeza && i < MUESTRAS; i++){
-        const op = 1 - (iCabeza - i) / COLA;
-        ctx.strokeStyle = `rgba(${c.color},${op * .95})`;
+      const PASOS = 24;
+      let anterior = puntoEn(c, cabeza - COLA);
+      for(let k = 1; k <= PASOS; k++){
+        const actual = puntoEn(c, cabeza - COLA + (COLA * k) / PASOS);
+        const op = k / PASOS;
+        ctx.strokeStyle = `rgba(${c.color},${op * op * .95})`;
         ctx.lineWidth = c.ancho + 1.3;
-        ctx.beginPath();
-        ctx.moveTo(c.puntos[i].x, c.puntos[i].y);
-        ctx.lineTo(c.puntos[i + 1].x, c.puntos[i + 1].y);
-        ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(anterior.x, anterior.y); ctx.lineTo(actual.x, actual.y); ctx.stroke();
+        anterior = actual;
       }
-      const p = c.puntos[Math.min(MUESTRAS, iCabeza)];
+      const p = anterior;                    /* == puntoEn(c, cabeza), exacto */
       const brillo = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, 15);
       brillo.addColorStop(0, `rgba(${c.color},.55)`);
       brillo.addColorStop(1, `rgba(${c.color},0)`);
@@ -936,10 +949,26 @@ function botArea(area){
     botDecir("¿Seguimos con esto?");
     botOfrecer([
       ["Sí, quiero cotizar", () => botFormulario(area)],
-      ["Ver el detalle", () => { location.href = area.href; }],
+      ["Ver el detalle", () => botVerDetalle(area)],
       ["Ver otra área", botInicio],
     ]);
   }, 350);
+}
+
+/* "Ver el detalle" apuntaba a location.href = "#..." directo: si el hash ya
+   era ese (por ejemplo, tras cerrar y volver a abrir el asistente) el
+   navegador no dispara ninguna navegacion ni scroll, y el panel tampoco se
+   cerraba solo — por eso no parecia hacer nada. Se cierra el panel y se
+   hace scroll a mano cuando el destino es una seccion de la misma pagina;
+   si es otra pagina (equipamiento va a tienda.html), se navega normal. */
+function botVerDetalle(area){
+  cerrarPaneles();
+  if(area.href.startsWith("#")){
+    const destino = $(area.href);
+    if(destino) destino.scrollIntoView({ behavior: quietud ? "auto" : "smooth", block: "start" });
+  } else {
+    location.href = area.href;
+  }
 }
 
 function botDirecto(){
